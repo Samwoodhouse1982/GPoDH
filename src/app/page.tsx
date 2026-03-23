@@ -197,30 +197,78 @@ export default function HomePage() {
             </a>
           </div>
 
-          {/* Right: artwork placeholder */}
+          {/* Right: artwork holding card */}
           <div
+            className="animate-fade-up"
             style={{
               aspectRatio: '1',
-              background: 'var(--bg-surface)',
               borderRadius: 'var(--radius-lg)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
               maxWidth: '480px',
               width: '100%',
               margin: '0 auto',
+              background: 'linear-gradient(145deg, #0D1E1C 0%, #1A3B37 45%, #2A6B62 100%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '1.5rem',
+              padding: '3rem',
+              position: 'relative',
+              animationDelay: '300ms',
             }}
           >
-            <span
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '1.5rem',
-                letterSpacing: '0.15em',
-                color: 'var(--text-muted)',
-              }}
-            >
+            {/* Decorative arc */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: 'var(--radius-lg)',
+              background: 'radial-gradient(ellipse at 80% 20%, rgba(212,97,74,0.25) 0%, transparent 60%)',
+              pointerEvents: 'none',
+            }} />
+
+            {/* Coral accent line */}
+            <div style={{
+              width: '3rem',
+              height: '3px',
+              background: 'var(--accent-coral)',
+              borderRadius: '2px',
+            }} />
+
+            <p style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+              letterSpacing: '0.12em',
+              color: '#ffffff',
+              fontWeight: 400,
+              lineHeight: 1,
+            }}>
               GPODH
-            </span>
+            </p>
+
+            <p style={{
+              fontFamily: 'var(--font-cormorant, var(--font-display))',
+              fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
+              color: 'rgba(255,255,255,0.6)',
+              textAlign: 'center',
+              lineHeight: 1.5,
+              maxWidth: '20ch',
+            }}>
+              Global Perspectives on Digital Health
+            </p>
+
+            {/* Bottom platform label */}
+            <p style={{
+              position: 'absolute',
+              bottom: '1.5rem',
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.5625rem',
+              letterSpacing: '0.18em',
+              color: 'rgba(255,255,255,0.35)',
+              textTransform: 'uppercase',
+            }}>
+              A Podcast by SandiQ Global
+            </p>
           </div>
         </div>
       </section>
