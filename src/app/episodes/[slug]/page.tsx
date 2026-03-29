@@ -41,9 +41,17 @@ export default async function EpisodePage({ params }: Props) {
 
   const hasExternalUrl = episode.url !== 'https://gpodh.org'
 
-  const currentIndex = episodes.findIndex((e) => e.id === episode.id)
-  const prevEpisode = currentIndex < episodes.length - 1 ? episodes[currentIndex + 1] : null
-  const nextEpisode = currentIndex > 0 ? episodes[currentIndex - 1] : null
+  // Sort episodes by episode number so prev/next are always sequential
+  const epSortKey = (n: number | string) => {
+    const s = String(n)
+    const num = parseFloat(s) || 0
+    const letter = s.replace(/[^A-Za-z]/g, '').toLowerCase()
+    return num + (letter ? (letter.charCodeAt(0) - 96) * 0.1 : 0)
+  }
+  const sorted = [...episodes].sort((a, b) => epSortKey(a.episodeNumber ?? 0) - epSortKey(b.episodeNumber ?? 0))
+  const currentIndex = sorted.findIndex((e) => e.id === episode.id)
+  const prevEpisode = currentIndex > 0 ? sorted[currentIndex - 1] : null
+  const nextEpisode = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null
 
   return (
     <>
