@@ -1,38 +1,38 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #FDFCFA;
-  --color-bg-secondary: #EDE5D4;
-  --color-bg-card: #FFFFFF;
-  --color-bg-surface: #F5F0E8;
+  --color-bg-primary: #F5F0E8;
+  --color-bg-secondary: #E8DECA;
+  --color-bg-card: #FDFCFA;
+  --color-bg-surface: #EDE6D6;
   --color-bg-dark: #0B1D1A;
   --color-accent-coral: #D4614A;
   --color-accent-amber: #E09C2A;
   --color-accent-teal: #1A8070;
   --color-accent-coral-dim: #B84D38;
   --color-text-primary: #0D1E1C;
-  --color-text-secondary: #3A6860;
-  --color-text-muted: #7A9E99;
+  --color-text-secondary: #254E48;
+  --color-text-muted: #4A6E6A;
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
 }
 
 :root {
-  --bg-primary:       #FDFCFA;
-  --bg-secondary:     #EDE5D4;
-  --bg-card:          #FFFFFF;
-  --bg-surface:       #F5F0E8;
+  --bg-primary:       #F5F0E8;
+  --bg-secondary:     #E8DECA;
+  --bg-card:          #FDFCFA;
+  --bg-surface:       #EDE6D6;
   --bg-dark:          #0B1D1A;
   --accent-coral:     #D4614A;
   --accent-amber:     #E09C2A;
   --accent-teal:      #1A8070;
   --accent-coral-dim: #B84D38;
   --text-primary:     #0D1E1C;
-  --text-secondary:   #3A6860;
-  --text-muted:       #7A9E99;
-  --border:           rgba(13, 30, 28, 0.1);
-  --border-accent:    rgba(212, 97, 74, 0.3);
+  --text-secondary:   #254E48;
+  --text-muted:       #4A6E6A;
+  --border:           rgba(13, 30, 28, 0.15);
+  --border-accent:    rgba(212, 97, 74, 0.35);
   --font-display:     'Cormorant Garamond', Georgia, serif;
   --font-body:        'DM Sans', sans-serif;
   --font-mono:        'DM Mono', monospace;
@@ -67,9 +67,17 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-dm-sans, var(--font-body));
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Visible focus rings for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--accent-coral);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 img,

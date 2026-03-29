@@ -365,7 +365,7 @@ export default function HomePage() {
               </h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {audienceList.map((item) => (
-                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.65)', display: 'flex', gap: '0.625rem' }}>
+                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.88)', display: 'flex', gap: '0.625rem' }}>
                     <span style={{ color: 'var(--accent-coral)', flexShrink: 0 }}>&#8594;</span>
                     {item}
                   </li>
@@ -388,7 +388,7 @@ export default function HomePage() {
               </h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {youllHear.map((item) => (
-                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.65)', display: 'flex', gap: '0.625rem' }}>
+                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.88)', display: 'flex', gap: '0.625rem' }}>
                     <span style={{ color: 'var(--accent-coral)', flexShrink: 0 }}>&#8594;</span>
                     {item}
                   </li>
@@ -411,9 +411,9 @@ export default function HomePage() {
             <p
               style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.5875rem',
+                fontSize: '0.75rem',
                 letterSpacing: '0.2em',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(255,255,255,0.82)',
                 textTransform: 'uppercase',
                 textAlign: 'center',
                 marginBottom: '3rem',
@@ -462,9 +462,9 @@ export default function HomePage() {
                   <p
                     style={{
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                      fontSize: '0.625rem',
+                      fontSize: '0.75rem',
                       letterSpacing: '0.14em',
-                      color: 'rgba(255,255,255,0.6)',
+                      color: 'rgba(255,255,255,0.88)',
                       textTransform: 'uppercase',
                     }}
                   >
@@ -476,7 +476,7 @@ export default function HomePage() {
                     <p
                       style={{
                         fontSize: '0.8125rem',
-                        color: 'rgba(255,255,255,0.55)',
+                        color: 'rgba(255,255,255,0.85)',
                         lineHeight: 1.55,
                         maxWidth: '18ch',
                       }}

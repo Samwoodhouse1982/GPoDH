@@ -86,13 +86,13 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.625rem', flex: 1 }}>
+      <div style={{ padding: '1.375rem', display: 'flex', flexDirection: 'column', gap: '0.625rem', flex: 1 }}>
         {/* Episode number + date */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span
             style={{
               fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: '0.6875rem',
+              fontSize: '0.75rem',
               letterSpacing: '0.08em',
               color: palette.border,
               fontWeight: 400,
@@ -100,12 +100,12 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
           >
             #{episode.episodeNumber}
           </span>
-          <span style={{ color: 'var(--border)', fontSize: '0.6875rem' }}>·</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>·</span>
           <p
             style={{
               fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: '0.6875rem',
-              letterSpacing: '0.1em',
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
               color: 'var(--text-muted)',
               textTransform: 'uppercase',
               margin: 0,
@@ -119,9 +119,9 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         <h3
           style={{
             fontFamily: 'var(--font-cormorant, var(--font-display))',
-            fontSize: '1.25rem',
-            fontWeight: 600,
-            lineHeight: 1.3,
+            fontSize: '1.3125rem',
+            fontWeight: 700,
+            lineHeight: 1.25,
             color: 'var(--text-primary)',
           }}
         >
@@ -131,8 +131,10 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         {/* Guest */}
         <p
           style={{
-            fontSize: '0.8125rem',
+            fontSize: '0.875rem',
+            fontWeight: 500,
             color: 'var(--text-secondary)',
+            lineHeight: 1.5,
           }}
         >
           {episode.guest} &middot; {episode.guestRole}
@@ -141,9 +143,9 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         {/* Description */}
         <p
           style={{
-            fontSize: '0.875rem',
+            fontSize: '0.9375rem',
             color: 'var(--text-secondary)',
-            lineHeight: 1.6,
+            lineHeight: 1.65,
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
@@ -157,9 +159,9 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         {/* CTA */}
         <p
           style={{
-            fontSize: '0.875rem',
+            fontSize: '0.9375rem',
             color: 'var(--accent-coral)',
-            fontWeight: 500,
+            fontWeight: 600,
             marginTop: '0.25rem',
           }}
         >

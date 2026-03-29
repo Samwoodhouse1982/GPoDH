@@ -765,6 +765,7 @@ For digital health companies choosing clinical outcomes: do formative research. 
     guest: 'Nadia Kadhim',
     guestRole: 'Co-founder, Naq',
     date: 'Jan 2026',
+    artworkUrl: '/guests/nadia-kadhim.jpg',
     description: 'There are 43 million people displaced through conflict and environmental disaster. Their likelihood of accessing good healthcare is already poor — and as we race towards algorithmic decision-making, they are becoming invisible in the data underpinning it. Nadia Kadhim, co-founder of Naq and daughter of an Iraqi refugee, explores what digital identity and data ownership really mean for displaced people, why this is an everybody problem, and what builders, policymakers, and funders need to do differently.',
     url: 'https://www.gpodh.org/why-displaced-people-need-a-digital-identity/',
     themes: ['Digital Identity', 'Refugees', 'Data', 'Policy', 'Human Rights'],

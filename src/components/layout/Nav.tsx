@@ -57,7 +57,7 @@ export default function Nav() {
             fontFamily: 'var(--font-dm-mono, var(--font-mono))',
             fontSize: '0.625rem',
             letterSpacing: '0.14em',
-            color: 'rgba(255,255,255,0.6)',
+            color: 'rgba(255,255,255,0.88)',
             textTransform: 'uppercase',
           }}
         >
@@ -73,7 +73,7 @@ export default function Nav() {
           right: 0,
           zIndex: 50,
           transition: 'background var(--transition-base), backdrop-filter var(--transition-base)',
-          background: scrolled ? 'rgba(253, 252, 250, 0.95)' : 'transparent',
+          background: scrolled ? 'rgba(245, 240, 232, 0.97)' : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         }}
