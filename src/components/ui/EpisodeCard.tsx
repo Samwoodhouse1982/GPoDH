@@ -87,18 +87,33 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
 
       {/* Content */}
       <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.625rem', flex: 1 }}>
-        {/* Date */}
-        <p
-          style={{
-            fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-            fontSize: '0.6875rem',
-            letterSpacing: '0.1em',
-            color: 'var(--text-muted)',
-            textTransform: 'uppercase',
-          }}
-        >
-          {episode.date}
-        </p>
+        {/* Episode number + date */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.6875rem',
+              letterSpacing: '0.08em',
+              color: palette.border,
+              fontWeight: 400,
+            }}
+          >
+            #{episode.episodeNumber}
+          </span>
+          <span style={{ color: 'var(--border)', fontSize: '0.6875rem' }}>·</span>
+          <p
+            style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.6875rem',
+              letterSpacing: '0.1em',
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              margin: 0,
+            }}
+          >
+            {episode.date}
+          </p>
+        </div>
 
         {/* Title */}
         <h3
