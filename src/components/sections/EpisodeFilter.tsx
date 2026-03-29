@@ -173,7 +173,10 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       return true
     })
 
-    if (!query.trim()) return base
+    const epNum = (ep: Episode) =>
+      typeof ep.episodeNumber === 'number' ? ep.episodeNumber : parseFloat(String(ep.episodeNumber)) || 0
+
+    if (!query.trim()) return [...base].sort((a, b) => epNum(b) - epNum(a))
 
     // Run a Fuse search for each expanded term, collect scored ids
     const scoreMap = new Map<string, number>()
