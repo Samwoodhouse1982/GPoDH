@@ -41,6 +41,7 @@ export const episodes: Episode[] = [
     title: 'How to develop AI that addresses health inequities',
     guest: 'Joe Alderman',
     guestRole: 'NHS Anaesthetist and NIHR Clinical Lecturer in AI, University of Birmingham',
+    artworkUrl: '/guests/joe-alderman.jpg',
     date: 'Mar 2026',
     description: 'Joe Alderman has a rare double view: anaesthetist by night, AI academic by day. His insights on what it takes to deploy and monitor AI in healthcare — with a lens on not leaving people behind — are relevant wherever in the world you are. We cover health data poverty, the STANDING Together initiative, algorithmic bias, LLM safety for patients and clinicians, anti-patterns in the industry, and what people building in low-resource settings specifically need to think about.',
     url: 'https://www.gpodh.org/how-to-develop-ai-that-addresses-health-inequities/',
