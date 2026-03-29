@@ -57,6 +57,171 @@ const resourceCategories: ResourceCategory[] = [
       },
     ],
   },
+  {
+    title: 'Evidence and Evaluation',
+    items: [
+      {
+        label: 'MAPS Toolkit',
+        description: 'WHO framework for mHealth assessment and planning.',
+        url: 'https://www.who.int/reproductivehealth/topics/mhealth/maps-toolkit/en/',
+      },
+      {
+        label: 'GRADE Approach',
+        description: 'Grading the quality of evidence for clinical decision making.',
+        url: 'https://www.gradeworkinggroup.org/',
+      },
+      {
+        label: 'Digital Health Monitor (WHO)',
+        description: 'Tracking digital health policy progress globally.',
+        url: 'https://digitalhealthmonitor.org/',
+      },
+    ],
+  },
+  {
+    title: 'Global Health Frameworks',
+    items: [
+      {
+        label: 'WHO Global Strategy on Digital Health 2020–2025',
+        description: 'The foundational WHO framework for digital health.',
+        url: 'https://www.who.int/docs/default-source/documents/gs4dhdaa2a9f352b0445bafbc79ca03c2d.pdf',
+      },
+      {
+        label: 'ITU Digital Inclusion Framework',
+        description: 'Addressing connectivity and access as prerequisites for digital health.',
+        url: 'https://www.itu.int/en/ITU-D/Digital-Inclusion/Pages/default.aspx',
+      },
+      {
+        label: 'PHCPI Primary Health Care Framework',
+        description: 'How digital tools fit into primary care strengthening.',
+        url: 'https://improvingphc.org/',
+      },
+    ],
+  },
+  {
+    title: 'WHO and ITU Publications',
+    items: [
+      {
+        label: 'Classification of Digital Health Interventions (WHO)',
+        description: 'The taxonomy for understanding what digital health tools do.',
+        url: 'https://www.who.int/reproductivehealth/publications/mhealth/classification-digital-health-interventions/en/',
+      },
+      {
+        label: 'Consolidated Telemedicine Implementation Guide (WHO)',
+        description: 'Practical guidance for telemedicine deployment.',
+        url: 'https://www.who.int/publications/i/item/9789240050709',
+      },
+      {
+        label: 'Digital Health Country Assessments (ITU/WHO)',
+        description: 'Country-level readiness and capacity assessments.',
+        url: 'https://www.itu.int/en/ITU-D/ICT-Applications/eHEALTH/Pages/default.aspx',
+      },
+    ],
+  },
+  {
+    title: 'Recommended Reading',
+    items: [
+      {
+        label: 'Lancet Digital Health',
+        description: 'Peer-reviewed research on digital health interventions, including extensive coverage of LMICs.',
+        url: 'https://www.thelancet.com/journals/landig/home',
+      },
+      {
+        label: 'The Digital Health Atlas',
+        description: 'Mapping digital health implementations across the world.',
+        url: 'https://digitalhealthatlas.org/',
+      },
+      {
+        label: 'GSMA Mobile for Development Insights',
+        description: 'How mobile technology is being used in emerging markets.',
+        url: 'https://www.gsma.com/mobilefordevelopment/',
+      },
+    ],
+  },
+  {
+    title: 'Organisations Doing Good Work',
+    items: [
+      {
+        label: 'Digital Square',
+        description: 'A PATH-led initiative to strengthen global goods for digital health.',
+        url: 'https://digitalsquare.org/',
+      },
+      {
+        label: 'Access Health International',
+        description: 'Advisory on health reform and systems strengthening.',
+        url: 'https://accessh.org/',
+      },
+      {
+        label: 'Resolve to Save Lives',
+        description: 'Cardiovascular disease prevention at scale in LMICs.',
+        url: 'https://resolvetosavelives.org/',
+      },
+    ],
+  },
+  {
+    title: 'Accessing funding for LMIC digital health and AI projects — useful links',
+    items: [
+      {
+        label: 'Grand Challenges Canada',
+        description: 'Funds bold ideas with the potential to save and improve lives in LMICs, including digital health and AI applications. The Stars in Global Health programme is particularly relevant.',
+        url: 'https://www.grandchallenges.ca/',
+      },
+      {
+        label: 'Grand Challenges (Gates Foundation)',
+        description: 'Open calls for innovation addressing health challenges in the developing world. Regularly funds digital health, diagnostics, and AI in global health.',
+        url: 'https://gcgh.grandchallenges.org/',
+      },
+      {
+        label: 'Wellcome Trust — Discovery Research and Innovations',
+        description: 'Funds research across global health including digital and data science applications. Their health inequities and infectious disease portfolios are relevant to LMIC digital health.',
+        url: 'https://wellcome.org/grant-funding',
+      },
+      {
+        label: 'USAID Digital Development',
+        description: 'USAID\'s digital development team funds and supports digital tools and infrastructure in developing countries. Their Digital Strategy sets the framework.',
+        url: 'https://www.usaid.gov/digital-development',
+      },
+      {
+        label: 'IDRC — International Development Research Centre',
+        description: 'Canadian public funder supporting research-based solutions in developing countries. Strong portfolio in digital health, AI for development, and data systems.',
+        url: 'https://idrc.ca/',
+      },
+      {
+        label: 'The Skoll Foundation',
+        description: 'Supports social entrepreneurs tackling systemic global challenges. Several Skoll awardees work in digital health and health equity.',
+        url: 'https://skoll.org/',
+      },
+      {
+        label: 'Omidyar Network',
+        description: 'Invests in market-based and policy approaches to increase inclusion and opportunity. Relevant for digital health ventures addressing underserved populations.',
+        url: 'https://omidyar.com/',
+      },
+      {
+        label: 'Google.org',
+        description: 'Google\'s philanthropic arm funds nonprofits and social enterprises using technology for social impact, including AI for health in underserved settings.',
+        url: 'https://www.google.org/',
+      },
+      {
+        label: 'Rockefeller Foundation — Health Initiative',
+        description: 'Long-standing funder of global health innovation, with a focus on health system strengthening and equity. Active in digital health and AI.',
+        url: 'https://www.rockefellerfoundation.org/initiative/health/',
+      },
+      {
+        label: 'World Bank Digital Development Partnership',
+        description: 'A multi-donor trust fund supporting countries in developing digital infrastructure and policies. Useful for government and systems-level digital health projects.',
+        url: 'https://www.worldbank.org/en/programs/digital-development-partnership',
+      },
+      {
+        label: 'The Global Fund',
+        description: 'Primary funder of HIV, TB, and malaria programmes globally. Increasingly funds digital health components including surveillance, supply chain, and community health systems.',
+        url: 'https://www.theglobalfund.org/',
+      },
+      {
+        label: 'The Fleming Fund',
+        description: 'UK-funded programme supporting countries in generating and using data to tackle antimicrobial resistance. A useful model for health data funding in LMICs.',
+        url: 'https://www.flemingfund.org/',
+      },
+    ],
+  },
 ]
 
 export default function ResourcesPage() {
