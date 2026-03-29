@@ -2,11 +2,13 @@
 
 @theme {
   --color-bg-primary: #FDFCFA;
-  --color-bg-secondary: #F2EDE5;
+  --color-bg-secondary: #EDE5D4;
   --color-bg-card: #FFFFFF;
-  --color-bg-surface: #F5F1EA;
+  --color-bg-surface: #F5F0E8;
+  --color-bg-dark: #0B1D1A;
   --color-accent-coral: #D4614A;
-  --color-accent-amber: #C9933A;
+  --color-accent-amber: #E09C2A;
+  --color-accent-teal: #1A8070;
   --color-accent-coral-dim: #B84D38;
   --color-text-primary: #0D1E1C;
   --color-text-secondary: #3A6860;
@@ -18,11 +20,13 @@
 
 :root {
   --bg-primary:       #FDFCFA;
-  --bg-secondary:     #F2EDE5;
+  --bg-secondary:     #EDE5D4;
   --bg-card:          #FFFFFF;
-  --bg-surface:       #F5F1EA;
+  --bg-surface:       #F5F0E8;
+  --bg-dark:          #0B1D1A;
   --accent-coral:     #D4614A;
-  --accent-amber:     #C9933A;
+  --accent-amber:     #E09C2A;
+  --accent-teal:      #1A8070;
   --accent-coral-dim: #B84D38;
   --text-primary:     #0D1E1C;
   --text-secondary:   #3A6860;

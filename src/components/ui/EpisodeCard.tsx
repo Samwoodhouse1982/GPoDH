@@ -5,7 +5,35 @@ interface EpisodeCardProps {
   episode: Episode
 }
 
+const CARD_PALETTES = [
+  {
+    border: '#D4614A',
+    artworkBg: 'linear-gradient(145deg, #2C1510 0%, #6B2918 55%, #A03520 100%)',
+    artworkText: '#F5A090',
+  },
+  {
+    border: '#E09C2A',
+    artworkBg: 'linear-gradient(145deg, #2A1A05 0%, #6B4510 55%, #9A6815 100%)',
+    artworkText: '#F5CC70',
+  },
+  {
+    border: '#1A8070',
+    artworkBg: 'linear-gradient(145deg, #071A18 0%, #1A4A42 55%, #1A7060 100%)',
+    artworkText: '#70D5BF',
+  },
+  {
+    border: '#2A6B8A',
+    artworkBg: 'linear-gradient(145deg, #071018 0%, #1A3A52 55%, #1A5A80 100%)',
+    artworkText: '#70B8D8',
+  },
+]
+
 export default function EpisodeCard({ episode }: EpisodeCardProps) {
+  const num = typeof episode.episodeNumber === 'number'
+    ? episode.episodeNumber
+    : parseInt(String(episode.episodeNumber)) || 0
+  const palette = CARD_PALETTES[num % CARD_PALETTES.length]
+
   return (
     <Link
       href={`/episodes/${episode.slug}`}
@@ -21,13 +49,14 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         boxShadow: 'var(--shadow-card)',
         textDecoration: 'none',
         color: 'inherit',
+        borderTop: `3px solid ${palette.border}`,
       }}
     >
       {/* Artwork */}
       <div
         style={{
           aspectRatio: '1',
-          background: 'var(--bg-surface)',
+          background: episode.artworkUrl ? 'var(--bg-surface)' : palette.artworkBg,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -47,7 +76,7 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
               fontFamily: 'var(--font-dm-mono, var(--font-mono))',
               fontSize: '1rem',
               letterSpacing: '0.1em',
-              color: 'var(--text-muted)',
+              color: palette.artworkText,
               fontWeight: 400,
             }}
           >

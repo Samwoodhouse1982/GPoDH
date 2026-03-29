@@ -19,14 +19,17 @@ const showCards = [
   {
     eyebrow: 'VISIBILITY',
     text: 'Who is actually building digital health tools in low-resource settings, and what does their work look like?',
+    accent: 'var(--accent-coral)',
   },
   {
     eyebrow: 'LEARNING',
     text: 'What can high-income country health systems learn from the ingenuity and constraint-led innovation happening elsewhere?',
+    accent: 'var(--accent-amber)',
   },
   {
     eyebrow: 'THE BIG PICTURE',
     text: 'How do we build a more equitable global digital health ecosystem, and who needs to be in the room?',
+    accent: 'var(--accent-teal)',
   },
 ]
 
@@ -110,6 +113,7 @@ export default function HomePage() {
           display: 'flex',
           alignItems: 'center',
           padding: '8rem var(--gutter) 4rem',
+          background: 'radial-gradient(ellipse at 90% 10%, rgba(212,97,74,0.07) 0%, transparent 55%), radial-gradient(ellipse at 5% 85%, rgba(224,156,42,0.05) 0%, transparent 50%), var(--bg-primary)',
         }}
       >
         <div
@@ -302,6 +306,7 @@ export default function HomePage() {
                   style={{
                     background: 'var(--bg-card)',
                     border: '1px solid var(--border)',
+                    borderTop: `3px solid ${card.accent}`,
                     borderRadius: 'var(--radius-lg)',
                     padding: '1.75rem',
                     height: '100%',
@@ -312,7 +317,7 @@ export default function HomePage() {
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                       fontSize: '0.6875rem',
                       letterSpacing: '0.12em',
-                      color: 'var(--accent-coral)',
+                      color: card.accent,
                       textTransform: 'uppercase',
                       marginBottom: '0.875rem',
                     }}
@@ -332,10 +337,8 @@ export default function HomePage() {
       {/* ——— Who listens / You will hear ——— */}
       <section
         style={{
-          background: 'var(--bg-secondary)',
+          background: 'var(--bg-dark)',
           padding: '5rem var(--gutter)',
-          borderTop: '1px solid var(--border)',
-          borderBottom: '1px solid var(--border)',
         }}
       >
         <div
@@ -354,7 +357,7 @@ export default function HomePage() {
                   fontFamily: 'var(--font-cormorant, var(--font-display))',
                   fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
                   fontWeight: 600,
-                  color: 'var(--text-primary)',
+                  color: '#ffffff',
                   marginBottom: '1.5rem',
                 }}
               >
@@ -362,7 +365,7 @@ export default function HomePage() {
               </h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {audienceList.map((item) => (
-                  <li key={item} style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', display: 'flex', gap: '0.625rem' }}>
+                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.65)', display: 'flex', gap: '0.625rem' }}>
                     <span style={{ color: 'var(--accent-coral)', flexShrink: 0 }}>&#8594;</span>
                     {item}
                   </li>
@@ -377,7 +380,7 @@ export default function HomePage() {
                   fontFamily: 'var(--font-cormorant, var(--font-display))',
                   fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
                   fontWeight: 600,
-                  color: 'var(--text-primary)',
+                  color: '#ffffff',
                   marginBottom: '1.5rem',
                 }}
               >
@@ -385,7 +388,7 @@ export default function HomePage() {
               </h2>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {youllHear.map((item) => (
-                  <li key={item} style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', display: 'flex', gap: '0.625rem' }}>
+                  <li key={item} style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.65)', display: 'flex', gap: '0.625rem' }}>
                     <span style={{ color: 'var(--accent-coral)', flexShrink: 0 }}>&#8594;</span>
                     {item}
                   </li>
@@ -400,7 +403,7 @@ export default function HomePage() {
       <ScrollReveal>
         <section
           style={{
-            background: 'var(--accent-coral)',
+            background: 'linear-gradient(120deg, #C4522A 0%, #D4614A 40%, #C9933A 100%)',
             padding: '4rem var(--gutter)',
           }}
         >
