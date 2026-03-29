@@ -82,10 +82,10 @@ export default function Nav() {
                   color: 'var(--text-secondary)',
                   display: 'block',
                   lineHeight: 1.3,
-                  maxWidth: '14rem',
+                  maxWidth: '16rem',
                 }}
               >
-                Global Perspectives on Digital Health
+                AI &amp; digital health in underserved communities
               </span>
             </div>
           </Link>

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import PlatformBadge from '@/components/ui/PlatformBadge'
@@ -7,6 +8,8 @@ import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
 import { episodes } from '@/lib/episodes'
 import { PLATFORMS, SOCIAL } from '@/lib/constants'
+
+const HeroGlobe = dynamic(() => import('@/components/ui/HeroGlobe'), { ssr: false })
 
 const testimonials = [
   "It is so valuable to hear insights from people who have already gone through similar challenges.",
@@ -146,12 +149,27 @@ export default function HomePage() {
                 fontWeight: 700,
                 lineHeight: 1.05,
                 color: 'var(--text-primary)',
-                marginBottom: '1.5rem',
+                marginBottom: '1rem',
                 animationDelay: '100ms',
               }}
             >
               Break out of your bubble.
             </h1>
+            <p
+              className="animate-fade-up"
+              style={{
+                fontFamily: 'var(--font-cormorant, var(--font-display))',
+                fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                color: 'var(--text-secondary)',
+                marginBottom: '1.75rem',
+                lineHeight: 1.4,
+                animationDelay: '160ms',
+              }}
+            >
+              The podcast about AI and digital health in underserved communities globally.
+            </p>
             <p
               className="animate-fade-up"
               style={{
@@ -197,7 +215,7 @@ export default function HomePage() {
             </a>
           </div>
 
-          {/* Right: artwork holding card */}
+          {/* Right: animated hero globe */}
           <div
             className="animate-fade-up"
             style={{
@@ -208,67 +226,19 @@ export default function HomePage() {
               width: '100%',
               margin: '0 auto',
               background: 'linear-gradient(145deg, #0D1E1C 0%, #1A3B37 45%, #2A6B62 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '1.5rem',
-              padding: '3rem',
               position: 'relative',
               animationDelay: '300ms',
             }}
           >
-            {/* Decorative arc */}
+            {/* Subtle coral radial accent */}
             <div style={{
               position: 'absolute',
               inset: 0,
-              borderRadius: 'var(--radius-lg)',
-              background: 'radial-gradient(ellipse at 80% 20%, rgba(212,97,74,0.25) 0%, transparent 60%)',
+              background: 'radial-gradient(ellipse at 75% 20%, rgba(212,97,74,0.18) 0%, transparent 55%)',
               pointerEvents: 'none',
+              zIndex: 1,
             }} />
-
-            {/* Coral accent line */}
-            <div style={{
-              width: '3rem',
-              height: '3px',
-              background: 'var(--accent-coral)',
-              borderRadius: '2px',
-            }} />
-
-            <p style={{
-              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: 'clamp(2.5rem, 8vw, 4rem)',
-              letterSpacing: '0.12em',
-              color: '#ffffff',
-              fontWeight: 400,
-              lineHeight: 1,
-            }}>
-              GPODH
-            </p>
-
-            <p style={{
-              fontFamily: 'var(--font-cormorant, var(--font-display))',
-              fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
-              color: 'rgba(255,255,255,0.6)',
-              textAlign: 'center',
-              lineHeight: 1.5,
-              maxWidth: '20ch',
-            }}>
-              Global Perspectives on Digital Health
-            </p>
-
-            {/* Bottom platform label */}
-            <p style={{
-              position: 'absolute',
-              bottom: '1.5rem',
-              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: '0.5625rem',
-              letterSpacing: '0.18em',
-              color: 'rgba(255,255,255,0.35)',
-              textTransform: 'uppercase',
-            }}>
-              A Podcast by SandiQ Global
-            </p>
+            <HeroGlobe />
           </div>
         </div>
       </section>
