@@ -36,10 +36,39 @@ export default function Nav() {
 
   return (
     <>
-      <header
+      {/* Top bar */}
+      <div
         style={{
           position: 'fixed',
           top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 51,
+          height: 'var(--topbar-height)',
+          background: 'var(--bg-dark)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 var(--gutter)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+            fontSize: '0.625rem',
+            letterSpacing: '0.14em',
+            color: 'rgba(255,255,255,0.6)',
+            textTransform: 'uppercase',
+          }}
+        >
+          AI &amp; digital health in underserved communities
+        </p>
+      </div>
+
+      <header
+        style={{
+          position: 'fixed',
+          top: 'var(--topbar-height)',
           left: 0,
           right: 0,
           zIndex: 50,
@@ -85,7 +114,7 @@ export default function Nav() {
                   maxWidth: '16rem',
                 }}
               >
-                AI &amp; digital health in underserved communities
+                Global Perspectives on Digital Health
               </span>
             </div>
           </Link>
