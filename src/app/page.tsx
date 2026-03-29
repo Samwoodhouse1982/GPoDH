@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import PlatformBadge from '@/components/ui/PlatformBadge'
@@ -6,10 +5,9 @@ import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
+import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
 import { episodes } from '@/lib/episodes'
 import { PLATFORMS, SOCIAL } from '@/lib/constants'
-
-const HeroGlobe = dynamic(() => import('@/components/ui/HeroGlobe'), { ssr: false })
 
 const testimonials = [
   "It is so valuable to hear insights from people who have already gone through similar challenges.",
@@ -238,7 +236,7 @@ export default function HomePage() {
               pointerEvents: 'none',
               zIndex: 1,
             }} />
-            <HeroGlobe />
+            <HeroGlobeWrapper />
           </div>
         </div>
       </section>
