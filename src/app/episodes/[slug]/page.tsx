@@ -4,6 +4,7 @@ import Link from 'next/link'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import EmailSignup from '@/components/sections/EmailSignup'
+import TranscriptToggle from '@/components/ui/TranscriptToggle'
 import { episodes } from '@/lib/episodes'
 import { PLATFORMS } from '@/lib/constants'
 
@@ -246,6 +247,120 @@ export default async function EpisodePage({ params }: Props) {
         </div>
       </section>
 
+      {/* ——— Embed player ——— */}
+      <section
+        style={{
+          padding: '3rem var(--gutter) 0',
+          borderBottom: '1px solid var(--border)',
+        }}
+      >
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.6875rem',
+              letterSpacing: '0.12em',
+              color: 'var(--accent-coral)',
+              textTransform: 'uppercase',
+              marginBottom: '1.25rem',
+            }}
+          >
+            Listen
+          </p>
+
+          {episode.transistorEpisodeId ? (
+            <iframe
+              width="100%"
+              height="180"
+              frameBorder="no"
+              scrolling="no"
+              seamless
+              src={`https://share.transistor.fm/e/${episode.transistorEpisodeId}`}
+              title={`Listen to ${episode.title}`}
+              style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
+            />
+          ) : episode.spotifyEpisodeId ? (
+            <iframe
+              src={`https://open.spotify.com/embed/episode/${episode.spotifyEpisodeId}?utm_source=generator`}
+              width="100%"
+              height="152"
+              frameBorder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
+              title={`Listen to ${episode.title} on Spotify`}
+            />
+          ) : episode.youtubeVideoId ? (
+            <div
+              style={{
+                position: 'relative',
+                paddingBottom: '56.25%',
+                height: 0,
+                overflow: 'hidden',
+                borderRadius: 'var(--radius-md)',
+              }}
+            >
+              <iframe
+                src={`https://www.youtube.com/embed/${episode.youtubeVideoId}`}
+                title={`Watch ${episode.title} on YouTube`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                }}
+              />
+            </div>
+          ) : (
+            /* Placeholder — add transistorEpisodeId to this episode in episodes.ts */
+            <div
+              style={{
+                padding: '2rem',
+                background: 'var(--bg-surface)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px dashed var(--border)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '1rem',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-sans, sans-serif)',
+                  fontSize: '0.9375rem',
+                  color: 'var(--text-muted)',
+                  margin: 0,
+                }}
+              >
+                Listen on your preferred platform
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                {hasExternalUrl && (
+                  <a
+                    href={episode.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
+                  >
+                    Episode page ↗
+                  </a>
+                )}
+                <a href={PLATFORMS.apple} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}>Apple Podcasts ↗</a>
+                <a href={PLATFORMS.spotify} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}>Spotify ↗</a>
+                <a href={PLATFORMS.youtube} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}>YouTube ↗</a>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ——— Overview ——— */}
       <section style={{ padding: '5rem var(--gutter)' }}>
         <div
@@ -457,6 +572,44 @@ export default async function EpisodePage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* ——— Transcript ——— */}
+      <section
+        style={{
+          padding: '5rem var(--gutter)',
+          borderBottom: '1px solid var(--border)',
+        }}
+      >
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.6875rem',
+              letterSpacing: '0.12em',
+              color: 'var(--accent-coral)',
+              textTransform: 'uppercase',
+              marginBottom: '1.25rem',
+            }}
+          >
+            Transcript
+          </p>
+
+          {episode.transcript ? (
+            <TranscriptToggle transcript={episode.transcript} guest={episode.guest} />
+          ) : (
+            <p
+              style={{
+                fontSize: '0.9375rem',
+                color: 'var(--text-muted)',
+                fontStyle: 'italic',
+                fontFamily: 'var(--font-dm-sans, sans-serif)',
+              }}
+            >
+              Transcript coming soon.
+            </p>
+          )}
+        </div>
+      </section>
 
       {/* ——— About the guest ——— */}
       {episode.bio && (

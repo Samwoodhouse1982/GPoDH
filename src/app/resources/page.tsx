@@ -3,48 +3,58 @@ import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export const metadata: Metadata = {
-  title: 'Resources',
+  title: 'Resources — GPODH',
+  description: 'An ongoing list of great resources from the podcast and beyond — articles, organisations, and tools at the intersection of digital health and underserved communities.',
 }
 
-const resourceCategories = [
+interface Resource {
+  label: string
+  description: string
+  url?: string
+}
+
+interface ResourceCategory {
+  title: string
+  items: Resource[]
+}
+
+const resourceCategories: ResourceCategory[] = [
   {
-    title: 'Evidence and Evaluation',
+    title: 'Articles and resources from the podcast or otherwise noteworthy',
     items: [
-      { label: 'MAPS Toolkit', description: 'WHO framework for mHealth assessment and planning.' },
-      { label: 'GRADE Approach', description: 'Grading the quality of evidence for clinical decision making.' },
-      { label: 'Digital Health Monitor', description: 'Tracking digital health policy progress globally.' },
+      {
+        label: 'Standing Together Initiative',
+        description: 'I spoke to Dr Xiao Liu in Episode 1 about what actionable things we can do about health data poverty. This is a great resource.',
+      },
+      {
+        label: "Rowena Luk's Africa Health Ventures",
+        description: 'About the digital health investment landscape in Africa. Listen to my discussion with Rowena on Episode 14.',
+      },
+      {
+        label: 'The Agency Fund',
+        description: 'I like their view on what needs to change in funding.',
+      },
+      {
+        label: 'The 5 Stages of Regulatory Grief',
+        description: 'Regulatory expert Hugh Harvey of Hardian Health, who I spoke to in Episode 13, wrote and spoke about this excellent article on regulatory strategy pitfalls.',
+      },
+      {
+        label: 'Seyi Abimbola: The Foreign Gaze',
+        description: 'Seyi writes compellingly about how global health needs to change. He recently published a book called The Foreign Gaze. Read it. Be changed.',
+      },
+      {
+        label: 'Community Health Impact Coalition: Community Health Worker video series',
+        description: 'Check out their series on community health workers. Essential viewing.',
+      },
     ],
   },
   {
-    title: 'Global Health Frameworks',
+    title: 'For Implementers',
     items: [
-      { label: 'WHO Global Strategy on Digital Health 2020-2025', description: 'The foundational WHO framework for digital health.' },
-      { label: 'ITU Digital Inclusion Framework', description: 'Addressing connectivity and access as prerequisites for digital health.' },
-      { label: 'PHCPI Primary Health Care Framework', description: 'How digital tools fit into primary care strengthening.' },
-    ],
-  },
-  {
-    title: 'WHO and ITU Publications',
-    items: [
-      { label: 'Classification of Digital Health Interventions (WHO)', description: 'The taxonomy for understanding what digital health tools do.' },
-      { label: 'Consolidated Telemedicine Implementation Guide (WHO)', description: 'Practical guidance for telemedicine deployment.' },
-      { label: 'Digital Health Country Assessments (ITU/WHO)', description: 'Country-level readiness and capacity assessments.' },
-    ],
-  },
-  {
-    title: 'Recommended Reading',
-    items: [
-      { label: 'Innovations in Global Health Technology (Lancet Digital Health)', description: 'Peer-reviewed research on digital health in LMICs.' },
-      { label: 'The Digital Health Atlas', description: 'Mapping digital health implementations across the world.' },
-      { label: 'GSMA Mobile for Development Insights', description: 'How mobile technology is being used in emerging markets.' },
-    ],
-  },
-  {
-    title: 'Organisations Doing Good Work',
-    items: [
-      { label: 'Digital Square', description: 'A PATH-led initiative to strengthen global goods for digital health.' },
-      { label: 'Access Health International', description: 'Advisory on health reform and systems strengthening.' },
-      { label: 'Resolve to Save Lives', description: 'Cardiovascular disease prevention at scale in LMICs.' },
+      {
+        label: 'Geneva Digital Health Hub',
+        description: 'GDHD lead a great community called Implementome — for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode I did with GDHD director Caroline Perrin (episode 15).',
+      },
     ],
   },
 ]
@@ -71,7 +81,7 @@ export default function ResourcesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              RESOURCES
+              Resources
             </p>
           </ScrollReveal>
           <ScrollReveal delay={100}>
@@ -85,25 +95,34 @@ export default function ResourcesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              Useful tools, frameworks, and reading.
+              Where can I connect to other great work in this space?
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={150}>
-            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-              A curated list of resources relevant to the topics covered on the podcast. Frameworks, publications, and organisations working at the intersection of digital health and underserved communities.
+            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+              This is an ongoing list of awesome resources I collect along the way. I&rsquo;ll categorise them as usefully as possible over time. Aside from my own musings on{' '}
+              <a
+                href="https://shubstack.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--accent-coral)', textDecoration: 'none' }}
+              >
+                Shubstack
+              </a>
+              {' '}where I regularly write about current issues and reflect on podcast conversations, here are some recommended resources.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Resources grid */}
+      {/* Resources */}
       <section style={{ padding: '4rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
-              gap: '3rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4rem',
               marginBottom: '4rem',
             }}
           >
@@ -113,34 +132,70 @@ export default function ResourcesPage() {
                   <h2
                     style={{
                       fontFamily: 'var(--font-cormorant, var(--font-display))',
-                      fontSize: '1.5rem',
+                      fontSize: '1.625rem',
                       fontWeight: 600,
                       color: 'var(--text-primary)',
-                      marginBottom: '1.25rem',
+                      marginBottom: '1.5rem',
                       paddingBottom: '0.75rem',
                       borderBottom: '1px solid var(--border)',
                     }}
                   >
                     {category.title}
                   </h2>
-                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                    {category.items.map((item) => (
-                      <li key={item.label}>
+                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0' }}>
+                    {category.items.map((item, i) => (
+                      <li
+                        key={item.label}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'minmax(min(100%, 240px), 1fr) 2fr',
+                          gap: '1.5rem 2.5rem',
+                          padding: '1.25rem 0',
+                          borderBottom: i < category.items.length - 1 ? '1px solid var(--border)' : 'none',
+                          alignItems: 'start',
+                        }}
+                      >
+                        <div>
+                          {item.url ? (
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                fontSize: '0.9375rem',
+                                fontWeight: 600,
+                                color: 'var(--accent-coral)',
+                                textDecoration: 'none',
+                                lineHeight: 1.5,
+                                fontFamily: 'var(--font-dm-sans, sans-serif)',
+                              }}
+                              className="resource-link"
+                            >
+                              {item.label} ↗
+                            </a>
+                          ) : (
+                            <p
+                              style={{
+                                fontSize: '0.9375rem',
+                                fontWeight: 600,
+                                color: 'var(--text-primary)',
+                                lineHeight: 1.5,
+                                margin: 0,
+                                fontFamily: 'var(--font-dm-sans, sans-serif)',
+                              }}
+                            >
+                              {item.label}
+                            </p>
+                          )}
+                        </div>
                         <p
                           style={{
                             fontSize: '0.9375rem',
-                            fontWeight: 500,
-                            color: 'var(--text-primary)',
-                            marginBottom: '0.25rem',
-                            display: 'flex',
-                            gap: '0.5rem',
-                            alignItems: 'flex-start',
+                            color: 'var(--text-secondary)',
+                            lineHeight: 1.7,
+                            margin: 0,
                           }}
                         >
-                          <span style={{ color: 'var(--accent-coral)', flexShrink: 0 }}>&#8594;</span>
-                          {item.label}
-                        </p>
-                        <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', lineHeight: 1.6, paddingLeft: '1.25rem' }}>
                           {item.description}
                         </p>
                       </li>
@@ -158,12 +213,12 @@ export default function ResourcesPage() {
                 background: 'var(--bg-card)',
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius-md)',
-                marginBottom: '2rem',
+                marginBottom: '3rem',
               }}
             >
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7 }}>
-                This list is updated periodically. If you have a recommendation for a resource that should be here, send a note to{' '}
-                <a href="mailto:hello@shubs.me" style={{ color: 'var(--accent-coral)' }}>hello@shubs.me</a>.
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>
+                This list is updated periodically. Got a recommendation?{' '}
+                <a href="mailto:hello@shubs.me" style={{ color: 'var(--accent-coral)' }}>hello@shubs.me</a>
               </p>
             </div>
           </ScrollReveal>
@@ -173,6 +228,10 @@ export default function ResourcesPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      <style>{`
+        .resource-link:hover { opacity: 0.8; }
+      `}</style>
     </>
   )
 }
