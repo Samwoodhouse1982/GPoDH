@@ -131,6 +131,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   const [query, setQuery] = useState('')
   const [activeTheme, setActiveTheme] = useState<string | null>(null)
   const [activeCountry, setActiveCountry] = useState<string | null>(null)
+  const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIdx, setHighlightedIdx] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -272,6 +273,13 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     },
     [showSuggestions, suggestions, highlightedIdx]
   )
+
+  // Top 10 themes by episode frequency
+  const topThemes = useMemo(() => {
+    const counts = new Map<string, number>()
+    episodes.forEach((ep) => ep.themes.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)))
+    return [...allThemes].sort((a, b) => (counts.get(b) ?? 0) - (counts.get(a) ?? 0)).slice(0, 10)
+  }, [episodes, allThemes])
 
   const hasFilters = query || activeTheme || activeCountry
 
@@ -475,24 +483,27 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           )}
         </div>
 
-        {/* Theme pills */}
+        {/* Theme pills — top 10 by frequency */}
         <div>
           <p style={{ fontFamily: 'var(--font-dm-mono, monospace)', fontSize: '0.625rem', letterSpacing: '0.12em', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
             Topic
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
-            {allThemes.map((theme) => {
+            {topThemes.map((theme) => {
               const active = activeTheme === theme
+              const hovered = hoveredTheme === theme
               return (
                 <button
                   key={theme}
                   onClick={() => setActiveTheme(active ? null : theme)}
+                  onMouseEnter={() => setHoveredTheme(theme)}
+                  onMouseLeave={() => setHoveredTheme(null)}
                   style={{
                     padding: '0.3rem 0.75rem',
                     borderRadius: '100px',
-                    border: `1px solid ${active ? 'var(--accent-coral)' : 'var(--border)'}`,
-                    background: active ? 'var(--accent-coral)' : 'transparent',
-                    color: active ? '#fff' : 'var(--text-secondary)',
+                    border: `1px solid ${active ? 'var(--accent-coral)' : hovered ? 'var(--accent-coral)' : 'var(--border)'}`,
+                    background: active ? 'var(--accent-coral)' : hovered ? 'rgba(212,97,74,0.1)' : 'transparent',
+                    color: active ? '#fff' : hovered ? 'var(--accent-coral)' : 'var(--text-secondary)',
                     fontSize: '0.8125rem',
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)',

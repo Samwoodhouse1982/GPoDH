@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import EpisodeCard from '@/components/ui/EpisodeCard'
+import VideoCard from '@/components/ui/VideoCard'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
@@ -7,6 +8,7 @@ import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
 import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
 import { episodes } from '@/lib/episodes'
+import { videos } from '@/lib/videos'
 import { PLATFORMS, SOCIAL } from '@/lib/constants'
 
 const testimonials = [
@@ -562,6 +564,82 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ——— Featured Videos ——— */}
+      {videos.length > 0 && (
+        <section
+          style={{
+            padding: '5rem var(--gutter)',
+            borderTop: '1px solid var(--border)',
+          }}
+        >
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                marginBottom: '2.5rem',
+                flexWrap: 'wrap',
+                gap: '1rem',
+              }}
+            >
+              <div>
+                <ScrollReveal>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                      fontSize: '0.6875rem',
+                      letterSpacing: '0.12em',
+                      color: 'var(--accent-coral)',
+                      textTransform: 'uppercase',
+                      marginBottom: '0.625rem',
+                    }}
+                  >
+                    Watch
+                  </p>
+                </ScrollReveal>
+                <ScrollReveal delay={100}>
+                  <h2
+                    style={{
+                      fontFamily: 'var(--font-cormorant, var(--font-display))',
+                      fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
+                      fontWeight: 600,
+                      color: 'var(--text-primary)',
+                    }}
+                  >
+                    From the GPODH archive
+                  </h2>
+                </ScrollReveal>
+              </div>
+              <Link
+                href="/videos"
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--accent-coral)',
+                  textDecoration: 'none',
+                }}
+              >
+                View all videos &#8594;
+              </Link>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                gap: '1.5rem',
+              }}
+            >
+              {videos.slice(0, 3).map((video, i) => (
+                <ScrollReveal key={video.id} delay={i * 80}>
+                  <VideoCard video={video} index={i} />
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ——— Testimonials ——— */}
       <section

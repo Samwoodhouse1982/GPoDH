@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import EpisodeCard from '@/components/ui/EpisodeCard'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import EmailSignup from '@/components/sections/EmailSignup'
 import TranscriptToggle from '@/components/ui/TranscriptToggle'
+import RelatedEpisodes from '@/components/ui/RelatedEpisodes'
+import ShareButtons from '@/components/ui/ShareButtons'
 import { episodes } from '@/lib/episodes'
 import { PLATFORMS } from '@/lib/constants'
 
@@ -30,14 +31,6 @@ export default async function EpisodePage({ params }: Props) {
   const { slug } = await params
   const episode = episodes.find((e) => e.slug === slug)
   if (!episode) notFound()
-
-  const related = episodes
-    .filter(
-      (e) =>
-        e.id !== episode.id &&
-        e.themes.some((t) => episode.themes.includes(t))
-    )
-    .slice(0, 2)
 
   const hasExternalUrl = episode.url !== 'https://gpodh.org'
 
@@ -240,8 +233,8 @@ export default async function EpisodePage({ params }: Props) {
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
-              {hasExternalUrl && (
+            {hasExternalUrl && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
                 <a
                   href={episode.url}
                   target="_blank"
@@ -265,41 +258,8 @@ export default async function EpisodePage({ params }: Props) {
                   </svg>
                   Listen now
                 </a>
-              )}
-              <a
-                href={PLATFORMS.apple}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4zm0 14a6 6 0 0 0 6-6h2a8 8 0 0 1-7 7.93V20h3v2H8v-2h3v-3.07A8 8 0 0 1 4 10h2a6 6 0 0 0 6 6z"/>
-                </svg>
-                Apple Podcasts
-              </a>
-              <a
-                href={PLATFORMS.spotify}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                </svg>
-                Spotify
-              </a>
-              <a
-                href={PLATFORMS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                YouTube
-              </a>
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Right: artwork */}
@@ -377,14 +337,14 @@ export default async function EpisodePage({ params }: Props) {
             Listen
           </p>
 
-          {episode.transistorEpisodeId ? (
+          {episode.transistorUrl ? (
             <iframe
               width="100%"
               height="180"
               frameBorder="no"
               scrolling="no"
               seamless
-              src={`https://share.transistor.fm/e/${episode.transistorEpisodeId}`}
+              src={episode.transistorUrl}
               title={`Listen to ${episode.title}`}
               style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
             />
@@ -426,7 +386,7 @@ export default async function EpisodePage({ params }: Props) {
               />
             </div>
           ) : (
-            /* Placeholder — add transistorEpisodeId to this episode in episodes.ts */
+            /* No embed yet — add transistorUrl to this episode in episodes.ts */
             <div
               style={{
                 padding: '2rem',
@@ -575,47 +535,141 @@ export default async function EpisodePage({ params }: Props) {
             </div>
           )}
         </div>
+
+        {/* Guest bio */}
+        {episode.bio && (
+          <div
+            style={{
+              maxWidth: 'var(--max-width)',
+              margin: '4rem auto 0',
+              paddingTop: '4rem',
+              borderTop: '1px solid var(--border)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+              gap: '3rem',
+              alignItems: 'start',
+            }}
+          >
+            <div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  color: 'var(--accent-coral)',
+                  textTransform: 'uppercase',
+                  marginBottom: '1rem',
+                }}
+              >
+                About the guest
+              </p>
+              <h2
+                style={{
+                  fontFamily: 'var(--font-cormorant, var(--font-display))',
+                  fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginBottom: '0.5rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                {episode.guest}
+              </h2>
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.1em',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {episode.guestRole}
+              </p>
+            </div>
+            <div>
+              <p
+                style={{
+                  fontSize: '0.9375rem',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.8,
+                  marginBottom: episode.guestLinkedIn ? '1.25rem' : 0,
+                }}
+              >
+                {episode.bio}
+              </p>
+              {episode.guestLinkedIn && (
+                <a
+                  href={episode.guestLinkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.375rem',
+                    fontSize: '0.8125rem',
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    letterSpacing: '0.08em',
+                    color: 'var(--accent-coral)',
+                    textDecoration: 'none',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                  LinkedIn
+                </a>
+              )}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ——— Pull quote ——— */}
       {episode.pullQuote && (
-        <section
-          style={{
-            background: 'var(--accent-coral)',
-            padding: '5rem var(--gutter)',
-          }}
-        >
-          <div style={{ maxWidth: 'var(--content-width)', margin: '0 auto', textAlign: 'center' }}>
+        <section style={{ padding: '0 var(--gutter) 5rem' }}>
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
             <blockquote
               style={{
-                fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
-                fontWeight: 600,
-                fontStyle: 'italic',
-                color: '#ffffff',
-                lineHeight: 1.4,
+                maxWidth: '56ch',
+                background: 'var(--accent-coral)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '2.5rem 3rem',
                 margin: 0,
               }}
             >
-              &ldquo;{episode.pullQuote}&rdquo;
+              <p
+                style={{
+                  fontFamily: 'var(--font-cormorant, var(--font-display))',
+                  fontSize: 'clamp(1.375rem, 2.5vw, 1.875rem)',
+                  fontWeight: 600,
+                  fontStyle: 'italic',
+                  color: '#ffffff',
+                  lineHeight: 1.45,
+                  margin: '0 0 1.25rem',
+                }}
+              >
+                &ldquo;{episode.pullQuote}&rdquo;
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  color: 'rgba(255,255,255,0.65)',
+                  textTransform: 'uppercase',
+                  margin: 0,
+                }}
+              >
+                {episode.guest}
+              </p>
             </blockquote>
-            <p
-              style={{
-                marginTop: '1.5rem',
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.6875rem',
-                letterSpacing: '0.12em',
-                color: 'rgba(255,255,255,0.65)',
-                textTransform: 'uppercase',
-              }}
-            >
-              {episode.guest}
-            </p>
           </div>
         </section>
       )}
 
-      {/* ——— Timestamps ——— */}
+      {/* ——— Chapters timeline ——— */}
       {episode.timestamps && episode.timestamps.length > 0 && (
         <section
           style={{
@@ -631,51 +685,129 @@ export default async function EpisodePage({ params }: Props) {
                 letterSpacing: '0.12em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '2rem',
+                marginBottom: '2.5rem',
               }}
             >
               Chapters
             </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-                gap: '0',
-              }}
-            >
+
+            {/* Timeline */}
+            <div style={{ position: 'relative', paddingLeft: '1.75rem', maxWidth: '640px' }}>
+              {/* Vertical connecting line */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '5px',
+                  top: '6px',
+                  bottom: '6px',
+                  width: '1px',
+                  background: 'var(--border)',
+                }}
+              />
+
               {episode.timestamps.map((ts, i) => (
                 <div
                   key={i}
                   style={{
-                    display: 'flex',
-                    gap: '1.25rem',
-                    alignItems: 'baseline',
-                    padding: '0.875rem 0',
-                    borderBottom: '1px solid var(--border)',
+                    position: 'relative',
+                    paddingBottom: i < episode.timestamps!.length - 1 ? '2rem' : 0,
                   }}
                 >
+                  {/* Dot */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: '-1.75rem',
+                      top: '3px',
+                      width: '11px',
+                      height: '11px',
+                      borderRadius: '50%',
+                      background: i === 0 ? 'var(--accent-coral)' : 'var(--bg-primary)',
+                      border: `1.5px solid ${i === 0 ? 'var(--accent-coral)' : 'var(--border)'}`,
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Time badge */}
                   <span
                     style={{
+                      display: 'inline-block',
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                      fontSize: '0.75rem',
-                      color: 'var(--accent-coral)',
-                      flexShrink: 0,
-                      minWidth: '3.5rem',
+                      fontSize: '0.625rem',
+                      letterSpacing: '0.12em',
+                      color: i === 0 ? 'var(--accent-coral)' : 'var(--text-muted)',
+                      textTransform: 'uppercase',
+                      marginBottom: '0.2rem',
                     }}
                   >
                     {ts.time}
                   </span>
-                  <span
+
+                  {/* Chapter label */}
+                  <p
                     style={{
                       fontSize: '0.9375rem',
                       color: 'var(--text-secondary)',
                       lineHeight: 1.5,
+                      margin: 0,
                     }}
                   >
                     {ts.label}
-                  </span>
+                  </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ——— Video ——— */}
+      {episode.youtubeVideoId && (episode.transistorUrl || episode.spotifyEpisodeId) && (
+        <section
+          style={{
+            padding: '5rem var(--gutter)',
+            borderBottom: '1px solid var(--border)',
+          }}
+        >
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.12em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '1.25rem',
+              }}
+            >
+              Watch
+            </p>
+            <div
+              style={{
+                position: 'relative',
+                paddingBottom: '56.25%',
+                height: 0,
+                overflow: 'hidden',
+                borderRadius: 'var(--radius-md)',
+              }}
+            >
+              <iframe
+                src={`https://www.youtube.com/embed/${episode.youtubeVideoId}`}
+                title={`Watch ${episode.title} on YouTube`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                }}
+              />
             </div>
           </div>
         </section>
@@ -718,98 +850,6 @@ export default async function EpisodePage({ params }: Props) {
           )}
         </div>
       </section>
-
-      {/* ——— About the guest ——— */}
-      {episode.bio && (
-        <section style={{ padding: '5rem var(--gutter)' }}>
-          <div
-            style={{
-              maxWidth: 'var(--max-width)',
-              margin: '0 auto',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
-              gap: '4rem',
-              alignItems: 'start',
-            }}
-          >
-            {/* Portrait placeholder */}
-            <div
-              style={{
-                aspectRatio: '4/5',
-                background: 'var(--bg-surface)',
-                borderRadius: 'var(--radius-lg)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxWidth: '360px',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: '3rem',
-                  fontWeight: 600,
-                  color: 'var(--text-muted)',
-                }}
-              >
-                {episode.guest.split(' ').map((n) => n[0]).join('')}
-              </span>
-            </div>
-
-            {/* Bio */}
-            <div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.12em',
-                  color: 'var(--accent-coral)',
-                  textTransform: 'uppercase',
-                  marginBottom: '1rem',
-                }}
-              >
-                About the guest
-              </p>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  marginBottom: '1.25rem',
-                  lineHeight: 1.2,
-                }}
-              >
-                {episode.guest}
-              </h2>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.1em',
-                  color: 'var(--text-muted)',
-                  textTransform: 'uppercase',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                {episode.guestRole}
-              </p>
-              <p
-                style={{
-                  fontSize: '0.9375rem',
-                  color: 'var(--text-secondary)',
-                  lineHeight: 1.8,
-                  marginBottom: '2rem',
-                }}
-              >
-                {episode.bio}
-              </p>
-
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ——— SandiQ bridge ——— */}
       <section
@@ -871,37 +911,11 @@ export default async function EpisodePage({ params }: Props) {
         </div>
       </section>
 
+      {/* ——— Share ——— */}
+      <ShareButtons slug={episode.slug} title={episode.title} guest={episode.guest} />
+
       {/* ——— Related episodes ——— */}
-      {related.length > 0 && (
-        <section style={{ padding: '5rem var(--gutter)' }}>
-          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.6875rem',
-                letterSpacing: '0.12em',
-                color: 'var(--accent-coral)',
-                textTransform: 'uppercase',
-                marginBottom: '0.625rem',
-              }}
-            >
-              You might also like
-            </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
-                gap: '1.5rem',
-                marginTop: '2rem',
-              }}
-            >
-              {related.map((ep) => (
-                <EpisodeCard key={ep.id} episode={ep} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <RelatedEpisodes episode={episode} />
 
       {/* ——— Email signup ——— */}
       <EmailSignup />
