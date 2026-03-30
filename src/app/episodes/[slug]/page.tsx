@@ -233,33 +233,75 @@ export default async function EpisodePage({ params }: Props) {
             </p>
 
             {/* CTAs */}
-            {hasExternalUrl && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {hasExternalUrl && (
+                <div>
+                  <a
+                    href={episode.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.65rem 1.5rem',
+                      background: 'var(--accent-coral)',
+                      color: '#fff',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.9375rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      fontFamily: 'var(--font-dm-sans, sans-serif)',
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                    Listen now
+                  </a>
+                </div>
+              )}
+
+              {/* Platform links */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <a
-                  href={episode.url}
+                  href={PLATFORMS.apple}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.65rem 1.5rem',
-                    background: 'var(--accent-coral)',
-                    color: '#fff',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '0.9375rem',
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                    fontFamily: 'var(--font-dm-sans, sans-serif)',
-                  }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
+                  className="platform-link"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="5,3 19,12 5,21" />
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4zm0 14a6 6 0 0 0 6-6h2a8 8 0 0 1-7 7.93V20h3v2H8v-2h3v-3.07A8 8 0 0 1 4 10h2a6 6 0 0 0 6 6z"/>
                   </svg>
-                  Listen now
+                  Apple Podcasts
+                </a>
+                <a
+                  href={PLATFORMS.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
+                  className="platform-link"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                  </svg>
+                  Spotify
+                </a>
+                <a
+                  href={PLATFORMS.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
+                  className="platform-link"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  YouTube
                 </a>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Right: artwork */}
@@ -772,42 +814,96 @@ export default async function EpisodePage({ params }: Props) {
           }}
         >
           <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.6875rem',
-                letterSpacing: '0.12em',
-                color: 'var(--accent-coral)',
-                textTransform: 'uppercase',
-                marginBottom: '1.25rem',
-              }}
-            >
-              Watch
-            </p>
             <div
               style={{
-                position: 'relative',
-                paddingBottom: '56.25%',
-                height: 0,
-                overflow: 'hidden',
-                borderRadius: 'var(--radius-md)',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+                gap: '3rem',
+                alignItems: 'center',
               }}
             >
-              <iframe
-                src={`https://www.youtube.com/embed/${episode.youtubeVideoId}`}
-                title={`Watch ${episode.title} on YouTube`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                }}
-              />
+              {/* Video embed — constrained to roughly half the page */}
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.12em',
+                    color: 'var(--accent-coral)',
+                    textTransform: 'uppercase',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  Watch
+                </p>
+                <div
+                  style={{
+                    position: 'relative',
+                    paddingBottom: '56.25%',
+                    height: 0,
+                    overflow: 'hidden',
+                    borderRadius: 'var(--radius-md)',
+                  }}
+                >
+                  <iframe
+                    src={`https://www.youtube.com/embed/${episode.youtubeVideoId}`}
+                    title={`Watch ${episode.title} on YouTube`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 'none',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Right: call to action */}
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-cormorant, var(--font-display))',
+                    fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
+                    fontWeight: 600,
+                    color: 'var(--text-primary)',
+                    lineHeight: 1.3,
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  Prefer to watch?
+                </p>
+                <p
+                  style={{
+                    fontSize: '0.9375rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: 1.7,
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  This episode is also available as a full video on YouTube.
+                </p>
+                <a
+                  href={`https://www.youtube.com/watch?v=${episode.youtubeVideoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.375rem',
+                    fontSize: '0.875rem',
+                    color: 'var(--accent-coral)',
+                    textDecoration: 'none',
+                    fontFamily: 'var(--font-dm-sans, sans-serif)',
+                  }}
+                >
+                  Open on YouTube &#8599;
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -927,6 +1023,9 @@ export default async function EpisodePage({ params }: Props) {
         }
         .ep-nav-link:hover {
           border-color: var(--accent-coral) !important;
+          color: var(--accent-coral) !important;
+        }
+        .platform-link:hover {
           color: var(--accent-coral) !important;
         }
       `}</style>
