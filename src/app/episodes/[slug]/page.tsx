@@ -33,8 +33,6 @@ export default async function EpisodePage({ params }: Props) {
   const episode = episodes.find((e) => e.slug === slug)
   if (!episode) notFound()
 
-  const hasExternalUrl = episode.url !== 'https://gpodh.org'
-
   // Sort episodes by episode number so prev/next are always sequential
   const epSortKey = (n: number | string) => {
     const s = String(n)
@@ -234,34 +232,18 @@ export default async function EpisodePage({ params }: Props) {
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {hasExternalUrl && (
-                <div>
-                  <a
-                    href={episode.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '0.65rem 1.5rem',
-                      background: 'var(--accent-coral)',
-                      color: '#fff',
-                      borderRadius: 'var(--radius-md)',
-                      fontSize: '0.9375rem',
-                      fontWeight: 600,
-                      textDecoration: 'none',
-                      fontFamily: 'var(--font-dm-sans, sans-serif)',
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5,3 19,12 5,21" />
-                    </svg>
-                    Listen now
-                  </a>
-                </div>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Listen on your preferred channel
+              </p>
 
               {/* Platform links */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
@@ -429,7 +411,7 @@ export default async function EpisodePage({ params }: Props) {
             </p>
 
             {/* Theme tags */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: episode.pullQuote ? '2rem' : 0 }}>
               {episode.themes.map((theme) => (
                 <Link
                   key={theme}
@@ -450,6 +432,44 @@ export default async function EpisodePage({ params }: Props) {
                 </Link>
               ))}
             </div>
+
+            {/* Pull quote */}
+            {episode.pullQuote && (
+              <blockquote
+                style={{
+                  background: 'var(--accent-coral)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '2rem 2.25rem',
+                  margin: 0,
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: 'var(--font-cormorant, var(--font-display))',
+                    fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
+                    fontWeight: 600,
+                    fontStyle: 'italic',
+                    color: '#ffffff',
+                    lineHeight: 1.45,
+                    margin: '0 0 1rem',
+                  }}
+                >
+                  &ldquo;{episode.pullQuote}&rdquo;
+                </p>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.12em',
+                    color: 'rgba(255,255,255,0.65)',
+                    textTransform: 'uppercase',
+                    margin: 0,
+                  }}
+                >
+                  {episode.guest}
+                </p>
+              </blockquote>
+            )}
           </div>
 
           {/* Topics */}
@@ -588,49 +608,6 @@ export default async function EpisodePage({ params }: Props) {
           </div>
         )}
       </section>
-
-      {/* ——— Pull quote ——— */}
-      {episode.pullQuote && (
-        <section style={{ padding: '0 var(--gutter) 5rem' }}>
-          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-            <blockquote
-              style={{
-                maxWidth: '56ch',
-                background: 'var(--accent-coral)',
-                borderRadius: 'var(--radius-lg)',
-                padding: '2.5rem 3rem',
-                margin: 0,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: 'clamp(1.375rem, 2.5vw, 1.875rem)',
-                  fontWeight: 600,
-                  fontStyle: 'italic',
-                  color: '#ffffff',
-                  lineHeight: 1.45,
-                  margin: '0 0 1.25rem',
-                }}
-              >
-                &ldquo;{episode.pullQuote}&rdquo;
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.12em',
-                  color: 'rgba(255,255,255,0.65)',
-                  textTransform: 'uppercase',
-                  margin: 0,
-                }}
-              >
-                {episode.guest}
-              </p>
-            </blockquote>
-          </div>
-        </section>
-      )}
 
       {/* ——— Chapters timeline ——— */}
       {episode.timestamps && episode.timestamps.length > 0 && (
