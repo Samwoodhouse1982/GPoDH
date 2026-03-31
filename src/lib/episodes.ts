@@ -119,6 +119,7 @@ Joseph Alderman (55:44)
 For people building in low-resource settings: the risk-benefit profile inverts. In an advanced healthcare system, deploying LLMs can cause harm because people already have access to relatively good care. If the baseline is no access or extremely inequitable access, even an imperfect tool changes the calculation. But it does not absolve you of responsibility. You still have an obligation to do the good engineering work, understand the problem, do the evidence generation, and mitigate risks. The context is different. The responsibilities are not.
 
 For books: How Big Things Get Done by Bent Flyvbjerg - on why big projects go wrong and what the common themes around planning are. And The Future of the Professions by Richard and Daniel Susskind - on what the future of work looks like in healthcare and other professions.`,
+    transistorUrl: 'https://share.transistor.fm/e/0cb86e83',
   },
   {
     id: '19',
