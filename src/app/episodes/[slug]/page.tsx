@@ -813,12 +813,12 @@ export default async function EpisodePage({ params }: Props) {
             borderBottom: '1px solid var(--border)',
           }}
         >
-          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
-                gap: '3rem',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+                gap: '2rem',
                 alignItems: 'center',
               }}
             >
