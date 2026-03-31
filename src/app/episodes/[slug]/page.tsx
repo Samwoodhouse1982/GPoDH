@@ -613,7 +613,7 @@ export default async function EpisodePage({ params }: Props) {
       {episode.timestamps && episode.timestamps.length > 0 && (
         <section
           style={{
-            padding: '5rem var(--gutter)',
+            padding: '3rem var(--gutter)',
             borderBottom: '1px solid var(--border)',
           }}
         >
@@ -625,77 +625,52 @@ export default async function EpisodePage({ params }: Props) {
                 letterSpacing: '0.12em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '2.5rem',
+                marginBottom: '1.25rem',
               }}
             >
               Chapters
             </p>
 
-            {/* Timeline */}
-            <div style={{ position: 'relative', paddingLeft: '1.75rem', maxWidth: '640px' }}>
-              {/* Vertical connecting line */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  left: '5px',
-                  top: '6px',
-                  bottom: '6px',
-                  width: '1px',
-                  background: 'var(--border)',
-                }}
-              />
-
+            {/* Timeline — two-column grid on wider screens */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
+                gap: '0',
+              }}
+            >
               {episode.timestamps.map((ts, i) => (
                 <div
                   key={i}
                   style={{
-                    position: 'relative',
-                    paddingBottom: i < episode.timestamps!.length - 1 ? '2rem' : 0,
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: '0.75rem',
+                    padding: '0.5rem 0',
+                    borderBottom: '1px solid var(--border)',
                   }}
                 >
-                  {/* Dot */}
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      left: '-1.75rem',
-                      top: '3px',
-                      width: '11px',
-                      height: '11px',
-                      borderRadius: '50%',
-                      background: i === 0 ? 'var(--accent-coral)' : 'var(--bg-primary)',
-                      border: `1.5px solid ${i === 0 ? 'var(--accent-coral)' : 'var(--border)'}`,
-                      zIndex: 1,
-                    }}
-                  />
-
-                  {/* Time badge */}
                   <span
                     style={{
-                      display: 'inline-block',
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                       fontSize: '0.625rem',
-                      letterSpacing: '0.12em',
-                      color: i === 0 ? 'var(--accent-coral)' : 'var(--text-muted)',
-                      textTransform: 'uppercase',
-                      marginBottom: '0.2rem',
+                      letterSpacing: '0.1em',
+                      color: 'var(--accent-coral)',
+                      flexShrink: 0,
+                      minWidth: '3.5rem',
                     }}
                   >
                     {ts.time}
                   </span>
-
-                  {/* Chapter label */}
-                  <p
+                  <span
                     style={{
-                      fontSize: '0.9375rem',
+                      fontSize: '0.875rem',
                       color: 'var(--text-secondary)',
-                      lineHeight: 1.5,
-                      margin: 0,
+                      lineHeight: 1.4,
                     }}
                   >
                     {ts.label}
-                  </p>
+                  </span>
                 </div>
               ))}
             </div>
