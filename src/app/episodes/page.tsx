@@ -56,6 +56,15 @@ export default function EpisodesPage() {
             <SandiQBridge variant="inline" />
           </div>
 
+          <p style={{
+            fontSize: '0.9375rem',
+            color: 'var(--text-muted)',
+            marginBottom: '1.75rem',
+            lineHeight: 1.6,
+          }}>
+            Hey — we&rsquo;ve got a huge back catalogue. Use the search below to find topics, countries, or guests that are relevant to you.
+          </p>
+
           <EpisodeFilter
             episodes={episodes}
             allThemes={ALL_THEMES}
