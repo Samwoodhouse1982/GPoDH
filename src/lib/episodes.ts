@@ -1085,6 +1085,7 @@ Hugh, it's been really, really great talking to you. Thinking about regulation a
 
 Hugh Harvey (54:43)
 hardianhealth.com - everything you need to know about AI medical device regulation. Thanks, Shubs.`,
+    transistorUrl: 'https://share.transistor.fm/e/8c8c2097',
     audioUrl: 'https://media.transistor.fm/8c8c2097/9dc92245.mp3',
   },
   {
