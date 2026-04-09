@@ -118,8 +118,8 @@ export default function GlobeSection() {
               Insights in motion
             </p>
 
-            {/* Changing route + caption */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* Changing route + caption — fixed height prevents layout shift */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '130px' }}>
               {stage.route ? (
                 <p
                   key={stage.route}
@@ -178,6 +178,26 @@ export default function GlobeSection() {
                 />
               ))}
             </div>
+
+            {/* CTA */}
+            <a
+              href="/episodes"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontSize: '0.875rem',
+                color: 'var(--accent-coral)',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-dm-sans, sans-serif)',
+                fontWeight: 500,
+              }}
+            >
+              Browse all episodes
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
           </div>
 
           {/* Right: globe */}

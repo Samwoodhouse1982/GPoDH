@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import { withUtm } from '@/lib/utm'
 
 export const metadata: Metadata = {
   title: 'Resources — GPODH',
@@ -300,7 +301,7 @@ export default function ResourcesPage() {
             <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
               An ongoing list of resources we collect along the way — we&rsquo;ll add to it and categorise as usefully as possible over time. Alongside our writing on{' '}
               <a
-                href="https://shubstack.substack.com/"
+                href={withUtm('https://shubstack.substack.com/', { campaign: 'resources', content: 'intro-shubstack' })}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
@@ -410,7 +411,7 @@ export default function ResourcesPage() {
                         <div>
                           {item.url ? (
                             <a
-                              href={item.url}
+                              href={withUtm(item.url!, { campaign: 'resources', content: item.label.toLowerCase().replace(/\s+/g, '-').slice(0, 40) })}
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{

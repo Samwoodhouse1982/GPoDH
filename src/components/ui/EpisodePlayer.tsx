@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { withUtm } from '@/lib/utm'
 
 interface Props {
   transistorUrl?: string
@@ -73,9 +74,9 @@ export default function EpisodePlayer({
       >
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
           {[
-            { href: applePodcastsUrl, label: 'Apple Podcasts', icon: CHANNEL_ICONS.transistor },
-            { href: spotifyShowUrl, label: 'Spotify', icon: CHANNEL_ICONS.spotify },
-            { href: youtubeShowUrl, label: 'YouTube', icon: CHANNEL_ICONS.youtube },
+            { href: withUtm(applePodcastsUrl, { campaign: 'episode-player', content: 'platform-apple' }), label: 'Apple Podcasts', icon: CHANNEL_ICONS.transistor },
+            { href: withUtm(spotifyShowUrl, { campaign: 'episode-player', content: 'platform-spotify' }), label: 'Spotify', icon: CHANNEL_ICONS.spotify },
+            { href: withUtm(youtubeShowUrl, { campaign: 'episode-player', content: 'platform-youtube' }), label: 'YouTube', icon: CHANNEL_ICONS.youtube },
           ].map(({ href, label, icon }) => (
             <a
               key={label}

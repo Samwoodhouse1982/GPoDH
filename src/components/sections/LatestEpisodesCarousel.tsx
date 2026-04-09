@@ -104,6 +104,7 @@ export default function LatestEpisodesCarousel({ episodes }: LatestEpisodesCarou
                 style={{
                   flexShrink: 0,
                   width: `${CARD_WIDTH}px`,
+                  height: '200px',
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border)',
                   borderTop: '3px solid var(--accent-coral)',

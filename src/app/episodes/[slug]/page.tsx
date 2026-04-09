@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { withUtm } from '@/lib/utm'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import EmailSignup from '@/components/sections/EmailSignup'
 import TranscriptToggle from '@/components/ui/TranscriptToggle'
@@ -248,7 +249,7 @@ export default async function EpisodePage({ params }: Props) {
               {/* Platform links */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <a
-                  href={PLATFORMS.apple}
+                  href={withUtm(PLATFORMS.apple, { campaign: 'episode', content: 'platform-apple' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
@@ -260,7 +261,7 @@ export default async function EpisodePage({ params }: Props) {
                   Apple Podcasts
                 </a>
                 <a
-                  href={PLATFORMS.spotify}
+                  href={withUtm(PLATFORMS.spotify, { campaign: 'episode', content: 'platform-spotify' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
@@ -272,7 +273,7 @@ export default async function EpisodePage({ params }: Props) {
                   Spotify
                 </a>
                 <a
-                  href={PLATFORMS.youtube}
+                  href={withUtm(PLATFORMS.youtube, { campaign: 'episode', content: 'platform-youtube' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
@@ -583,7 +584,7 @@ export default async function EpisodePage({ params }: Props) {
               </p>
               {episode.guestLinkedIn && (
                 <a
-                  href={episode.guestLinkedIn}
+                  href={withUtm(episode.guestLinkedIn, { campaign: 'episode', content: 'guest-linkedin' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -761,7 +762,7 @@ export default async function EpisodePage({ params }: Props) {
                   This episode is also available as a full video on YouTube.
                 </p>
                 <a
-                  href={`https://www.youtube.com/watch?v=${episode.youtubeVideoId}`}
+                  href={withUtm(`https://www.youtube.com/watch?v=${episode.youtubeVideoId}`, { campaign: 'episode', content: 'watch-youtube' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
