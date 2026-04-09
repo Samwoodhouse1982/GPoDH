@@ -279,6 +279,7 @@ For impact-oriented builders: validate the market early. So many organisations i
 
 Rowena (54:55)
 Ten years from now could be very different from today. We have the opportunity to deliver AI-enabled, technology-enabled information, services, and access to care in a way that is smarter, faster, and better than anything before. The question is whether we act with the right mindset - both internationally and within Africa - to unlock that opportunity.`,
+    transistorUrl: 'https://share.transistor.fm/e/bc91ec6a',
   },
   {
     id: '24',
@@ -362,6 +363,7 @@ Caroline Perrin (47:55)
 My key message for anyone starting an implementation: flip the order. Most people go technology first, then process, then people. It should be the exact reverse. Start with the people - the health workers, the patients, the community - understand their lives and their constraints. Then design the process. Then find the technology that fits. Technology is the last step, not the first.
 
 And be humble about timelines. A well-implemented digital health programme takes three to five years to show real impact. If someone is promising you results in 12 months, they're either measuring the wrong things or telling you what you want to hear.`,
+    transistorUrl: 'https://share.transistor.fm/e/93b7f2a4',
   },
   {
     id: '25',
@@ -449,6 +451,7 @@ Alain Labrique (50:40)
 If you are based in the Global North and have ambitions to help build in countries struggling with major public health challenges, invest your time and energy in building local capacity in such a way that you almost make yourself irrelevant in that setting after a period of years. The greatest reward lies in being able to step back and see the ecosystem that you helped create.
 
 It's not about charity. It's about participating in their struggle, in their journey. It's about listening to what those countries have prioritised, what those communities need. The first step of any innovation journey should be listening - with humility and with deep respect. And at the macro level: identify what the country strategies are, and see what you are producing that can advance those goals. You can do good and do well in the same breath.`,
+    transistorUrl: 'https://share.transistor.fm/e/52c5fb62',
   },
   {
     id: '26',
@@ -538,6 +541,7 @@ How to find a UVP that resonates: feedback, feedback, feedback. Find the exact p
 Signs your comms isn't working: it's not performing well. It's not meeting your business goals. End of story.
 
 Biggest lesson: if you give without the expectation of receiving, everything will get better.`,
+    transistorUrl: 'https://share.transistor.fm/e/46590578',
   },
   {
     id: '27',
@@ -578,6 +582,7 @@ Biggest lesson: if you give without the expectation of receiving, everything wil
     ],
     pullQuote: 'Most of what we call healthcare happens outside clinics. If we ignore that, we miss the biggest opportunity for real impact.',
     bio: 'Rubayat Khan is a health entrepreneur and technologist from Bangladesh, and Director of Health Programs at Endless Foundation, a US family foundation reimagining how global health innovation is funded and delivered. He co-founded mPower Social Enterprises and Jeeon, which have pioneered innovative models for delivering healthcare and essential services to last-mile populations across 15 countries, currently reaching over 120 million people. A passionate advocate for bottom-up and user-centred thinking in global health, he has written in the Guardian, SSIR, and Frontiers in Public Health. He is an Acumen and Aspen New Voices Fellow.',
+    transistorUrl: 'https://share.transistor.fm/e/74802313',
   },
   {
     id: '28',
@@ -618,6 +623,7 @@ Biggest lesson: if you give without the expectation of receiving, everything wil
     ],
     pullQuote: 'The communities he is serving do not get to quit. Why should he.',
     bio: 'Dr Aral Surmeli is the Founder and CEO of HERA Digital Health, a nonprofit that helps refugee women and children access local healthcare through AI-powered digital tools. HERA has served over 300,000 users across Turkey, the Middle East, and Africa, providing immunisation reminders, prenatal care tracking, and digital health records accessible via WhatsApp and offline apps. The platform is open source, co-designed with local healthcare workers and refugee communities, and integrates with national health systems and NGO services. Dr Surmeli holds an MPH from Harvard and is pursuing a DrPH at Johns Hopkins. He is a former Innovation Fellow at the Harvard Humanitarian Initiative and has been supported by Google.org, Grand Challenges Canada, MIT Solve, and Harvard iLab.',
+    transistorUrl: 'https://share.transistor.fm/e/db9b32ff',
   },
   {
     id: '29',
@@ -677,6 +683,7 @@ Nick Martin (39:28)
 We're entering a period of scarcity, and I think you have to be really honest with yourself and your colleagues about what the runway looks like. Can you pivot your business model? Does it make sense to merge? Is it better to gracefully wind down? For people earlier in their careers: be on the wavelength that learns AI skills. The blend of technical abilities plus sector sensibilities is a powerful combo. Constraints and chaos breed creativity. When we started TechChange in 2009, nobody had jobs. We were able to build something beautiful because talent was available and people had energy to put into something new.
 
 And wherever you can - often and always - prioritise learning and community. We are in a state of constant reinvention as humans, not just in our sector. The more you shift your mindset to never stop learning, and scaffold that journey with incredible humans and community, the more powerful you will be for any of these shocks and challenges that arise. Build your virtual community and prioritise it in your trajectory. Sharing is caring.`,
+    transistorUrl: 'https://share.transistor.fm/e/0c3f6092',
   },
   {
     id: '30',
@@ -758,6 +765,7 @@ Dr Shay Soremekun (45:02)
 How to measure what matters: co-create your evaluation design with people on the ground - those who will conduct the research, those exposed to the intervention, and those with the agency to scale it. Consider your evaluation not just around a hard impact endpoint, but around the context in which it's being delivered. And try to measure things in that context.
 
 For digital health companies choosing clinical outcomes: do formative research. Talk to the people who are going to be affected. Once you've produced a program theory - how does your AI intervention achieve its impact? - create a logic model mapping every stage. Then agree on indicators all along that process, not just the final outcome.`,
+    transistorUrl: 'https://share.transistor.fm/e/f08967be',
   },
   {
     id: '31',
@@ -834,6 +842,7 @@ Nadia Kadhim (45:37)
 For digital health founders and builders: your tool might not be built for refugees - but could it be? Is it built with ethics in mind: transparency, interoperability, security? If so, you are already building something that could potentially be used by these very vulnerable groups of people - whether that is someone in a conflict situation now, or your neighbour in ten years who has to find another place to live because of rising water levels.
 
 Don't think of ethics and compliance as a tick-box exercise. Think of it as putting humanity at the centre. When you do that, you are already part of the solution.`,
+    transistorUrl: 'https://share.transistor.fm/e/77f52fc0',
   },
   {
     id: '33',
@@ -934,6 +943,7 @@ My honest reflection on the humanitarian sector: the funding crisis is real, but
 And internally, under pressure, organisations tend to retreat into what's familiar: cut innovation functions, hope that simplification will bring control. But the complexity won't disappear because we put it to the side.
 
 The sector also has a tendency to assume that because the work involves helping people in terrible situations, it is inherently good. At an individual level, that is absolutely true. At an organisational and sector level, I don't think it's enough anymore. There are no scrutiny mechanisms for the humanitarian sector. All claims are allowed. We need to invite external and independent scrutiny - not as a threat, but as a necessity. We need to be transparent about where we fall short. We need to question some long-standing assumptions. We need to stop looking at the past and saying: we've been around for 163 years, therefore we can be trusted. Trust is earned. And it can be lost.`,
+    transistorUrl: 'https://share.transistor.fm/e/083f106b',
   },
   {
     id: '32',
@@ -976,6 +986,7 @@ The sector also has a tendency to assume that because the work involves helping 
     ],
     pullQuote: 'Women are not just a target population. They are decision-makers and consumers representing the biggest unmet market opportunity in health.',
     bio: 'Dr Patricia (Patty) Mechael is a global digital health leader, speaker, and award-winning author with nearly 30 years of experience shaping equity-centred health and technology initiatives across more than 45 countries. She is Co-Founder and CEO of health.enabled, where she leads the Global Digital Health Monitor and Digital Health and AI Strategy work with Gavi, WHO, UNICEF, and others. She is also a Senior Associate Professor at the Johns Hopkins Bloomberg School of Public Health, Co-Principal Investigator for the Gates Foundation\'s Digital Health Exemplars, and teaches a course on Gender-Intentional Digital Health.',
+    transistorUrl: 'https://share.transistor.fm/e/cc353575',
   },
   {
     id: '22',
