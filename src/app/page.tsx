@@ -216,7 +216,7 @@ export default function HomePage() {
                 animationDelay: '200ms',
               }}
             >
-              The digital health industry talks too much about the Global North. This podcast amplifies the people working in under-resourced settings: clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
+              This podcast amplifies the people working in under-resourced settings: clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
             </p>
             <div
               className="animate-fade-up"
