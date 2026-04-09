@@ -23,6 +23,7 @@ export interface Episode {
   //   Spotify episode:    open.spotify.com/episode/{spotifyEpisodeId}
   //   YouTube video:      youtube.com/watch?v={youtubeVideoId}
   transistorUrl?: string      // full URL e.g. "https://share.transistor.fm/e/abc12345"
+  audioUrl?: string           // direct MP3 URL for og:audio meta tag
   spotifyEpisodeId?: string
   youtubeVideoId?: string
   // Rich content for episode landing pages
@@ -280,6 +281,7 @@ For impact-oriented builders: validate the market early. So many organisations i
 Rowena (54:55)
 Ten years from now could be very different from today. We have the opportunity to deliver AI-enabled, technology-enabled information, services, and access to care in a way that is smarter, faster, and better than anything before. The question is whether we act with the right mindset - both internationally and within Africa - to unlock that opportunity.`,
     transistorUrl: 'https://share.transistor.fm/e/bc91ec6a',
+    audioUrl: 'https://media.transistor.fm/bc91ec6a/0d9958de.mp3',
   },
   {
     id: '24',
@@ -1082,6 +1084,7 @@ Hugh, it's been really, really great talking to you. Thinking about regulation a
 
 Hugh Harvey (54:43)
 hardianhealth.com - everything you need to know about AI medical device regulation. Thanks, Shubs.`,
+    audioUrl: 'https://media.transistor.fm/8c8c2097/9dc92245.mp3',
   },
   {
     id: '21',

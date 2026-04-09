@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${episode.title} — GPODH`,
     description: episode.description,
+    ...(episode.audioUrl && { other: { 'og:audio': episode.audioUrl } }),
   }
 }
 
