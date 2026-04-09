@@ -205,19 +205,6 @@ export default function HomePage() {
             >
               The podcast that shares stories from people doing AI and digital health in low-resourced settings, because health inequalities are everywhere and the lessons travel.
             </p>
-            <p
-              className="animate-fade-up"
-              style={{
-                fontSize: '1.125rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.7,
-                maxWidth: '38rem',
-                marginBottom: '2.5rem',
-                animationDelay: '200ms',
-              }}
-            >
-              This podcast amplifies the people working in under-resourced settings: clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
-            </p>
             <div
               className="animate-fade-up"
               style={{
