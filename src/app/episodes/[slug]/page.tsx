@@ -364,15 +364,17 @@ export default async function EpisodePage({ params }: Props) {
             Listen
           </p>
 
-          <EpisodePlayer
-            transistorUrl={episode.transistorUrl}
-            spotifyEpisodeId={episode.spotifyEpisodeId}
-            youtubeVideoId={episode.youtubeVideoId}
-            title={episode.title}
-            applePodcastsUrl={PLATFORMS.apple}
-            spotifyShowUrl={PLATFORMS.spotify}
-            youtubeShowUrl={PLATFORMS.youtube}
-          />
+          <div style={{ marginBottom: '2.5rem' }}>
+            <EpisodePlayer
+              transistorUrl={episode.transistorUrl}
+              spotifyEpisodeId={episode.spotifyEpisodeId}
+              youtubeVideoId={episode.youtubeVideoId}
+              title={episode.title}
+              applePodcastsUrl={PLATFORMS.apple}
+              spotifyShowUrl={PLATFORMS.spotify}
+              youtubeShowUrl={PLATFORMS.youtube}
+            />
+          </div>
         </div>
       </section>
 
