@@ -14,29 +14,42 @@ interface Resource {
 }
 
 interface ResourceCategory {
+  id: string
   title: string
   items: Resource[]
 }
 
 const resourceCategories: ResourceCategory[] = [
   {
+    id: 'writing',
+    title: 'Writing & insights from the show',
+    items: [
+      {
+        label: 'Shubstack — Shubs\' newsletter',
+        description: 'Our ongoing newsletter where we write about current issues in digital health, reflect on podcast conversations, and share perspectives on what\'s happening in the field. A good companion to the podcast.',
+        url: 'https://shubstack.substack.com/',
+      },
+    ],
+  },
+  {
+    id: 'articles',
     title: 'Articles and resources from the podcast or otherwise noteworthy',
     items: [
       {
         label: 'Standing Together Initiative',
-        description: 'I spoke to Dr Xiao Liu in Episode 1 about what actionable things we can do about health data poverty. This is a great resource.',
+        description: 'We spoke to Dr Xiao Liu in Episode 1 about what actionable things we can do about health data poverty. This is a great resource.',
       },
       {
         label: "Rowena Luk's Africa Health Ventures",
-        description: 'About the digital health investment landscape in Africa. Listen to my discussion with Rowena on Episode 14.',
+        description: 'About the digital health investment landscape in Africa. Listen to our discussion with Rowena on Episode 14.',
       },
       {
         label: 'The Agency Fund',
-        description: 'I like their view on what needs to change in funding.',
+        description: 'We like their view on what needs to change in funding.',
       },
       {
         label: 'The 5 Stages of Regulatory Grief',
-        description: 'Regulatory expert Hugh Harvey of Hardian Health, who I spoke to in Episode 13, wrote and spoke about this excellent article on regulatory strategy pitfalls.',
+        description: 'Regulatory expert Hugh Harvey of Hardian Health, who we spoke to in Episode 13, wrote and spoke about this excellent article on regulatory strategy pitfalls.',
       },
       {
         label: 'Seyi Abimbola: The Foreign Gaze',
@@ -49,15 +62,17 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'implementers',
     title: 'For Implementers',
     items: [
       {
         label: 'Geneva Digital Health Hub',
-        description: 'GDHD lead a great community called Implementome — for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode I did with GDHD director Caroline Perrin (episode 15).',
+        description: 'GDHD lead a great community called Implementome — for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode we did with GDHD director Caroline Perrin (episode 15).',
       },
     ],
   },
   {
+    id: 'evidence',
     title: 'Evidence and Evaluation',
     items: [
       {
@@ -78,6 +93,7 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'frameworks',
     title: 'Global Health Frameworks',
     items: [
       {
@@ -98,6 +114,7 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'who-itu',
     title: 'WHO and ITU Publications',
     items: [
       {
@@ -118,6 +135,7 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'reading',
     title: 'Recommended Reading',
     items: [
       {
@@ -138,6 +156,7 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'organisations',
     title: 'Organisations Doing Good Work',
     items: [
       {
@@ -158,6 +177,7 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
   {
+    id: 'funding',
     title: 'Accessing funding for LMIC digital health and AI projects — useful links',
     items: [
       {
@@ -177,7 +197,7 @@ const resourceCategories: ResourceCategory[] = [
       },
       {
         label: 'USAID Digital Development',
-        description: 'USAID\'s digital development team funds and supports digital tools and infrastructure in developing countries. Their Digital Strategy sets the framework.',
+        description: "USAID's digital development team funds and supports digital tools and infrastructure in developing countries. Their Digital Strategy sets the framework.",
         url: 'https://www.usaid.gov/digital-development',
       },
       {
@@ -197,7 +217,7 @@ const resourceCategories: ResourceCategory[] = [
       },
       {
         label: 'Google.org',
-        description: 'Google\'s philanthropic arm funds nonprofits and social enterprises using technology for social impact, including AI for health in underserved settings.',
+        description: "Google's philanthropic arm funds nonprofits and social enterprises using technology for social impact, including AI for health in underserved settings.",
         url: 'https://www.google.org/',
       },
       {
@@ -223,6 +243,19 @@ const resourceCategories: ResourceCategory[] = [
     ],
   },
 ]
+
+// Short labels for quick nav
+const NAV_LABELS: Record<string, string> = {
+  writing: 'Writing',
+  articles: 'Articles',
+  implementers: 'Implementers',
+  evidence: 'Evidence',
+  frameworks: 'Frameworks',
+  'who-itu': 'WHO / ITU',
+  reading: 'Reading',
+  organisations: 'Organisations',
+  funding: 'Funding',
+}
 
 export default function ResourcesPage() {
   return (
@@ -260,21 +293,21 @@ export default function ResourcesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              Where can I connect to other great work in this space?
+              Where can we connect to other great work in this space?
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={150}>
             <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-              This is an ongoing list of awesome resources I collect along the way. I&rsquo;ll categorise them as usefully as possible over time. Aside from my own musings on{' '}
+              An ongoing list of resources we collect along the way — we&rsquo;ll add to it and categorise as usefully as possible over time. Alongside our writing on{' '}
               <a
                 href="https://shubstack.substack.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'var(--accent-coral)', textDecoration: 'none' }}
+                style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
               >
-                Shubstack
+                Shubstack ↗
               </a>
-              {' '}where I regularly write about current issues and reflect on podcast conversations, here are some recommended resources.
+              {' '}— where we regularly write about current issues and reflect on podcast conversations — here are our recommended resources.
             </p>
           </ScrollReveal>
         </div>
@@ -283,6 +316,45 @@ export default function ResourcesPage() {
       {/* Resources */}
       <section style={{ padding: '4rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+
+          {/* Quick navigation */}
+          <ScrollReveal>
+            <div style={{ marginBottom: '3rem' }}>
+              <p style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.625rem',
+                letterSpacing: '0.12em',
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+                marginBottom: '0.75rem',
+              }}>
+                Jump to
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+                {resourceCategories.map(cat => (
+                  <a
+                    key={cat.id}
+                    href={`#${cat.id}`}
+                    style={{
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '100px',
+                      border: '1px solid var(--border)',
+                      fontSize: '0.8125rem',
+                      color: 'var(--text-secondary)',
+                      textDecoration: 'none',
+                      fontFamily: 'var(--font-dm-sans, sans-serif)',
+                      background: 'var(--bg-card)',
+                      transition: 'all 0.15s ease',
+                    }}
+                    className="resource-nav-pill"
+                  >
+                    {NAV_LABELS[cat.id] ?? cat.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
           <div
             style={{
               display: 'flex',
@@ -292,8 +364,8 @@ export default function ResourcesPage() {
             }}
           >
             {resourceCategories.map((category, ci) => (
-              <ScrollReveal key={category.title} delay={ci * 60}>
-                <div>
+              <ScrollReveal key={category.id} delay={ci * 40}>
+                <div id={category.id}>
                   <h2
                     style={{
                       fontFamily: 'var(--font-cormorant, var(--font-display))',
@@ -302,10 +374,23 @@ export default function ResourcesPage() {
                       color: 'var(--text-primary)',
                       marginBottom: '1.5rem',
                       paddingBottom: '0.75rem',
-                      borderBottom: '1px solid var(--border)',
+                      borderBottom: '2px solid var(--accent-coral)',
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: '0.75rem',
                     }}
                   >
                     {category.title}
+                    <span style={{
+                      fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                      fontSize: '0.625rem',
+                      letterSpacing: '0.1em',
+                      color: 'var(--accent-coral)',
+                      textTransform: 'uppercase',
+                      fontWeight: 400,
+                    }}>
+                      {category.items.length} {category.items.length === 1 ? 'item' : 'items'}
+                    </span>
                   </h2>
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0' }}>
                     {category.items.map((item, i) => (
@@ -315,9 +400,11 @@ export default function ResourcesPage() {
                           display: 'grid',
                           gridTemplateColumns: 'minmax(min(100%, 240px), 1fr) 2fr',
                           gap: '1.5rem 2.5rem',
-                          padding: '1.25rem 0',
+                          padding: '1.25rem 0.75rem',
                           borderBottom: i < category.items.length - 1 ? '1px solid var(--border)' : 'none',
                           alignItems: 'start',
+                          borderRadius: 'var(--radius-sm)',
+                          background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)',
                         }}
                       >
                         <div>
@@ -396,6 +483,10 @@ export default function ResourcesPage() {
 
       <style>{`
         .resource-link:hover { opacity: 0.8; }
+        .resource-nav-pill:hover {
+          border-color: var(--accent-coral) !important;
+          color: var(--accent-coral) !important;
+        }
       `}</style>
     </>
   )

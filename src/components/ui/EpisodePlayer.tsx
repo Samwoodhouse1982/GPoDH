@@ -71,16 +71,6 @@ export default function EpisodePlayer({
           gap: '1rem',
         }}
       >
-        <p
-          style={{
-            fontFamily: 'var(--font-dm-sans, sans-serif)',
-            fontSize: '0.9375rem',
-            color: 'var(--text-muted)',
-            margin: 0,
-          }}
-        >
-          Choose your preferred platform
-        </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
           {[
             { href: applePodcastsUrl, label: 'Apple Podcasts', icon: CHANNEL_ICONS.transistor },

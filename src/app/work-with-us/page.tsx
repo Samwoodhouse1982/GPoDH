@@ -9,6 +9,10 @@ export const metadata: Metadata = {
 
 const collaborationOptions = [
   {
+    title: 'Propose a Session or Nominate a Speaker',
+    description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know — we\'re always looking for the next compelling conversation.',
+  },
+  {
     title: 'Sponsored Episodes',
     description: 'Align your organisation with a specific episode or series. Your message reaches an engaged, specialist audience in the right context.',
   },
@@ -113,6 +117,19 @@ export default function WorkWithUsPage() {
           </div>
 
           {/* Collaboration options */}
+          <ScrollReveal>
+            <h2
+              style={{
+                fontFamily: 'var(--font-cormorant, var(--font-display))',
+                fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                marginBottom: '1.5rem',
+              }}
+            >
+              How to get involved
+            </h2>
+          </ScrollReveal>
           <div
             style={{
               display: 'grid',

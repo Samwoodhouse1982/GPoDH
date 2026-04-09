@@ -84,6 +84,7 @@ function expandQuery(raw: string): { terms: string[]; concepts: string[] } {
 }
 
 const ALL_CATEGORIES: VideoCategory[] = ['talk', 'panel', 'explainer', 'clip']
+const TRAILER_ID = '29' // Always pinned to first grid position
 
 export default function VideoPageClient() {
   // ── Featured (static — always first video) ───────────────────────────────
@@ -129,7 +130,10 @@ export default function VideoPageClient() {
       ? videos.filter(v => v.category === activeCategory)
       : videos
 
-    if (!query.trim()) return base
+    if (!query.trim()) {
+      const trailer = videos.find(v => v.id === TRAILER_ID)
+      return trailer ? [trailer, ...base.filter(v => v.id !== TRAILER_ID)] : base
+    }
 
     const scoreMap = new Map<string, number>()
     expandedTerms.forEach((term, i) => {
@@ -140,9 +144,12 @@ export default function VideoPageClient() {
       })
     })
 
-    return base
+    const scored = base
       .filter(v => scoreMap.has(v.id))
       .sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0))
+
+    const trailer = videos.find(v => v.id === TRAILER_ID)
+    return trailer ? [trailer, ...scored.filter(v => v.id !== TRAILER_ID)] : scored
   }, [query, expandedTerms, fuse, activeCategory])
 
   // ── Surprise me — opens a random video in a modal ────────────────────────

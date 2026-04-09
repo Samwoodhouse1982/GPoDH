@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import EpisodeCard from '@/components/ui/EpisodeCard'
 import VideoCard from '@/components/ui/VideoCard'
+import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
@@ -135,7 +135,7 @@ const stats = [
 ]
 
 export default function HomePage() {
-  const latestEpisodes = episodes.slice(0, 4)
+  const latestEpisodes = episodes.slice(0, 6)
 
   return (
     <>
@@ -736,19 +736,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
-              gap: '1.5rem',
-            }}
-          >
-            {latestEpisodes.map((episode, i) => (
-              <ScrollReveal key={episode.id} delay={i * 80}>
-                <EpisodeCard episode={episode} />
-              </ScrollReveal>
-            ))}
-          </div>
+          <LatestEpisodesCarousel episodes={latestEpisodes} />
         </div>
       </section>
 
