@@ -189,7 +189,7 @@ Yes. Definitely. Thanks so much for the conversation.
 
 Shubs Upadhyay (16:13)
 Jess, it's been really, really insightful. Thank you so much.`,
-    audioUrl: 'https://media.transistor.fm/f199d4da/c7e7746e.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/f199d4da',
   },
   {
     id: '23',
@@ -1179,7 +1179,7 @@ Smisha, it's been so valuable and insightful. I really appreciate the real talk 
 
 Smisha (44:32)
 This was really fun. Look forward to many more such conversations.`,
-    audioUrl: 'https://media.transistor.fm/16190eb9/b575f4a9.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/16190eb9',
   },
   {
     id: '20',
@@ -1273,7 +1273,7 @@ Lucy, thank you for sharing these valuable insights. Really great to see this ty
 
 Lucy Cesnakova (19:51)
 Thank you very much. Have a great day.`,
-    audioUrl: 'https://media.transistor.fm/d145eafd/e23c58de.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/d145eafd',
   },
   {
     id: '18',
@@ -1297,7 +1297,7 @@ Thank you very much. Have a great day.`,
       'What leaders in LMIC settings can take away from the ethics debate in high-income countries',
     ],
     bio: 'Jess Morley is a researcher at the Digital Ethics Center at Yale University. She previously worked with NHSX and contributed to the Goldacre review in 2022, and has deep expertise on ethics, AI governance, and health policy.',
-    audioUrl: 'https://media.transistor.fm/c36dc259/06b5d68f.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/c36dc259',
   },
   {
     id: '17',
@@ -1320,7 +1320,7 @@ Thank you very much. Have a great day.`,
       'Infrastructure, policy, and trust as the key elements for making digital health innovations stick',
     ],
     bio: 'Rigveda Kadam is an experienced global health strategist with expertise in digital health, AI, and public health programmes, driving impactful innovations and policy alignment. Andrew Muhire is the Chief Digital Officer at the Rwanda Ministry of Health.',
-    audioUrl: 'https://media.transistor.fm/6c728b26/2959b104.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/6c728b26',
   },
   {
     id: '16',
@@ -1345,7 +1345,7 @@ Thank you very much. Have a great day.`,
       'Innovative evaluation approaches: from cluster RCTs to cyclical evaluation for digital health',
     ],
     bio: 'Dr Jana Alagarajah (MD MPH) is a digital mental health specialist, UK-trained public health doctor, and psychiatrist co-designing equitable and impactful digital health innovation in Africa with young people as Technical Lead at YLabs. Partnering with UNICEF, USAID, and the Gates Foundation, he leverages digital tools to strengthen health systems.',
-    audioUrl: 'https://media.transistor.fm/6941a992/653769d7.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/6941a992',
   },
   {
     id: '15',
@@ -1389,7 +1389,7 @@ Thank you very much. Have a great day.`,
       { time: '01:02:02', label: 'Ruchit\'s top takeaway for developers' },
     ],
     bio: 'Ruchit Nagar is the CEO and Co-Founder of Khushi Baby. For his efforts to deliver scalable public health impact, Ruchit has been recognised as a Forbes 30 Under 30 leader in Healthcare, a World Innovation Summit in Health Young Innovator, and a Distinguished Young Alumnus by the Yale School of Public Health.',
-    audioUrl: 'https://media.transistor.fm/a115eb8e/2ad6fb03.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/a115eb8e',
   },
   {
     id: '14',
@@ -1412,7 +1412,7 @@ Thank you very much. Have a great day.`,
       'Using the end goal of great healthcare to decide where digital can genuinely help',
       'Working proactively with the Civil Aviation Authority to safely establish a high-quality drone service - a lesson for regulators and developers everywhere',
     ],
-    audioUrl: 'https://media.transistor.fm/a9aabd01/68075844.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/a9aabd01',
   },
   {
     id: '13',
@@ -1439,7 +1439,7 @@ Thank you very much. Have a great day.`,
       'Why digital transformation in healthcare requires investment and time before yielding dividends',
     ],
     bio: 'Stephen Gilbert is a Professor at the Faculty of Medicine, Dresden University of Technology (Else Kröner Fresenius Center for Digital Health), leading a multidisciplinary team specialising in regulatory science for medical devices and in vitro diagnostic devices. With over 15 years of expertise in clinical research, computational biology, and regulatory science, he is committed to advancing digital health innovation and governance.',
-    audioUrl: 'https://media.transistor.fm/cb6cf217/b931925d.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/cb6cf217',
   },
   {
     id: '12',
@@ -1461,7 +1461,7 @@ Thank you very much. Have a great day.`,
       'How strong local partnerships contribute to successful technology implementation',
       'Regulatory backing as a necessity for the safety and efficacy of new technologies',
     ],
-    audioUrl: 'https://media.transistor.fm/868c0561/9523d06a.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/868c0561',
   },
   {
     id: '11',
@@ -1496,7 +1496,7 @@ Thank you very much. Have a great day.`,
       { time: '45:28', label: 'Regulation of LLMs as medical devices' },
       { time: '48:40', label: 'Recommendations to innovators about healthcare regulation' },
     ],
-    audioUrl: 'https://media.transistor.fm/8580fc0c/588d5861.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/8580fc0c',
   },
   {
     id: '10',
@@ -1523,7 +1523,7 @@ Thank you very much. Have a great day.`,
     ],
     pullQuote: 'The world is becoming more like Brazil.',
     bio: 'Alexandre Chiavegatto Filho is an Associate Professor of Machine Learning in Healthcare at the Department of Epidemiology, School of Public Health, University of São Paulo. He directs the Laboratory of Big Data and Predictive Analysis in Health (Labdaps), which includes a team of 30 researchers focused on developing AI algorithms to improve healthcare decisions.',
-    audioUrl: 'https://media.transistor.fm/8eacd111/cfd34497.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/8eacd111',
   },
   {
     id: '9',
@@ -1546,7 +1546,7 @@ Thank you very much. Have a great day.`,
       'Dr Liu\'s views on current progress and the steps ahead',
       'How society and the healthcare ecosystem can address these challenges comprehensively',
     ],
-    audioUrl: 'https://media.transistor.fm/0987ca44/6fcd3360.mp3',
+    transistorUrl: 'https://share.transistor.fm/e/0987ca44',
   },
 ]
 
