@@ -189,6 +189,7 @@ Yes. Definitely. Thanks so much for the conversation.
 
 Shubs Upadhyay (16:13)
 Jess, it's been really, really insightful. Thank you so much.`,
+    audioUrl: 'https://media.transistor.fm/f199d4da/c7e7746e.mp3',
   },
   {
     id: '23',
@@ -1178,6 +1179,7 @@ Smisha, it's been so valuable and insightful. I really appreciate the real talk 
 
 Smisha (44:32)
 This was really fun. Look forward to many more such conversations.`,
+    audioUrl: 'https://media.transistor.fm/16190eb9/b575f4a9.mp3',
   },
   {
     id: '20',
@@ -1271,6 +1273,7 @@ Lucy, thank you for sharing these valuable insights. Really great to see this ty
 
 Lucy Cesnakova (19:51)
 Thank you very much. Have a great day.`,
+    audioUrl: 'https://media.transistor.fm/d145eafd/e23c58de.mp3',
   },
   {
     id: '18',
@@ -1294,6 +1297,7 @@ Thank you very much. Have a great day.`,
       'What leaders in LMIC settings can take away from the ethics debate in high-income countries',
     ],
     bio: 'Jess Morley is a researcher at the Digital Ethics Center at Yale University. She previously worked with NHSX and contributed to the Goldacre review in 2022, and has deep expertise on ethics, AI governance, and health policy.',
+    audioUrl: 'https://media.transistor.fm/c36dc259/06b5d68f.mp3',
   },
   {
     id: '17',
