@@ -203,7 +203,7 @@ export default function HomePage() {
                 animationDelay: '160ms',
               }}
             >
-              The podcast about AI and digital health in underserved communities globally.
+              Sharing stories from people doing digital health in low-resourced settings — because health inequalities are everywhere, and the lessons travel.
             </p>
             <p
               className="animate-fade-up"
@@ -216,7 +216,7 @@ export default function HomePage() {
                 animationDelay: '200ms',
               }}
             >
-              Real conversations on AI and digital health where it matters most: with the communities and innovators working in underserved settings around the world.
+              The digital health industry talks too much about the Global North. This podcast amplifies the people working in under-resourced settings — clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
             </p>
             <div
               className="animate-fade-up"
@@ -310,17 +310,17 @@ export default function HomePage() {
                   marginBottom: '2rem',
                 }}
               >
-                The perspectives of those innovating in underserved settings are sorely missing from digital health.
+                The digital health industry talks too much about the Global North.
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={130}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.
+                This podcast shares the stories of people working in under-resourced and low-resourced settings — clinicians, founders, researchers, and policy makers doing real work in digital health in contexts that rarely make it onto the main stage.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={160}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?
+                Health inequalities exist everywhere, and we can all learn from the people who are laser-focused on outcomes in some of the most challenging contexts on earth.
               </p>
             </ScrollReveal>
           </div>
