@@ -203,7 +203,7 @@ export default function HomePage() {
                 animationDelay: '160ms',
               }}
             >
-              Sharing stories from people doing digital health in low-resourced settings — because health inequalities are everywhere, and the lessons travel.
+              The podcast that shares stories from people doing AI and digital health in low-resourced settings — because health inequalities are everywhere, and the lessons travel.
             </p>
             <p
               className="animate-fade-up"
