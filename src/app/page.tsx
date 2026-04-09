@@ -203,7 +203,7 @@ export default function HomePage() {
                 animationDelay: '160ms',
               }}
             >
-              The podcast that shares stories from people doing AI and digital health in low-resourced settings — because health inequalities are everywhere, and the lessons travel.
+              The podcast that shares stories from people doing AI and digital health in low-resourced settings, because health inequalities are everywhere and the lessons travel.
             </p>
             <p
               className="animate-fade-up"
@@ -216,7 +216,7 @@ export default function HomePage() {
                 animationDelay: '200ms',
               }}
             >
-              The digital health industry talks too much about the Global North. This podcast amplifies the people working in under-resourced settings — clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
+              The digital health industry talks too much about the Global North. This podcast amplifies the people working in under-resourced settings: clinicians, founders, and researchers who are laser-focused on outcomes in some of the most challenging contexts on earth.
             </p>
             <div
               className="animate-fade-up"
@@ -315,7 +315,7 @@ export default function HomePage() {
             </ScrollReveal>
             <ScrollReveal delay={130}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                This podcast shares the stories of people working in under-resourced and low-resourced settings — clinicians, founders, researchers, and policy makers doing real work in digital health in contexts that rarely make it onto the main stage.
+                This podcast shares the stories of people working in under-resourced and low-resourced settings: clinicians, founders, researchers, and policy makers doing real work in digital health in contexts that rarely make it onto the main stage.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={160}>
