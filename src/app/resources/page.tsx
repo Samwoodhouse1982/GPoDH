@@ -471,7 +471,7 @@ export default function ResourcesPage() {
             >
               <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>
                 This list is updated periodically. Got a recommendation?{' '}
-                <a href="mailto:hello@shubs.me" style={{ color: 'var(--accent-coral)' }}>hello@shubs.me</a>
+                <a href="/contact" style={{ color: 'var(--accent-coral)' }}>Let us know</a>
               </p>
             </div>
           </ScrollReveal>

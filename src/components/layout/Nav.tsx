@@ -13,7 +13,7 @@ const navLinks = [
 ]
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
@@ -92,12 +92,12 @@ export default function Nav() {
           }}
         >
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, padding: '0.75rem 0.75rem 0.5rem', display: 'block' }}>
+          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'block' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo-gpodh.png"
               alt="GPODH: Global Perspectives on Digital Health"
-              style={{ height: '68px', width: 'auto', display: 'block' }}
+              style={{ height: '48px', width: 'auto', display: 'block' }}
             />
           </Link>
 

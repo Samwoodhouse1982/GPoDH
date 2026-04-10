@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
-import { SITE } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Work With Us',
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
 
 const collaborationOptions = [
   {
-    title: 'Propose a Session or Nominate a Speaker',
+    title: 'Propose a Session or Speaker',
     description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
   },
   {
@@ -34,11 +33,6 @@ const collaborationOptions = [
   },
 ]
 
-const audienceStats = [
-  { value: '60+', label: 'Countries represented' },
-  { value: 'Thousands', label: 'of specialist listeners' },
-  { value: 'Clinicians, Founders, NGOs & Policy, Investors', label: 'Core audience types' },
-]
 
 export default function WorkWithUsPage() {
   return (
@@ -83,38 +77,105 @@ export default function WorkWithUsPage() {
           </div>
 
           {/* Audience stats */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1.5rem',
-              marginBottom: '3.5rem',
-              padding: '2rem',
-              background: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border)',
-            }}
-          >
-            {audienceStats.map((stat, i) => (
-              <ScrollReveal key={stat.label} delay={i * 80}>
-                <div style={{ textAlign: 'center' }}>
-                  <p
+          <ScrollReveal delay={180}>
+            <div
+              style={{
+                marginBottom: '3.5rem',
+                background: 'var(--bg-dark)',
+                borderRadius: 'var(--radius-lg)',
+                borderTop: '4px solid var(--accent-coral)',
+                padding: 'clamp(2rem, 4vw, 3rem)',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
+              {/* Big numbers row */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '0',
+                  marginBottom: '2.25rem',
+                }}
+              >
+                {[
+                  { value: '60+', label: 'Countries reached' },
+                  { value: 'Thousands', label: 'of specialist listeners' },
+                ].map((stat, i) => (
+                  <div
+                    key={stat.label}
                     style={{
-                      fontFamily: 'var(--font-cormorant, var(--font-display))',
-                      fontSize: '2rem',
-                      fontWeight: 700,
-                      color: 'var(--text-primary)',
-                      lineHeight: 1.1,
-                      marginBottom: '0.375rem',
+                      textAlign: 'center',
+                      padding: '0.5rem 2rem',
+                      borderRight: i === 0 ? '1px solid rgba(255,255,255,0.1)' : 'none',
                     }}
                   >
-                    {stat.value}
-                  </p>
-                  <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{stat.label}</p>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-cormorant, var(--font-display))',
+                        fontSize: 'clamp(3rem, 6vw, 5rem)',
+                        fontWeight: 700,
+                        color: 'var(--accent-coral)',
+                        lineHeight: 1,
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {stat.value}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                        fontSize: '0.625rem',
+                        letterSpacing: '0.13em',
+                        color: 'rgba(255,255,255,0.55)',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: '2rem' }} />
+
+              {/* Audience type pills */}
+              <div style={{ textAlign: 'center' }}>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    fontSize: '0.625rem',
+                    letterSpacing: '0.13em',
+                    color: 'rgba(255,255,255,0.4)',
+                    textTransform: 'uppercase',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  Core audience
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem', justifyContent: 'center' }}>
+                  {['Clinicians', 'Founders', 'NGOs & Policy', 'Investors'].map((type) => (
+                    <span
+                      key={type}
+                      style={{
+                        fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                        fontSize: '0.8125rem',
+                        letterSpacing: '0.04em',
+                        color: 'rgba(255,255,255,0.85)',
+                        background: 'rgba(255,255,255,0.07)',
+                        border: '1px solid rgba(255,255,255,0.14)',
+                        borderRadius: 'var(--radius-md)',
+                        padding: '0.4rem 1rem',
+                      }}
+                    >
+                      {type}
+                    </span>
+                  ))}
                 </div>
-              </ScrollReveal>
-            ))}
-          </div>
+              </div>
+            </div>
+          </ScrollReveal>
 
           {/* Collaboration options */}
           <ScrollReveal>
@@ -168,18 +229,23 @@ export default function WorkWithUsPage() {
           </div>
 
           <ScrollReveal>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '0.75rem', fontSize: '0.9375rem' }}>
-              To discuss a partnership, get in touch directly:
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.25rem', fontSize: '0.9375rem' }}>
+              To discuss a partnership, use the contact form and tell us what you have in mind.
             </p>
             <a
-              href={`mailto:${SITE.email}`}
+              href="/contact"
               style={{
-                color: 'var(--accent-coral)',
+                display: 'inline-block',
+                padding: '0.6rem 1.5rem',
+                background: 'var(--accent-coral)',
+                color: '#fff',
+                borderRadius: 'var(--radius-md)',
                 fontWeight: 500,
-                fontSize: '1rem',
+                fontSize: '0.9375rem',
+                textDecoration: 'none',
               }}
             >
-              {SITE.email}
+              Get in touch ›
             </a>
           </ScrollReveal>
         </div>

@@ -109,11 +109,11 @@ export default function Footer() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <a
-                href={`mailto:${SITE.email}`}
+                href="/contact"
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                {SITE.email}
+                Get in touch
               </a>
               <a
                 href={SOCIAL.linkedin}

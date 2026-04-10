@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import PlatformBadge from '@/components/ui/PlatformBadge'
-import { SITE, PLATFORMS, SOCIAL } from '@/lib/constants'
+import { PLATFORMS, SOCIAL } from '@/lib/constants'
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -188,7 +188,7 @@ export default function ContactPage() {
 
             {/* Right column context */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-              {/* Direct contact */}
+              {/* Response note */}
               <div>
                 <p
                   style={{
@@ -200,14 +200,11 @@ export default function ContactPage() {
                     marginBottom: '0.75rem',
                   }}
                 >
-                  Direct
+                  Response time
                 </p>
-                <a
-                  href={`mailto:${SITE.email}`}
-                  style={{ color: 'var(--accent-coral)', fontSize: '1rem', fontWeight: 500 }}
-                >
-                  {SITE.email}
-                </a>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6 }}>
+                  We aim to respond to all messages within a few days.
+                </p>
               </div>
 
               {/* Listen */}

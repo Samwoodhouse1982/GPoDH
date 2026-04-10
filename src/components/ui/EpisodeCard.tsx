@@ -94,7 +94,7 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
               fontFamily: 'var(--font-dm-mono, var(--font-mono))',
               fontSize: '0.75rem',
               letterSpacing: '0.08em',
-              color: palette.border,
+              color: 'var(--accent-coral)',
               fontWeight: 400,
             }}
           >

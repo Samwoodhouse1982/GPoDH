@@ -367,6 +367,65 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ——— Promo photo strip ——— */}
+      <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(280px, 35vw, 440px)' }}>
+        <Image
+          src="/shubs-interview.jpg"
+          alt="Shubs Upadhyay interviewing a guest at HLTH Conference"
+          fill
+          style={{ objectFit: 'cover', objectPosition: 'center 42%' }}
+          sizes="100vw"
+        />
+        {/* Right-side gradient — Shubs is on the left, text sits on the darkened right */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to left, rgba(15,12,10,0.82) 0%, rgba(15,12,10,0.6) 40%, rgba(15,12,10,0.08) 68%, transparent 100%)',
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 var(--gutter)',
+        }}>
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ maxWidth: '460px', textAlign: 'right' }}>
+              <p style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.625rem',
+                letterSpacing: '0.16em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '1rem',
+              }}>
+                In the room
+              </p>
+              <blockquote style={{
+                fontFamily: 'var(--font-cormorant, var(--font-display))',
+                fontSize: 'clamp(1.5rem, 2.8vw, 2.5rem)',
+                fontWeight: 700,
+                fontStyle: 'italic',
+                color: '#fff',
+                lineHeight: 1.2,
+                margin: '0 0 1.25rem',
+              }}>
+                &ldquo;Getting the conversations that never make it onto the main stage.&rdquo;
+              </blockquote>
+              <p style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.625rem',
+                letterSpacing: '0.12em',
+                color: 'rgba(255,255,255,0.5)',
+                textTransform: 'uppercase',
+              }}>
+                HLTH Conference
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ——— Who listens ——— */}
       <style>{`
         @keyframes heartbeat {
@@ -594,6 +653,7 @@ export default function HomePage() {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                 gap: '2.5rem 1rem',
+                alignItems: 'start',
               }}
             >
               {stats.map((stat) => (
@@ -613,25 +673,27 @@ export default function HomePage() {
                   </div>
 
                   {/* Value */}
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-cormorant, var(--font-display))',
-                      fontSize: 'clamp(2.5rem, 4vw, 3.75rem)',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      lineHeight: 1,
-                    }}
-                  >
-                    {stat.value}
-                  </p>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', height: '5.5rem' }}>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-cormorant, var(--font-display))',
+                        fontSize: 'clamp(3.5rem, 6vw, 5.5rem)',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        lineHeight: 1,
+                      }}
+                    >
+                      {stat.value}
+                    </p>
+                  </div>
 
                   {/* Label */}
                   <p
                     style={{
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                      fontSize: '0.75rem',
+                      fontSize: '0.875rem',
                       letterSpacing: '0.14em',
-                      color: 'rgba(255,255,255,0.88)',
+                      color: 'rgba(255,255,255,1)',
                       textTransform: 'uppercase',
                     }}
                   >

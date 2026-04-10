@@ -155,6 +155,22 @@ export default function HostModal({ videoSrc }: Props) {
         className="host-modal"
         onClick={handleBackdropClick}
       >
+        {/* Hero photo */}
+        <div style={{ position: 'relative', height: '260px', overflow: 'hidden', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0' }}>
+          <Image
+            src="/shubs-interview.jpg"
+            alt="Shubs interviewing a guest at HLTH Conference"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center 38%' }}
+            sizes="860px"
+          />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 55%, rgba(245,240,232,0.6) 82%, rgba(245,240,232,0.97) 100%)',
+          }} />
+        </div>
+
         {/* Close */}
         <button
           onClick={() => setOpen(false)}
@@ -166,21 +182,47 @@ export default function HostModal({ videoSrc }: Props) {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            border: '1px solid var(--border)',
-            background: 'var(--bg-card)',
+            border: '1px solid rgba(255,255,255,0.4)',
+            background: 'rgba(0,0,0,0.35)',
+            backdropFilter: 'blur(6px)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '1rem',
-            color: 'var(--text-secondary)',
+            color: '#fff',
             zIndex: 1,
           }}
         >
           ×
         </button>
 
-        <div style={{ padding: '2rem' }}>
+        <div style={{ padding: '1.5rem 2rem 2rem' }}>
+          {/* Trailer embed */}
+          <div style={{ marginBottom: '2rem' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.6rem',
+                letterSpacing: '0.1em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '0.625rem',
+              }}
+            >
+              Listen to the trailer
+            </p>
+            <iframe
+              width="100%"
+              height="180"
+              frameBorder="0"
+              scrolling="no"
+              src="https://share.transistor.fm/e/56cf0e03"
+              title="GPODH Trailer"
+              style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
+            />
+          </div>
+
           {/* Video slot — shown only when src is provided */}
           {videoSrc && (
             <div

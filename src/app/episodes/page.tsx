@@ -14,7 +14,16 @@ export default function EpisodesPage() {
   const speakers = episodes
     .filter((e) => !!e.artworkUrl)
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
-    .map((e) => ({ slug: e.slug, guest: e.guest, artworkUrl: e.artworkUrl! }))
+    .flatMap((e) => {
+      // Episode 9 has a combined photo — expand into individual entries
+      if (e.slug === 'policy-insights-from-the-rwanda-ministry-of-health-and-find') {
+        return [
+          { slug: e.slug, guest: 'Rigveda Kadam', artworkUrl: '/guests/rigveda-kadam.jpg' },
+          { slug: e.slug, guest: 'Andrew Muhire', artworkUrl: '/guests/andrew-muhire.jpg' },
+        ]
+      }
+      return [{ slug: e.slug, guest: e.guest, artworkUrl: e.artworkUrl! }]
+    })
 
   return (
     <>
