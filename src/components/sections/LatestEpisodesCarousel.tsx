@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Episode } from '@/lib/episodes';
 
 interface LatestEpisodesCarouselProps {
@@ -104,7 +105,7 @@ export default function LatestEpisodesCarousel({ episodes }: LatestEpisodesCarou
                 style={{
                   flexShrink: 0,
                   width: `${CARD_WIDTH}px`,
-                  height: '200px',
+                  height: '220px',
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border)',
                   borderTop: '3px solid var(--accent-coral)',
@@ -117,20 +118,39 @@ export default function LatestEpisodesCarousel({ episodes }: LatestEpisodesCarou
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 }}
               >
-                {/* Episode number badge */}
-                <span
-                  style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: '0.625rem',
-                    fontVariant: 'small-caps',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    color: 'var(--accent-coral)',
-                    lineHeight: 1,
-                  }}
-                >
-                  {episode.episodeNumber != null ? `Ep ${episode.episodeNumber}` : 'Episode'}
-                </span>
+                {/* Thumbnail + episode badge row */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {episode.artworkUrl ? (
+                    <Image
+                      src={episode.artworkUrl}
+                      alt={episode.guest}
+                      width={40}
+                      height={40}
+                      style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: '40px', height: '40px', borderRadius: '50%', flexShrink: 0,
+                      background: 'var(--accent-coral)', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: '#fff',
+                    }}>
+                      {episode.guest.charAt(0)}
+                    </div>
+                  )}
+                  <span
+                    style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '0.625rem',
+                      fontVariant: 'small-caps',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      color: 'var(--accent-coral)',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {episode.episodeNumber != null ? `Ep ${episode.episodeNumber}` : 'Episode'}
+                  </span>
+                </div>
 
                 {/* Title */}
                 <span
