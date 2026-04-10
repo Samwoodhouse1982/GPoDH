@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const episode = episodes.find((e) => e.slug === slug)
   if (!episode) return {}
   return {
-    title: `${episode.title} — GPODH`,
+    title: `${episode.title} | GPODH`,
     description: episode.description,
     ...(episode.audioUrl && { other: { 'og:audio': episode.audioUrl } }),
   }
@@ -343,10 +343,10 @@ export default async function EpisodePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ——— Embed player ——— */}
+      {/* ——— 1. Podcast player ——— */}
       <section
         style={{
-          padding: '3rem var(--gutter) 0',
+          padding: '3rem var(--gutter)',
           borderBottom: '1px solid var(--border)',
         }}
       >
@@ -363,20 +363,77 @@ export default async function EpisodePage({ params }: Props) {
           >
             Listen
           </p>
-
-          <div style={{ marginBottom: '2.5rem' }}>
-            <EpisodePlayer
-              transistorUrl={episode.transistorUrl}
-              spotifyEpisodeId={episode.spotifyEpisodeId}
-              youtubeVideoId={episode.youtubeVideoId}
-              title={episode.title}
-              applePodcastsUrl={PLATFORMS.apple}
-              spotifyShowUrl={PLATFORMS.spotify}
-              youtubeShowUrl={PLATFORMS.youtube}
-            />
-          </div>
+          <EpisodePlayer
+            transistorUrl={episode.transistorUrl}
+            spotifyEpisodeId={episode.spotifyEpisodeId}
+            youtubeVideoId={episode.youtubeVideoId}
+            title={episode.title}
+            applePodcastsUrl={PLATFORMS.apple}
+            spotifyShowUrl={PLATFORMS.spotify}
+            youtubeShowUrl={PLATFORMS.youtube}
+          />
         </div>
       </section>
+
+      {/* ——— 2. Teaser video (only when teaserVideoUrl is set) ——— */}
+      {episode.teaserVideoUrl && (
+        <section
+          style={{
+            padding: '3rem var(--gutter)',
+            borderBottom: '1px solid var(--border)',
+          }}
+        >
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.12em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '1.25rem',
+              }}
+            >
+              Watch
+            </p>
+            <div
+              style={{
+                maxWidth: '800px',
+                borderRadius: 'var(--radius-md)',
+                overflow: 'hidden',
+              }}
+            >
+              {/\.(mp4|webm|mov|ogg)(\?|$)/i.test(episode.teaserVideoUrl) ? (
+                // Direct video file
+                <video
+                  src={episode.teaserVideoUrl}
+                  controls
+                  playsInline
+                  style={{ width: '100%', display: 'block', borderRadius: 'var(--radius-md)' }}
+                />
+              ) : (
+                // Embeddable iframe (YouTube, Vimeo, Substack, etc.)
+                <div style={{ position: 'relative', paddingBottom: '56.25%' }}>
+                  <iframe
+                    src={episode.teaserVideoUrl}
+                    title={`${episode.title} — teaser`}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 'none',
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ——— Overview ——— */}
       <section style={{ padding: '5rem var(--gutter)' }}>

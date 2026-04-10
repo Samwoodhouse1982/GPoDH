@@ -13,102 +13,125 @@ interface Props {
   speakers: Speaker[]
 }
 
-// Deterministic pseudo-random from a seed
-function seededRand(seed: number) {
-  let s = seed
-  return () => {
-    s = (s * 1664525 + 1013904223) & 0xffffffff
-    return (s >>> 0) / 0xffffffff
-  }
-}
-
 export default function SpeakerMarquee({ speakers }: Props) {
-  // With ~24 speakers at ~80px avg each, total track = ~1920px.
-  // Viewport is 260px — duplicates are ~1920px apart, never both visible.
-  const doubled = [...speakers, ...speakers]
+  const N = speakers.length
+  const ITEM = 72
+  const R = Math.round(ITEM / (2 * Math.tan(Math.PI / N)))
+  const W = 420
+  const H = 180
+  const ringLeft = Math.round((W - ITEM) / 2)
+  const ringTop  = Math.round((H - ITEM) / 2)
 
-  // Assign each item a deterministic size, horizontal offset, and animation params
-  const items = doubled.map((s, i) => {
-    const rand = seededRand(i * 7919 + 31337)
-    const size   = Math.round(44 + rand() * 44)        // 44–88px
-    const left   = Math.round(rand() * 32)              // 0–32px horizontal scatter
-    const gap    = Math.round(8 + rand() * 20)          // 8–28px gap above
-    const floatX = (rand() - 0.5) * 14                  // ±7px drift amplitude
-    const floatDur = 3 + rand() * 4                      // 3–7s float cycle
-    const floatDelay = -(rand() * floatDur)              // staggered start
-    return { ...s, size, left, gap, floatX, floatDur, floatDelay }
-  })
+  const holdFrac = 0.75
+  const stepDur  = 4
+  const totalDur = N * stepDur
+  const easing   = 'cubic-bezier(0.4, 0, 0.2, 1)'
+
+  // Ring stepped animation
+  let spinKf = `@keyframes smq-spin {\n`
+  for (let i = 0; i < N; i++) {
+    const tStart = ((i / N) * 100).toFixed(3)
+    const tHold  = (((i + holdFrac) / N) * 100).toFixed(3)
+    const angle  = -(360 / N) * i
+    spinKf += `  ${tStart}% { transform: rotateY(${angle}deg); animation-timing-function: linear; }\n`
+    spinKf += `  ${tHold}%  { transform: rotateY(${angle}deg); animation-timing-function: ${easing}; }\n`
+  }
+  spinKf += `  100% { transform: rotateY(-360deg); }\n}`
+
+  // Per-item billboard counter-rotation: exactly cancels ring + cell rotation
+  // so each image always faces the viewer flat-on (no skew).
+  // When ring is at step k and cell is fixed at θ_i, billboard adds (k−i)·360/N.
+  // Math: ring(−k·α) + cell(i·α) + billboard((k−i)·α) = 0 for all k, any easing. ✓
+  const counterKfs = Array.from({ length: N }, (_, i) => {
+    const α = 360 / N
+    let kf = `@keyframes smq-counter-${i} {\n`
+    for (let k = 0; k < N; k++) {
+      const tStart = ((k / N) * 100).toFixed(3)
+      const tHold  = (((k + holdFrac) / N) * 100).toFixed(3)
+      const angle  = α * (k - i)
+      kf += `  ${tStart}% { transform: rotateY(${angle.toFixed(3)}deg); animation-timing-function: linear; }\n`
+      kf += `  ${tHold}%  { transform: rotateY(${angle.toFixed(3)}deg); animation-timing-function: ${easing}; }\n`
+    }
+    kf += `  100% { transform: rotateY(${(360 - α * i).toFixed(3)}deg); }\n}`
+    return kf
+  }).join('\n')
 
   return (
     <div
       style={{
-        width: '110px',
-        height: '260px',
+        width: `${W}px`,
+        height: `${H}px`,
         overflow: 'hidden',
-        maskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
+        perspective: '300px',
+        perspectiveOrigin: '50% 50%',
         flexShrink: 0,
+        maskImage:
+          'linear-gradient(to right, transparent, black 25%, black 75%, transparent)',
+        WebkitMaskImage:
+          'linear-gradient(to right, transparent, black 25%, black 75%, transparent)',
       }}
     >
       <style>{`
-        @keyframes smq-scroll {
-          from { transform: translateY(0); }
-          to   { transform: translateY(-50%); }
+        ${spinKf}
+        ${counterKfs}
+        .smq-ring {
+          width: ${ITEM}px;
+          height: ${ITEM}px;
+          position: absolute;
+          top: ${ringTop}px;
+          left: ${ringLeft}px;
+          transform-style: preserve-3d;
+          animation: smq-spin ${totalDur}s infinite;
         }
-        .smq-track {
-          display: flex;
-          flex-direction: column;
-          animation: smq-scroll 65s linear infinite;
+        .smq-cell {
+          position: absolute;
+          inset: 0;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          text-decoration: none;
         }
-        .smq-track:hover { animation-play-state: paused; }
-        @keyframes smq-float {
-          0%, 100% { transform: translateX(var(--fx)); }
-          50%       { transform: translateX(calc(var(--fx) * -1)); }
+        .smq-billboard {
+          position: absolute;
+          inset: 0;
         }
         .smq-img {
           border-radius: 50%;
           object-fit: cover;
+          object-position: top center;
+          width: 100%;
+          height: 100%;
           display: block;
-          border: 2px solid var(--border);
-          transition: transform 0.25s ease, box-shadow 0.25s ease;
-          animation: smq-float var(--fd) ease-in-out var(--fdelay) infinite;
-        }
-        .smq-img:hover {
-          transform: scale(1.14) !important;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.22);
-          animation-play-state: paused;
+          border: 2px solid rgba(255,255,255,0.35);
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
         }
       `}</style>
 
-      <div className="smq-track">
-        {items.map((item, i) => (
+      <div className="smq-ring">
+        {speakers.map((s, i) => (
           <Link
-            key={`${item.slug}-${i}`}
-            href={`/episodes/${item.slug}`}
-            title={item.guest}
+            key={s.slug}
+            href={`/episodes/${s.slug}`}
+            title={s.guest}
+            className="smq-cell"
             style={{
-              textDecoration: 'none',
-              flexShrink: 0,
-              marginTop: `${item.gap}px`,
-              marginLeft: `${item.left}px`,
-              display: 'block',
-              width: 'fit-content',
+              transform: `rotateY(${(360 / N) * i}deg) translateZ(${R}px)`,
             }}
           >
-            <Image
-              src={item.artworkUrl}
-              alt={item.guest}
-              width={item.size}
-              height={item.size}
-              className="smq-img"
-              style={{
-                width: `${item.size}px`,
-                height: `${item.size}px`,
-                '--fx': `${item.floatX}px`,
-                '--fd': `${item.floatDur.toFixed(1)}s`,
-                '--fdelay': `${item.floatDelay.toFixed(1)}s`,
-              } as React.CSSProperties}
-            />
+            <div
+              className="smq-billboard"
+              style={{ animation: `smq-counter-${i} ${totalDur}s infinite` }}
+            >
+              <Image
+                src={s.artworkUrl}
+                alt={s.guest}
+                width={ITEM * 4}
+                height={ITEM * 4}
+                className="smq-img"
+                sizes={`${ITEM}px`}
+              />
+            </div>
           </Link>
         ))}
       </div>

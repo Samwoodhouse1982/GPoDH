@@ -302,7 +302,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           <input
             ref={inputRef}
             type="search"
-            placeholder="Search by meaning — try 'AI in Africa' or 'funding'"
+            placeholder="Search by meaning: try 'AI in Africa' or 'funding'"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value)

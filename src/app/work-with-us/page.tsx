@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const collaborationOptions = [
   {
     title: 'Propose a Session or Nominate a Speaker',
-    description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know — we\'re always looking for the next compelling conversation.',
+    description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
   },
   {
     title: 'Sponsored Episodes',
@@ -37,7 +37,7 @@ const collaborationOptions = [
 const audienceStats = [
   { value: '60+', label: 'Countries represented' },
   { value: 'Thousands', label: 'of specialist listeners' },
-  { value: 'Clinicians, Founders, Investors', label: 'Core audience types' },
+  { value: 'Clinicians, Founders, NGOs & Policy, Investors', label: 'Core audience types' },
 ]
 
 export default function WorkWithUsPage() {

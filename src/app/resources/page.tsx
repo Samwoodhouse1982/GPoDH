@@ -4,8 +4,8 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 import { withUtm } from '@/lib/utm'
 
 export const metadata: Metadata = {
-  title: 'Resources — GPODH',
-  description: 'An ongoing list of great resources from the podcast and beyond — articles, organisations, and tools at the intersection of digital health and underserved communities.',
+  title: 'Resources | GPODH',
+  description: 'An ongoing list of great resources from the podcast and beyond: articles, organisations, and tools at the intersection of digital health and underserved communities.',
 }
 
 interface Resource {
@@ -26,7 +26,7 @@ const resourceCategories: ResourceCategory[] = [
     title: 'Writing & insights from the show',
     items: [
       {
-        label: 'Shubstack — Shubs\' newsletter',
+        label: 'Shubstack, Shubs\' newsletter',
         description: 'Our ongoing newsletter where we write about current issues in digital health, reflect on podcast conversations, and share perspectives on what\'s happening in the field. A good companion to the podcast.',
         url: 'https://shubstack.substack.com/',
       },
@@ -68,7 +68,7 @@ const resourceCategories: ResourceCategory[] = [
     items: [
       {
         label: 'Geneva Digital Health Hub',
-        description: 'GDHD lead a great community called Implementome — for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode we did with GDHD director Caroline Perrin (episode 15).',
+        description: 'GDHD lead a great community called Implementome, for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode we did with GDHD director Caroline Perrin (episode 15).',
       },
     ],
   },
@@ -179,7 +179,7 @@ const resourceCategories: ResourceCategory[] = [
   },
   {
     id: 'funding',
-    title: 'Accessing funding for LMIC digital health and AI projects — useful links',
+    title: 'Accessing funding for LMIC digital health and AI projects: useful links',
     items: [
       {
         label: 'Grand Challenges Canada',
@@ -192,7 +192,7 @@ const resourceCategories: ResourceCategory[] = [
         url: 'https://gcgh.grandchallenges.org/',
       },
       {
-        label: 'Wellcome Trust — Discovery Research and Innovations',
+        label: 'Wellcome Trust: Discovery Research and Innovations',
         description: 'Funds research across global health including digital and data science applications. Their health inequities and infectious disease portfolios are relevant to LMIC digital health.',
         url: 'https://wellcome.org/grant-funding',
       },
@@ -202,7 +202,7 @@ const resourceCategories: ResourceCategory[] = [
         url: 'https://www.usaid.gov/digital-development',
       },
       {
-        label: 'IDRC — International Development Research Centre',
+        label: 'IDRC: International Development Research Centre',
         description: 'Canadian public funder supporting research-based solutions in developing countries. Strong portfolio in digital health, AI for development, and data systems.',
         url: 'https://idrc.ca/',
       },
@@ -222,7 +222,7 @@ const resourceCategories: ResourceCategory[] = [
         url: 'https://www.google.org/',
       },
       {
-        label: 'Rockefeller Foundation — Health Initiative',
+        label: 'Rockefeller Foundation: Health Initiative',
         description: 'Long-standing funder of global health innovation, with a focus on health system strengthening and equity. Active in digital health and AI.',
         url: 'https://www.rockefellerfoundation.org/initiative/health/',
       },
@@ -299,7 +299,7 @@ export default function ResourcesPage() {
           </ScrollReveal>
           <ScrollReveal delay={150}>
             <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-              An ongoing list of resources we collect along the way — we&rsquo;ll add to it and categorise as usefully as possible over time. Alongside our writing on{' '}
+              An ongoing list of resources we collect along the way. We&rsquo;ll add to it and categorise as usefully as possible over time. Alongside our writing on{' '}
               <a
                 href={withUtm('https://shubstack.substack.com/', { campaign: 'resources', content: 'intro-shubstack' })}
                 target="_blank"
@@ -308,7 +308,7 @@ export default function ResourcesPage() {
               >
                 Shubstack ↗
               </a>
-              {' '}— where we regularly write about current issues and reflect on podcast conversations — here are our recommended resources.
+              {' '}(where we regularly write about current issues and reflect on podcast conversations), here are our recommended resources.
             </p>
           </ScrollReveal>
         </div>

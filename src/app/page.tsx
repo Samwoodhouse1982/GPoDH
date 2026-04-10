@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import VideoCard from '@/components/ui/VideoCard'
 import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
 import PlatformBadge from '@/components/ui/PlatformBadge'
@@ -244,24 +245,12 @@ export default function HomePage() {
             className="animate-fade-up"
             style={{
               aspectRatio: '1',
-              borderRadius: 'var(--radius-lg)',
-              overflow: 'hidden',
               maxWidth: '480px',
               width: '100%',
               margin: '0 auto',
-              background: 'linear-gradient(145deg, #0D1E1C 0%, #1A3B37 45%, #2A6B62 100%)',
-              position: 'relative',
               animationDelay: '300ms',
             }}
           >
-            {/* Subtle coral radial accent */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'radial-gradient(ellipse at 75% 20%, rgba(212,97,74,0.18) 0%, transparent 55%)',
-              pointerEvents: 'none',
-              zIndex: 1,
-            }} />
             <HeroGlobeWrapper />
           </div>
         </div>
@@ -304,12 +293,12 @@ export default function HomePage() {
             </ScrollReveal>
             <ScrollReveal delay={130}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                This podcast shares the stories of people working in under-resourced and low-resourced settings: clinicians, founders, researchers, and policy makers doing real work in digital health in contexts that rarely make it onto the main stage.
+                The dominant narrative in digital health is one of innovation flowing outward from wealthy systems. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH is built to help change that narrative.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={160}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                Health inequalities exist everywhere, and we can all learn from the people who are laser-focused on outcomes in some of the most challenging contexts on earth.
+                We share the stories of clinicians, founders, researchers, and policy makers doing real work in under-resourced settings: the people building solutions in contexts that rarely make it onto the main stage, but whose lessons travel everywhere.
               </p>
             </ScrollReveal>
           </div>
@@ -961,30 +950,25 @@ export default function HomePage() {
             </ScrollReveal>
           </div>
 
-          {/* Right: portrait placeholder */}
+          {/* Right: portrait */}
           <div
             style={{
               aspectRatio: '1',
-              background: 'var(--bg-surface)',
               borderRadius: 'var(--radius-lg)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
               maxWidth: '400px',
               width: '100%',
               margin: '0 auto',
+              position: 'relative',
             }}
           >
-            <span
-              style={{
-                fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: '3rem',
-                fontWeight: 600,
-                color: 'var(--text-muted)',
-              }}
-            >
-              SU
-            </span>
+            <Image
+              src="/shubs.webp"
+              alt="Dr Shubs Upadhyay"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'top' }}
+              sizes="(max-width: 768px) 100vw, 400px"
+            />
           </div>
         </div>
       </section>

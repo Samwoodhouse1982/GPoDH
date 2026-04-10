@@ -15,7 +15,7 @@ export default function ShareButtons({ slug, title, guest }: Props) {
     setPageUrl(window.location.href)
   }, [])
 
-  const shareText = `${title} with ${guest} — Global Perspectives on Digital Health`
+  const shareText = `${title} with ${guest} | Global Perspectives on Digital Health`
 
   async function copyLink() {
     try {

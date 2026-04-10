@@ -26,6 +26,7 @@ export interface Episode {
   audioUrl?: string           // direct MP3 URL for og:audio meta tag
   spotifyEpisodeId?: string
   youtubeVideoId?: string
+  teaserVideoUrl?: string     // short teaser/clip — direct .mp4 URL or embeddable iframe URL
   // Rich content for episode landing pages
   bio?: string
   topics?: string[]
@@ -36,6 +37,54 @@ export interface Episode {
 }
 
 export const episodes: Episode[] = [
+  {
+    id: '34',
+    slug: 'enhancing-newborn-care-in-rural-eastern-congo',
+    episodeNumber: 26,
+    title: 'Enhancing newborn care in rural eastern Congo: how a tool built alongside nurses changed everything',
+    guest: 'Dr Josh Bress',
+    guestRole: 'Pediatrician; President, Global Strategies; Medical Director, NoviGuide',
+    artworkUrl: '/guests/josh-bress.jpg',
+    date: 'Apr 2026',
+    duration: '1hr 8min',
+    description: 'The most vulnerable moment in any human life is the first few hours. Shubs talks with Dr Josh Bress, pediatrician, President of Global Strategies, and Medical Director of NoviGuide, a tool used nearly half a million times to help nurses in remote facilities across Africa manage critical newborn care. Josh shares his experiences from Eastern Congo, why paper guidelines fail at the bedside, how configuration (not customisation) is the key to scaling, what it actually looks like to delight frontline health workers, and what has kept his team going through 15 years of building at the last mile.',
+    url: 'https://www.gpodh.org/enhancing-newborn-care-in-rural-eastern-congo-how-a-tool-built-alongside-nurses-changed-everything/',
+    themes: ['Newborn Health', 'Clinical Decision Support', 'Digital Health Tools', 'Nursing', 'Scale'],
+    country: 'DR Congo',
+    tags: ['NoviGuide', 'newborn care', 'neonatal', 'clinical decision support', 'nurses', 'Congo', 'Goma', 'Global Strategies', 'frontline health workers', 'scale', 'configuration', 'last mile', 'pediatrics'],
+    pullQuote: 'I\'m not going to be better than these nurses. What can I do to help these nurses do their job better?',
+    bio: 'Dr Joshua Bress is a pediatrician and leads the nonprofit Global Strategies, where he serves as the medical director of the NoviGuide clinical decision support platform. He completed his undergraduate studies at Harvard University, attended medical school at Vanderbilt University, and completed his pediatric residency at the University of California, San Francisco. After residency, he moved to eastern Congo, living and working in the city of Goma from 2011 to 2012. That experience, and the challenges of sustaining high-quality care in resource-limited settings, led him to focus on clinical decision support. Today, he works with a multidisciplinary team to develop and scale NoviGuide, a point-of-care platform used by nurses and clinicians to deliver guideline-based care for newborns and children, helping bridge the gap between training, guidelines, and real-world clinical practice.',
+    topics: [
+      'Paper guidelines end up on shelves. Digital care pathways get to the bedside. Josh compares paper guidelines to an atlas and NoviGuide to Google Maps: built right, digital can adapt to what you actually have, flow with real clinical decisions, and stay available at 3am.',
+      'Configuration, not customisation, is how you scale. Clinical guidelines differ in predictable ways. The real variation is at the site level: what drugs, equipment, and diagnostics are available. Build for that and you can scale without starting from scratch.',
+      'Delight your end user. Nurses turned NoviGuide into a verb. They trained others with more passion than Josh\'s own team could. Treat frontline health workers as true customers, not passive recipients.',
+      'Local leadership is the engine of scale. Josh has personally met fewer than a dozen of NoviGuide\'s users across nearly half a million uses. Scale happened because local leaders like Dr Nakakeeto in Uganda took ownership and made the tool their own.',
+    ],
+    timestamps: [
+      { time: '00:00', label: 'Introduction to Global Health and Neonatology' },
+      { time: '05:17', label: 'The Unique Challenges of Newborn Care' },
+      { time: '07:33', label: 'Experiences in Eastern Congo' },
+      { time: '10:21', label: 'The Role of Nurses in Neonatal Care' },
+      { time: '12:50', label: 'Identifying Gaps in Neonatal Care' },
+      { time: '15:19', label: 'Developing the Novi Guide' },
+      { time: '18:09', label: 'Adapting Guidelines for Local Contexts' },
+      { time: '20:50', label: 'User-Centric Design in Healthcare Technology' },
+      { time: '23:41', label: 'Scaling the Novi Guide Across Regions' },
+      { time: '26:32', label: 'The Importance of Local Adaptation' },
+      { time: '29:02', label: 'Delighting Users with Effective Solutions' },
+      { time: '37:50', label: 'Scaling Challenges and Insights' },
+      { time: '40:17', label: 'The Importance of Local Leadership' },
+      { time: '43:05', label: 'Customization vs. Configuration in Digital Tools' },
+      { time: '45:59', label: 'Managing Complexity in Healthcare Applications' },
+      { time: '48:55', label: 'The Role of Feedback in Product Development' },
+      { time: '51:34', label: 'Balancing Trust and Scale in Healthcare' },
+      { time: '54:29', label: 'Lessons from a leader' },
+      { time: '01:02:25', label: 'What Policymakers and Funders can do better' },
+      { time: '01:07:52', label: 'This is a team sport' },
+    ],
+    transistorUrl: 'https://share.transistor.fm/e/3811b00d',
+    audioUrl: 'https://media.transistor.fm/3811b00d/5d2695c3.mp3',
+  },
   {
     id: '1',
     slug: 'how-to-develop-ai-that-addresses-health-inequities',

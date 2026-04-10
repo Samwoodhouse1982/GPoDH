@@ -104,7 +104,6 @@ export default function Globe({ scrollProgress }: GlobeProps) {
   const lastPosRef = useRef<[number, number]>([0, 0])
   const startPosRef = useRef<[number, number]>([0, 0])
   const userOffsetRef = useRef<[number, number]>([0, 0]) // [lonOffset, latOffset]
-  const zoomRef = useRef(1)
   const lastRotationRef = useRef<[number, number]>([10, 20])
 
   useEffect(() => { scrollRef.current = scrollProgress }, [scrollProgress])
@@ -138,7 +137,7 @@ export default function Globe({ scrollProgress }: GlobeProps) {
     const y = clientY - rect.top
     const W = rect.width, H = rect.height
     const [lon, lat] = lastRotationRef.current
-    const radius = Math.min(W, H) * 0.38 * zoomRef.current
+    const radius = Math.min(W, H) * 0.38
     const projection = geoOrthographic()
       .scale(radius).translate([W / 2, H / 2]).rotate([-lon, -lat]).clipAngle(90)
     for (let i = 0; i < CITIES.length; i++) {
@@ -185,10 +184,6 @@ export default function Globe({ scrollProgress }: GlobeProps) {
     }
   }, [hitTestCity])
 
-  const handleWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
-    e.preventDefault()
-    zoomRef.current = Math.max(0.5, Math.min(2.5, zoomRef.current - e.deltaY * 0.001))
-  }, [])
 
   const draw = useCallback((timestamp: number) => {
     const canvas = canvasRef.current
@@ -200,8 +195,7 @@ export default function Globe({ scrollProgress }: GlobeProps) {
     const rect = canvas.getBoundingClientRect()
     const W = rect.width, H = rect.height
     const cx = W / 2, cy = H / 2
-    const radius = Math.min(W, H) * 0.38 * zoomRef.current
-
+    const radius = Math.min(W, H) * 0.38 
     ctx.clearRect(0, 0, W, H)
 
     const [baseLon, baseLat] = getRotation(progress)
@@ -342,9 +336,8 @@ export default function Globe({ scrollProgress }: GlobeProps) {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      onWheel={handleWheel}
       style={{ width: '100%', height: '100%', display: 'block', cursor: 'grab', touchAction: 'none' }}
-      aria-label="Interactive globe — drag to spin, scroll to zoom, click a city dot to explore episodes"
+      aria-label="Interactive globe: drag to spin, click a city dot to explore episodes"
       role="img"
     />
   )

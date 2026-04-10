@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -93,14 +92,12 @@ export default function Nav() {
           }}
         >
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
-            <Image
+          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, padding: '0.75rem 0.75rem 0.5rem', display: 'block' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/logo-gpodh.png"
-              alt="GPODH — Global Perspectives on Digital Health"
-              width={180}
-              height={60}
-              style={{ height: '44px', width: 'auto', display: 'block' }}
-              priority
+              alt="GPODH: Global Perspectives on Digital Health"
+              style={{ height: '68px', width: 'auto', display: 'block' }}
             />
           </Link>
 

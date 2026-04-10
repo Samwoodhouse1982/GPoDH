@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const video = videos.find((v) => v.slug === slug)
   if (!video) return {}
   return {
-    title: `${video.title} — GPODH`,
+    title: `${video.title} | GPODH`,
     description: video.description,
   }
 }

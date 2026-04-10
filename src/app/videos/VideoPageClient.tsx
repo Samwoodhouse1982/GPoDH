@@ -514,7 +514,7 @@ export default function VideoPageClient() {
               <input
                 ref={inputRef}
                 type="search"
-                placeholder="Search by meaning — try 'AI', 'usaid cuts', 'digital health Africa'"
+                placeholder="Search by meaning: try 'AI', 'usaid cuts', 'digital health Africa'"
                 value={query}
                 onChange={e => {
                   setQuery(e.target.value)

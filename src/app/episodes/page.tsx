@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import EpisodeFilter from '@/components/sections/EpisodeFilter'
 import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
+import HostModal from '@/components/ui/HostModal'
 import { episodes, ALL_THEMES, ALL_COUNTRIES } from '@/lib/episodes'
 
 export const metadata: Metadata = {
@@ -63,7 +64,7 @@ export default function EpisodesPage() {
               Every conversation.
             </h1>
             <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '38rem' }}>
-              Clinicians, founders, researchers, and policy makers working in digital health across the world's most underserved settings.
+              Stories from clinicians, founders, researchers, and policy makers doing real work in digital health across under-resourced settings. Health inequalities are everywhere, and the lessons travel.
             </p>
           </div>
 
@@ -74,8 +75,15 @@ export default function EpisodesPage() {
         </div>
       </section>
 
+      {/* Meet your host */}
+      <section style={{ padding: '2rem var(--gutter) 0' }}>
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <HostModal />
+        </div>
+      </section>
+
       {/* Search + grid */}
-      <section style={{ padding: '4rem var(--gutter)' }}>
+      <section style={{ padding: '3rem var(--gutter) 4rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
             <SandiQBridge variant="inline" />
@@ -87,7 +95,7 @@ export default function EpisodesPage() {
             marginBottom: '1.75rem',
             lineHeight: 1.6,
           }}>
-            Hey — we&rsquo;ve got a huge back catalogue. Use the search below to find topics, countries, or guests that are relevant to you.
+We&rsquo;ve got a huge back catalogue. Use the search below to find topics, countries, or guests that are relevant to you.
           </p>
 
           <EpisodeFilter
