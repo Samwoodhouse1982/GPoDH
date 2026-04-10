@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import EpisodeFilter from '@/components/sections/EpisodeFilter'
+import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
 import { episodes, ALL_THEMES, ALL_COUNTRIES } from '@/lib/episodes'
 
 export const metadata: Metadata = {
@@ -9,43 +10,69 @@ export const metadata: Metadata = {
 }
 
 export default function EpisodesPage() {
+  const speakers = episodes
+    .filter((e) => !!e.artworkUrl)
+    .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
+    .map((e) => ({ slug: e.slug, guest: e.guest, artworkUrl: e.artworkUrl! }))
+
   return (
     <>
       {/* Hero */}
       <section
         style={{
-          padding: '8rem var(--gutter) 4rem',
+          paddingTop: '8rem',
+          paddingBottom: '0',
+          overflow: 'hidden',
           borderBottom: '1px solid var(--border)',
         }}
       >
-        <div style={{ maxWidth: 'var(--content-width)', margin: '0 auto' }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: '0.6875rem',
-              letterSpacing: '0.12em',
-              color: 'var(--accent-coral)',
-              textTransform: 'uppercase',
-              marginBottom: '1.25rem',
-            }}
-          >
-            ALL EPISODES
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-cormorant, var(--font-display))',
-              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              lineHeight: 1.1,
-              marginBottom: '1.25rem',
-            }}
-          >
-            Every conversation.
-          </h1>
-          <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            Clinicians, founders, researchers, and policy makers working in digital health across the world's most underserved settings.
-          </p>
+        <div
+          style={{
+            maxWidth: 'var(--max-width)',
+            margin: '0 auto',
+            padding: '0 var(--gutter) 4rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3rem',
+          }}
+        >
+          {/* Text */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.12em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '1.25rem',
+              }}
+            >
+              ALL EPISODES
+            </p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-cormorant, var(--font-display))',
+                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                lineHeight: 1.1,
+                marginBottom: '1.25rem',
+              }}
+            >
+              Every conversation.
+            </h1>
+            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '38rem' }}>
+              Clinicians, founders, researchers, and policy makers working in digital health across the world's most underserved settings.
+            </p>
+          </div>
+
+          {/* Scrolling speaker column */}
+          <div style={{ flexShrink: 0, display: 'flex', gap: '12px' }}>
+            <SpeakerMarquee speakers={speakers} />
+            <SpeakerMarquee speakers={speakers} reverse />
+            <SpeakerMarquee speakers={speakers} />
+          </div>
         </div>
       </section>
 
