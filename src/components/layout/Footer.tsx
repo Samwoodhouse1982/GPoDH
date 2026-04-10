@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import { SITE, PLATFORMS, SOCIAL } from '@/lib/constants'
@@ -34,17 +35,13 @@ export default function Footer() {
         >
           {/* Left: wordmark + tagline */}
           <div>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.875rem',
-                letterSpacing: '0.12em',
-                color: 'var(--accent-coral)',
-                marginBottom: '0.5rem',
-              }}
-            >
-              GPODH
-            </p>
+            <Image
+              src="/logo-gpodh-icon.png"
+              alt="GPODH"
+              width={56}
+              height={56}
+              style={{ height: '52px', width: 'auto', display: 'block', marginBottom: '0.75rem' }}
+            />
             <p
               style={{
                 fontSize: '0.875rem',

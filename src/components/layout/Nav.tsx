@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -93,31 +94,14 @@ export default function Nav() {
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
-            <div>
-              <span
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.875rem',
-                  letterSpacing: '0.12em',
-                  color: 'var(--accent-coral)',
-                  display: 'block',
-                  lineHeight: 1.2,
-                }}
-              >
-                GPODH
-              </span>
-              <span
-                style={{
-                  fontSize: '0.6875rem',
-                  color: 'var(--text-secondary)',
-                  display: 'block',
-                  lineHeight: 1.3,
-                  maxWidth: '16rem',
-                }}
-              >
-                Global Perspectives on Digital Health
-              </span>
-            </div>
+            <Image
+              src="/logo-gpodh.png"
+              alt="GPODH — Global Perspectives on Digital Health"
+              width={180}
+              height={60}
+              style={{ height: '44px', width: 'auto', display: 'block' }}
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
