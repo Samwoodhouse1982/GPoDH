@@ -135,7 +135,9 @@ const stats = [
 ]
 
 export default function HomePage() {
-  const latestEpisodes = episodes.slice(0, 6)
+  const latestEpisodes = [...episodes]
+    .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
+    .slice(0, 6)
 
   return (
     <>
