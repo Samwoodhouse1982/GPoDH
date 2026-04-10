@@ -11,73 +11,103 @@ interface Speaker {
 
 interface Props {
   speakers: Speaker[]
-  reverse?: boolean
 }
 
-export default function SpeakerMarquee({ speakers, reverse = false }: Props) {
+// Deterministic pseudo-random from a seed
+function seededRand(seed: number) {
+  let s = seed
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff
+    return (s >>> 0) / 0xffffffff
+  }
+}
+
+export default function SpeakerMarquee({ speakers }: Props) {
+  // With ~24 speakers at ~80px avg each, total track = ~1920px.
+  // Viewport is 260px — duplicates are ~1920px apart, never both visible.
   const doubled = [...speakers, ...speakers]
+
+  // Assign each item a deterministic size, horizontal offset, and animation params
+  const items = doubled.map((s, i) => {
+    const rand = seededRand(i * 7919 + 31337)
+    const size   = Math.round(44 + rand() * 44)        // 44–88px
+    const left   = Math.round(rand() * 32)              // 0–32px horizontal scatter
+    const gap    = Math.round(8 + rand() * 20)          // 8–28px gap above
+    const floatX = (rand() - 0.5) * 14                  // ±7px drift amplitude
+    const floatDur = 3 + rand() * 4                      // 3–7s float cycle
+    const floatDelay = -(rand() * floatDur)              // staggered start
+    return { ...s, size, left, gap, floatX, floatDur, floatDelay }
+  })
 
   return (
     <div
       style={{
-        height: '220px',
+        width: '110px',
+        height: '260px',
         overflow: 'hidden',
-        maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+        maskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
+        flexShrink: 0,
       }}
     >
       <style>{`
-        @keyframes speaker-scroll-up {
+        @keyframes smq-scroll {
           from { transform: translateY(0); }
           to   { transform: translateY(-50%); }
         }
-        @keyframes speaker-scroll-down {
-          from { transform: translateY(-50%); }
-          to   { transform: translateY(0); }
-        }
-        .speaker-scroll-track {
+        .smq-track {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          width: max-content;
+          animation: smq-scroll 65s linear infinite;
         }
-        .speaker-scroll-track:hover {
-          animation-play-state: paused;
+        .smq-track:hover { animation-play-state: paused; }
+        @keyframes smq-float {
+          0%, 100% { transform: translateX(var(--fx)); }
+          50%       { transform: translateX(calc(var(--fx) * -1)); }
         }
-        .speaker-avatar-btn {
-          transition: transform 0.2s ease;
+        .smq-img {
+          border-radius: 50%;
+          object-fit: cover;
           display: block;
+          border: 2px solid var(--border);
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          animation: smq-float var(--fd) ease-in-out var(--fdelay) infinite;
         }
-        .speaker-avatar-btn:hover {
-          transform: scale(1.1);
+        .smq-img:hover {
+          transform: scale(1.14) !important;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+          animation-play-state: paused;
         }
       `}</style>
 
-      <div
-        className="speaker-scroll-track"
-        style={{ animation: `${reverse ? 'speaker-scroll-down' : 'speaker-scroll-up'} 20s linear infinite` }}
-      >
-        {doubled.map((s, i) => (
+      <div className="smq-track">
+        {items.map((item, i) => (
           <Link
-            key={`${s.slug}-${i}`}
-            href={`/episodes/${s.slug}`}
-            title={s.guest}
-            className="speaker-avatar-btn"
-            style={{ textDecoration: 'none', flexShrink: 0 }}
+            key={`${item.slug}-${i}`}
+            href={`/episodes/${item.slug}`}
+            title={item.guest}
+            style={{
+              textDecoration: 'none',
+              flexShrink: 0,
+              marginTop: `${item.gap}px`,
+              marginLeft: `${item.left}px`,
+              display: 'block',
+              width: 'fit-content',
+            }}
           >
             <Image
-              src={s.artworkUrl}
-              alt={s.guest}
-              width={64}
-              height={64}
+              src={item.artworkUrl}
+              alt={item.guest}
+              width={item.size}
+              height={item.size}
+              className="smq-img"
               style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                display: 'block',
-                border: '2px solid var(--border)',
-              }}
+                width: `${item.size}px`,
+                height: `${item.size}px`,
+                '--fx': `${item.floatX}px`,
+                '--fd': `${item.floatDur.toFixed(1)}s`,
+                '--fdelay': `${item.floatDelay.toFixed(1)}s`,
+              } as React.CSSProperties}
             />
           </Link>
         ))}

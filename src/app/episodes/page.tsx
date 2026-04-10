@@ -67,10 +67,8 @@ export default function EpisodesPage() {
             </p>
           </div>
 
-          {/* Scrolling speaker column */}
-          <div style={{ flexShrink: 0, display: 'flex', gap: '12px' }}>
-            <SpeakerMarquee speakers={speakers} />
-            <SpeakerMarquee speakers={speakers} reverse />
+          {/* Scrolling speaker columns */}
+          <div style={{ flexShrink: 0 }}>
             <SpeakerMarquee speakers={speakers} />
           </div>
         </div>
