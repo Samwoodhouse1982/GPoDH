@@ -10,7 +10,8 @@ export interface Video {
   duration?: string
   category?: VideoCategory
   tags?: string[]
-  thumbnailUrl?: string   // override auto-generated YouTube thumbnail if needed
+  thumbnailUrl?: string            // override auto-generated YouTube thumbnail if needed
+  thumbnailPosition?: string       // CSS objectPosition for thumbnailUrl, e.g. 'center 20%'
 }
 
 // ─── Video library ────────────────────────────────────────────────────────────
@@ -305,6 +306,8 @@ export const videos: Video[] = [
     title: 'Trailer: Global Perspectives on Digital Health Podcast',
     description: 'An introduction to the Global Perspectives on Digital Health podcast,who it is for, what it covers, and why these conversations matter.',
     youtubeVideoId: 'ABmm7iO9sDc',
+    thumbnailUrl: '/shubs.webp',
+    thumbnailPosition: 'center 20%',
     date: 'Apr 2025',
     category: 'clip',
     tags: ['Trailer', 'GPODH'],

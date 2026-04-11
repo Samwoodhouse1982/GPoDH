@@ -12,7 +12,7 @@ const PALETTE = [
 export default function VideoCard({ video, index = 0 }: { video: Video; index?: number }) {
   const palette = PALETTE[index % PALETTE.length]
   const thumb = video.thumbnailUrl
-    ?? `https://img.youtube.com/vi/${video.youtubeVideoId}/maxresdefault.jpg`
+    ?? `https://img.youtube.com/vi/${video.youtubeVideoId}/hqdefault.jpg`
 
   return (
     <Link
@@ -36,7 +36,7 @@ export default function VideoCard({ video, index = 0 }: { video: Video; index?: 
         <img
           src={thumb}
           alt={video.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: video.thumbnailPosition ?? 'center', display: 'block' }}
         />
         {/* Play overlay */}
         <div

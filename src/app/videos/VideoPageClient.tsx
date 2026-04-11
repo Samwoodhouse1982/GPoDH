@@ -233,6 +233,26 @@ export default function VideoPageClient() {
         .watch-btn:hover { background: var(--accent-coral-dim) !important; }
         .featured-play-ring:hover { transform: scale(1.1); }
         .surprise-btn:hover { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.5) !important; }
+        .surprise-btn:hover .dice-cube { animation: dice-roll 1.1s ease-in-out infinite; }
+        .dice-wrap { display: inline-block; width: 18px; height: 18px; perspective: 80px; flex-shrink: 0; vertical-align: middle; }
+        .dice-cube { display: block; width: 18px; height: 18px; position: relative; transform-style: preserve-3d; transform: rotateX(-20deg) rotateY(25deg); transition: transform 0.3s ease; }
+        .face { display: block; position: absolute; width: 18px; height: 18px; background: #fff; border: 1.5px solid rgba(0,0,0,0.18); border-radius: 3px; box-sizing: border-box; }
+        .dot { display: block; position: absolute; width: 3.5px; height: 3.5px; border-radius: 50%; background: #D4614A; transform: translate(-50%, -50%); }
+        .df1 { transform: translateZ(9px); }
+        .df2 { transform: rotateY(180deg) translateZ(9px); }
+        .df3 { transform: rotateY(90deg) translateZ(9px); }
+        .df4 { transform: rotateY(-90deg) translateZ(9px); }
+        .df5 { transform: rotateX(90deg) translateZ(9px); }
+        .df6 { transform: rotateX(-90deg) translateZ(9px); }
+        @keyframes dice-roll {
+          0%   { transform: rotateX(-20deg)  rotateY(25deg); }
+          16%  { transform: rotateX(-110deg) rotateY(80deg); }
+          33%  { transform: rotateX(-200deg) rotateY(170deg); }
+          50%  { transform: rotateX(-290deg) rotateY(260deg); }
+          66%  { transform: rotateX(-380deg) rotateY(350deg); }
+          83%  { transform: rotateX(-430deg) rotateY(430deg); }
+          100% { transform: rotateX(-20deg)  rotateY(385deg); }
+        }
         @keyframes surprise-in {
           from { opacity: 0; transform: scale(0.92) translateY(12px); }
           to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -703,12 +723,34 @@ export default function VideoPageClient() {
                 whiteSpace: 'nowrap',
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 3 21 3 21 8"/>
-                <line x1="4" y1="20" x2="21" y2="3"/>
-                <polyline points="21 16 21 21 16 21"/>
-                <line x1="15" y1="15" x2="21" y2="21"/>
-              </svg>
+              <span className="dice-wrap">
+                <span className="dice-cube">
+                  <span className="face df1"><span className="dot" style={{ left: '50%', top: '50%' }} /></span>
+                  <span className="face df2">
+                    <span className="dot" style={{ left: '28%', top: '25%' }} /><span className="dot" style={{ left: '72%', top: '25%' }} />
+                    <span className="dot" style={{ left: '28%', top: '50%' }} /><span className="dot" style={{ left: '72%', top: '50%' }} />
+                    <span className="dot" style={{ left: '28%', top: '75%' }} /><span className="dot" style={{ left: '72%', top: '75%' }} />
+                  </span>
+                  <span className="face df3">
+                    <span className="dot" style={{ left: '28%', top: '25%' }} />
+                    <span className="dot" style={{ left: '50%', top: '50%' }} />
+                    <span className="dot" style={{ left: '72%', top: '75%' }} />
+                  </span>
+                  <span className="face df4">
+                    <span className="dot" style={{ left: '28%', top: '28%' }} /><span className="dot" style={{ left: '72%', top: '28%' }} />
+                    <span className="dot" style={{ left: '28%', top: '72%' }} /><span className="dot" style={{ left: '72%', top: '72%' }} />
+                  </span>
+                  <span className="face df5">
+                    <span className="dot" style={{ left: '28%', top: '25%' }} /><span className="dot" style={{ left: '72%', top: '25%' }} />
+                    <span className="dot" style={{ left: '50%', top: '50%' }} />
+                    <span className="dot" style={{ left: '28%', top: '75%' }} /><span className="dot" style={{ left: '72%', top: '75%' }} />
+                  </span>
+                  <span className="face df6">
+                    <span className="dot" style={{ left: '28%', top: '28%' }} />
+                    <span className="dot" style={{ left: '72%', top: '72%' }} />
+                  </span>
+                </span>
+              </span>
               Surprise me
             </button>
           </div>

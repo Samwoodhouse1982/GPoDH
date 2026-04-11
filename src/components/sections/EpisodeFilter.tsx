@@ -134,6 +134,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIdx, setHighlightedIdx] = useState(-1)
+  const [surpriseEpisode, setSurpriseEpisode] = useState<Episode | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -246,6 +247,14 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     return () => document.removeEventListener('mousedown', handle)
   }, [])
 
+  // ── Surprise me ──────────────────────────────────────────────────────────
+  const surprise = useCallback(() => {
+    const pool = filtered.length > 0 ? filtered : episodes
+    setSurpriseEpisode(pool[Math.floor(Math.random() * pool.length)])
+  }, [filtered, episodes])
+
+  const closeSurprise = useCallback(() => setSurpriseEpisode(null), [])
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!showSuggestions || suggestions.length === 0) return
@@ -258,6 +267,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       } else if (e.key === 'Escape') {
         setShowSuggestions(false)
         setHighlightedIdx(-1)
+        setSurpriseEpisode(null)
       } else if (e.key === 'Enter' && highlightedIdx >= 0) {
         e.preventDefault()
         const sug = suggestions[highlightedIdx]
@@ -288,8 +298,9 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       {/* ── Search + filters ───────────────────────────────────────────── */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2.5rem' }}>
 
-        {/* Smart search input */}
-        <div style={{ position: 'relative' }}>
+        {/* Smart search input + Surprise me */}
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div style={{ position: 'relative', flex: 1 }}>
           {/* Search icon */}
           <svg
             width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -369,6 +380,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
                 overflow: 'hidden',
               }}
             >
+
               {/* Semantic expansion notice */}
               {matchedConcepts.length > 0 && (
                 <div style={{
@@ -483,6 +495,75 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           )}
         </div>
 
+          {/* Surprise me */}
+          <button
+            onClick={surprise}
+            className="surprise-btn"
+            title="Pick a random episode"
+            style={{
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.125rem',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+              background: 'var(--bg-card)',
+              color: 'var(--text-secondary)',
+              fontSize: '0.875rem',
+              fontFamily: 'var(--font-dm-sans, sans-serif)',
+              cursor: 'pointer',
+              transition: 'background 0.15s ease, border-color 0.15s ease',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span className="dice-wrap">
+              <span className="dice-cube">
+                {/* Face 1 — front: 1 dot */}
+                <span className="face df1">
+                  <span className="dot" style={{ left: '50%', top: '50%' }} />
+                </span>
+                {/* Face 6 — back: 6 dots */}
+                <span className="face df2">
+                  <span className="dot" style={{ left: '28%', top: '25%' }} />
+                  <span className="dot" style={{ left: '72%', top: '25%' }} />
+                  <span className="dot" style={{ left: '28%', top: '50%' }} />
+                  <span className="dot" style={{ left: '72%', top: '50%' }} />
+                  <span className="dot" style={{ left: '28%', top: '75%' }} />
+                  <span className="dot" style={{ left: '72%', top: '75%' }} />
+                </span>
+                {/* Face 3 — right: 3 dots */}
+                <span className="face df3">
+                  <span className="dot" style={{ left: '28%', top: '25%' }} />
+                  <span className="dot" style={{ left: '50%', top: '50%' }} />
+                  <span className="dot" style={{ left: '72%', top: '75%' }} />
+                </span>
+                {/* Face 4 — left: 4 dots */}
+                <span className="face df4">
+                  <span className="dot" style={{ left: '28%', top: '28%' }} />
+                  <span className="dot" style={{ left: '72%', top: '28%' }} />
+                  <span className="dot" style={{ left: '28%', top: '72%' }} />
+                  <span className="dot" style={{ left: '72%', top: '72%' }} />
+                </span>
+                {/* Face 5 — top: 5 dots */}
+                <span className="face df5">
+                  <span className="dot" style={{ left: '28%', top: '25%' }} />
+                  <span className="dot" style={{ left: '72%', top: '25%' }} />
+                  <span className="dot" style={{ left: '50%', top: '50%' }} />
+                  <span className="dot" style={{ left: '28%', top: '75%' }} />
+                  <span className="dot" style={{ left: '72%', top: '75%' }} />
+                </span>
+                {/* Face 2 — bottom: 2 dots */}
+                <span className="face df6">
+                  <span className="dot" style={{ left: '28%', top: '28%' }} />
+                  <span className="dot" style={{ left: '72%', top: '72%' }} />
+                </span>
+              </span>
+            </span>
+            Surprise me
+          </button>
+        </div>
+
         {/* Theme pills — top 10 by frequency */}
         <div>
           <p style={{ fontFamily: 'var(--font-dm-mono, monospace)', fontSize: '0.625rem', letterSpacing: '0.12em', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
@@ -564,6 +645,169 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           )}
         </div>
       </div>
+
+      {/* ── Surprise modal ───────────────────────────────────────────────── */}
+      <style>{`
+        .surprise-btn:hover { border-color: var(--accent-coral) !important; color: var(--accent-coral) !important; }
+
+        /* ── 3D Dice ── */
+        .dice-wrap {
+          display: inline-block;
+          width: 18px; height: 18px;
+          perspective: 80px;
+          flex-shrink: 0;
+          vertical-align: middle;
+        }
+        .dice-cube {
+          display: block;
+          width: 18px; height: 18px;
+          position: relative;
+          transform-style: preserve-3d;
+          transform: rotateX(-20deg) rotateY(25deg);
+          transition: transform 0.3s ease;
+        }
+        .surprise-btn:hover .dice-cube {
+          animation: dice-roll 1.1s ease-in-out infinite;
+        }
+        .face {
+          display: block;
+          position: absolute;
+          width: 18px; height: 18px;
+          background: #fff;
+          border: 1.5px solid rgba(0,0,0,0.18);
+          border-radius: 3px;
+          box-sizing: border-box;
+        }
+        .dot {
+          display: block;
+          position: absolute;
+          width: 3.5px; height: 3.5px;
+          border-radius: 50%;
+          background: #D4614A;
+          transform: translate(-50%, -50%);
+        }
+        .df1 { transform: translateZ(9px); }
+        .df2 { transform: rotateY(180deg) translateZ(9px); }
+        .df3 { transform: rotateY(90deg)  translateZ(9px); }
+        .df4 { transform: rotateY(-90deg) translateZ(9px); }
+        .df5 { transform: rotateX(90deg)  translateZ(9px); }
+        .df6 { transform: rotateX(-90deg) translateZ(9px); }
+
+        @keyframes dice-roll {
+          0%   { transform: rotateX(-20deg)  rotateY(25deg); }
+          16%  { transform: rotateX(-110deg) rotateY(80deg); }
+          33%  { transform: rotateX(-200deg) rotateY(170deg); }
+          50%  { transform: rotateX(-290deg) rotateY(260deg); }
+          66%  { transform: rotateX(-380deg) rotateY(350deg); }
+          83%  { transform: rotateX(-430deg) rotateY(430deg); }
+          100% { transform: rotateX(-20deg)  rotateY(385deg); }
+        }
+        @keyframes surprise-in {
+          from { opacity: 0; transform: scale(0.93) translateY(14px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      `}</style>
+
+      {surpriseEpisode && (
+        <div
+          onClick={closeSurprise}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0,0,0,0.65)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: '100%',
+              maxWidth: '640px',
+              background: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              overflow: 'hidden',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
+              animation: 'surprise-in 0.28s ease',
+              position: 'relative',
+            }}
+          >
+            {/* Transistor embed or artwork header */}
+            {surpriseEpisode.transistorUrl ? (
+              <div style={{ padding: '1.5rem 1.5rem 0' }}>
+                <iframe
+                  width="100%"
+                  height="180"
+                  frameBorder="0"
+                  scrolling="no"
+                  src={surpriseEpisode.transistorUrl}
+                  title={surpriseEpisode.title}
+                  style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
+                />
+              </div>
+            ) : surpriseEpisode.artworkUrl ? (
+              <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={surpriseEpisode.artworkUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)' }} />
+              </div>
+            ) : null}
+
+            {/* Info */}
+            <div style={{ padding: '1.25rem 1.5rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              <p style={{ fontFamily: 'var(--font-dm-mono, monospace)', fontSize: '0.5625rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase' }}>
+                Ep {surpriseEpisode.episodeNumber} · {surpriseEpisode.date}
+              </p>
+              <h3 style={{ fontFamily: 'var(--font-cormorant, serif)', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, margin: 0 }}>
+                {surpriseEpisode.title}
+              </h3>
+              <p style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
+                {surpriseEpisode.guest} · {surpriseEpisode.guestRole}
+              </p>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', lineHeight: 1.65, margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {surpriseEpisode.description}
+              </p>
+
+              {/* Actions */}
+              <div style={{ display: 'flex', gap: '0.625rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                <Link
+                  href={`/episodes/${surpriseEpisode.slug}`}
+                  onClick={closeSurprise}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.55rem 1.1rem', borderRadius: 'var(--radius-md)', background: 'var(--accent-coral)', color: '#fff', fontSize: '0.8125rem', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}
+                >
+                  Full episode &#8594;
+                </Link>
+                <button
+                  onClick={surprise}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.55rem 1.1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-secondary)', fontSize: '0.8125rem', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: 'var(--font-dm-sans, sans-serif)' }}
+                >
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="4"/>
+                    <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+                    <circle cx="15.5" cy="8.5" r="1.5" fill="currentColor"/>
+                    <circle cx="8.5" cy="15.5" r="1.5" fill="currentColor"/>
+                    <circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/>
+                  </svg>
+                  Try another
+                </button>
+              </div>
+            </div>
+
+            {/* Close */}
+            <button
+              onClick={closeSurprise}
+              aria-label="Close"
+              style={{ position: 'absolute', top: '1rem', right: '1rem', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ── Episode grid ────────────────────────────────────────────────── */}
       {filtered.length > 0 ? (
