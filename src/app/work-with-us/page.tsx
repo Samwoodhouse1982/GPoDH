@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
@@ -303,6 +304,36 @@ export default function WorkWithUsPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* ——— Photo strip ——— */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0',
+          height: 'clamp(260px, 32vw, 420px)',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          <Image
+            src="/shubs-presenting.jpg"
+            alt="Shubs presenting to an audience"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
+            sizes="50vw"
+          />
+        </div>
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          <Image
+            src="/shubs-hosting.jpg"
+            alt="Shubs hosting a panel at IBIS Capital"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center 15%' }}
+            sizes="50vw"
+          />
+        </div>
+      </div>
 
       {/* Coral divider with CONSULTING label */}
       <div

@@ -2,16 +2,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import VideoCard from '@/components/ui/VideoCard'
 import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
-import PlatformBadge from '@/components/ui/PlatformBadge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
 import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
 import OrgMarquee from '@/components/ui/OrgMarquee'
 import HostIntroStrip from '@/components/ui/HostIntroStrip'
+import TrailerModal from '@/components/ui/TrailerModal'
 import { episodes } from '@/lib/episodes'
 import { videos } from '@/lib/videos'
-import { PLATFORMS } from '@/lib/constants'
 
 const testimonials = [
   "It is so valuable to hear insights from people who have already gone through similar challenges.",
@@ -98,6 +97,7 @@ export default function HomePage() {
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
     .slice(0, 6)
 
+
   return (
     <>
       {/* ——— Hero ——— */}
@@ -168,34 +168,38 @@ export default function HomePage() {
             </p>
             <div
               className="animate-fade-up"
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '0.75rem',
-                marginBottom: '1.75rem',
-                animationDelay: '350ms',
-              }}
+              style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', animationDelay: '350ms' }}
             >
-              <PlatformBadge platform="apple" href={PLATFORMS.apple} />
-              <PlatformBadge platform="spotify" href={PLATFORMS.spotify} />
-              <PlatformBadge platform="youtube" href={PLATFORMS.youtube} />
+              <Link
+                href="/episodes"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.875rem 1.75rem',
+                  background: 'var(--accent-coral)',
+                  color: '#fff',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: '0.9375rem',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                }}
+              >
+                Listen to episodes &#8594;
+              </Link>
+              <a
+                href="#about-section"
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--text-muted)',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  transition: 'color var(--transition-fast)',
+                }}
+              >
+                What is this podcast? &#8595;
+              </a>
             </div>
-            <a
-              href="#about-section"
-              className="animate-fade-up"
-              style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.375rem',
-                animationDelay: '350ms',
-                transition: 'color var(--transition-fast)',
-              }}
-            >
-              What is this podcast? &#8595;
-            </a>
           </div>
 
           {/* Right: animated hero globe */}
@@ -220,44 +224,72 @@ export default function HomePage() {
         style={{ padding: '5rem var(--gutter)', borderTop: '1px solid var(--border)' }}
       >
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-          <div style={{ maxWidth: 'var(--content-width)', marginBottom: '3rem' }}>
-            <ScrollReveal>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
+              gap: '3.5rem',
+              alignItems: 'center',
+              marginBottom: '3rem',
+            }}
+          >
+            {/* Text */}
+            <div>
+              <ScrollReveal>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.12em',
+                    color: 'var(--accent-coral)',
+                    textTransform: 'uppercase',
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  The Show
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={80}>
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-cormorant, var(--font-display))',
+                    fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                    fontWeight: 700,
+                    color: 'var(--text-primary)',
+                    lineHeight: 1.2,
+                    marginBottom: '2rem',
+                  }}
+                >
+                  The perspectives of those innovating in underserved settings are sorely missing from digital health.
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal delay={130}>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
+                  The dominant narrative in digital health flows outward from the Global North. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={160}>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                  Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?
+                </p>
+              </ScrollReveal>
+            </div>
+
+            {/* Trailer video */}
+            <ScrollReveal delay={200}>
               <p
                 style={{
                   fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.12em',
-                  color: 'var(--accent-coral)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.14em',
+                  color: 'var(--text-muted)',
                   textTransform: 'uppercase',
-                  marginBottom: '1.25rem',
+                  marginBottom: '0.75rem',
                 }}
               >
-                The Show
+                Watch the trailer
               </p>
-            </ScrollReveal>
-            <ScrollReveal delay={80}>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: 'clamp(2rem, 4vw, 3.25rem)',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  lineHeight: 1.2,
-                  marginBottom: '2rem',
-                }}
-              >
-                The perspectives of those innovating in underserved settings are sorely missing from digital health.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={130}>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                The dominant narrative in digital health flows outward from the Global North. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={160}>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?
-              </p>
+              <TrailerModal />
             </ScrollReveal>
           </div>
 

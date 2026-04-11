@@ -164,10 +164,10 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
         {/* Hero photo */}
         <div style={{ position: 'relative', height: '260px', overflow: 'hidden', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0' }}>
           <Image
-            src="/shubs-interview.jpg"
+            src="/shubs-podcasting.jpg"
             alt="Shubs interviewing a guest at HLTH Conference"
             fill
-            style={{ objectFit: 'cover', objectPosition: 'center 38%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
             sizes="860px"
           />
           <div style={{
@@ -204,32 +204,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
         </button>
 
         <div style={{ padding: '1.5rem 2rem 2rem' }}>
-          {/* Trailer embed */}
-          <div style={{ marginBottom: '2rem' }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.6rem',
-                letterSpacing: '0.1em',
-                color: 'var(--accent-coral)',
-                textTransform: 'uppercase',
-                marginBottom: '0.625rem',
-              }}
-            >
-              Listen to the trailer
-            </p>
-            <iframe
-              width="100%"
-              height="180"
-              frameBorder="0"
-              scrolling="no"
-              src="https://share.transistor.fm/e/56cf0e03"
-              title="GPODH Trailer"
-              style={{ borderRadius: 'var(--radius-md)', display: 'block' }}
-            />
-          </div>
-
-          {/* Video slot — shown only when src is provided */}
+            {/* Video slot — shown only when src is provided */}
           {videoSrc && (
             <div
               style={{
