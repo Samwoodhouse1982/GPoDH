@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import SubscribeModal from '@/components/ui/SubscribeModal'
 
 const navLinks = [
@@ -17,6 +18,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [subscribeOpen, setSubscribeOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,8 +78,8 @@ export default function Nav() {
           right: 0,
           zIndex: 50,
           transition: 'background var(--transition-base), backdrop-filter var(--transition-base)',
-          background: scrolled ? 'rgba(245, 240, 232, 0.97)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          background: scrolled ? 'rgba(245, 240, 232, 0.97)' : 'rgba(245, 240, 232, 0.85)',
+          backdropFilter: 'blur(12px)',
           borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         }}
       >
@@ -112,21 +114,26 @@ export default function Nav() {
               gap: '2rem',
             }}
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                style={{
-                  fontSize: '0.875rem',
-                  color: 'var(--text-secondary)',
-                  transition: 'color var(--transition-fast)',
-                  textDecoration: 'none',
-                }}
-                className="nav-link"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    fontSize: '0.875rem',
+                    color: isActive ? 'var(--accent-coral)' : 'var(--text-secondary)',
+                    transition: 'color var(--transition-fast)',
+                    textDecoration: 'none',
+                    borderBottom: isActive ? '2px solid var(--accent-coral)' : '2px solid transparent',
+                    paddingBottom: '2px',
+                  }}
+                  className="nav-link"
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </nav>
 
           {/* Subscribe Button (desktop) */}
@@ -194,22 +201,25 @@ export default function Nav() {
           }}
         >
           <nav style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: '2.5rem',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  textDecoration: 'none',
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  style={{
+                    fontFamily: 'var(--font-cormorant, var(--font-display))',
+                    fontSize: '2.5rem',
+                    fontWeight: 600,
+                    color: isActive ? 'var(--accent-coral)' : 'var(--text-primary)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </nav>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
             <a href="https://podcasts.apple.com/us/podcast/id1744026517?mt=2&ls=1" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Apple Podcasts</a>

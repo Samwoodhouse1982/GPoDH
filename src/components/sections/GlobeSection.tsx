@@ -84,7 +84,7 @@ export default function GlobeSection() {
           top: 0,
           height: '100vh',
           overflow: 'hidden',
-          background: 'var(--bg-primary)',
+          background: 'radial-gradient(ellipse at 15% 50%, rgba(212,97,74,0.07) 0%, transparent 50%), radial-gradient(ellipse at 85% 50%, rgba(62,201,167,0.07) 0%, transparent 50%), var(--bg-primary)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',

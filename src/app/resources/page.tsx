@@ -280,7 +280,7 @@ export default function ResourcesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              Useful reading. Essential organisations. The best of the rest.
+              Useful reading. Essential organisations.
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={150}>

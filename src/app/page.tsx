@@ -48,6 +48,7 @@ const listenerPersonas = [
       </svg>
     ),
     accent: 'var(--accent-coral)',
+    borderColor: 'rgba(212,97,74,0.35)',
     motionClass: 'icon-heartbeat',
   },
   {
@@ -60,6 +61,7 @@ const listenerPersonas = [
       </svg>
     ),
     accent: 'var(--accent-amber)',
+    borderColor: 'rgba(224,156,42,0.35)',
     motionClass: 'icon-glow',
   },
   {
@@ -73,6 +75,7 @@ const listenerPersonas = [
       </svg>
     ),
     accent: '#3EC9A7',
+    borderColor: 'rgba(62,201,167,0.35)',
     motionClass: 'icon-spin',
   },
   {
@@ -86,6 +89,7 @@ const listenerPersonas = [
       </svg>
     ),
     accent: '#5BB8D4',
+    borderColor: 'rgba(91,184,212,0.35)',
     motionClass: 'icon-float',
   },
 ]
@@ -216,10 +220,16 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ——— Gradient divider ——— */}
+      <div style={{ height: '3px', background: 'linear-gradient(to right, var(--accent-coral), #3EC9A7, var(--accent-coral))' }} />
+
       {/* ——— About the Show ——— */}
       <section
         id="about-section"
-        style={{ padding: '5rem var(--gutter)', borderTop: '1px solid var(--border)' }}
+        style={{
+          padding: '5rem var(--gutter)',
+          background: 'radial-gradient(ellipse at 0% 80%, rgba(212,97,74,0.06) 0%, transparent 55%), var(--bg-primary)',
+        }}
       >
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div
@@ -517,7 +527,7 @@ export default function HomePage() {
                     textAlign: 'center',
                     padding: '2.25rem 1.5rem',
                     background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: `1px solid ${persona.borderColor}`,
                     borderRadius: 'var(--radius-lg)',
                     height: '100%',
                   }}
@@ -634,7 +644,7 @@ export default function HomePage() {
       </div>
 
       {/* ——— Latest Episodes ——— */}
-      <section style={{ padding: '5rem var(--gutter)' }}>
+      <section style={{ padding: '5rem var(--gutter)', background: 'radial-gradient(ellipse at 100% 0%, rgba(62,201,167,0.06) 0%, transparent 55%), var(--bg-primary)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div
             style={{

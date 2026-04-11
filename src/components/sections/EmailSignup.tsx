@@ -21,10 +21,8 @@ export default function EmailSignup() {
     <section
       id="subscribe"
       style={{
-        background: 'var(--bg-secondary)',
+        background: 'linear-gradient(135deg, #C4522A 0%, #D4614A 40%, #C9933A 100%)',
         padding: '5rem var(--gutter)',
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
       }}
     >
       <div
@@ -39,7 +37,7 @@ export default function EmailSignup() {
             fontFamily: 'var(--font-dm-mono, var(--font-mono))',
             fontSize: '0.6875rem',
             letterSpacing: '0.12em',
-            color: 'var(--accent-coral)',
+            color: 'rgba(255,255,255,0.75)',
             textTransform: 'uppercase',
             marginBottom: '1rem',
           }}
@@ -51,7 +49,7 @@ export default function EmailSignup() {
             fontFamily: 'var(--font-cormorant, var(--font-display))',
             fontSize: 'clamp(2rem, 4vw, 3rem)',
             fontWeight: 600,
-            color: 'var(--text-primary)',
+            color: '#ffffff',
             lineHeight: 1.2,
             marginBottom: '1.5rem',
           }}
@@ -128,7 +126,7 @@ export default function EmailSignup() {
         )}
 
         {!submitted && (
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
             No spam. Unsubscribe at any time.
           </p>
         )}
