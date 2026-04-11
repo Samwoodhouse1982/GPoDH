@@ -181,10 +181,13 @@ export default function SpeakerMarquee({ speakers }: Props) {
         const NICK: Record<string, string> = { Alexandre: 'Alex' }
         const firstName = s.guest.replace(/^(Dr\.?|Prof\.?)\s*/i, '').split(' ')[0]
         const shortName = NICK[firstName] ?? firstName
+        // Per-guest object-position overrides for tall/unusual crops
+        const OBJ_POS: Record<string, string> = { 'Andrew Muhire': 'top center' }
+        const objectPosition = OBJ_POS[s.guest] ?? 'center center'
 
         return (
           <div
-            key={s.slug}
+            key={`${s.slug}-${i}`}
             className="smq-wrapper"
             style={{
               width:  `${it.size}px`,
@@ -206,6 +209,7 @@ export default function SpeakerMarquee({ speakers }: Props) {
                 height={it.size * 3}
                 className="smq-img"
                 sizes={`${it.size}px`}
+                style={{ objectPosition }}
               />
               <div className="smq-overlay">
                 <span>{shortName}</span>

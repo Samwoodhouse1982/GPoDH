@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
-import SandiQBridge from '@/components/ui/SandiQBridge'
 import EpisodeFilter from '@/components/sections/EpisodeFilter'
 import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
-import HostModal from '@/components/ui/HostModal'
+import OrgMarquee from '@/components/ui/OrgMarquee'
 import { episodes, ALL_THEMES, ALL_COUNTRIES } from '@/lib/episodes'
 
 export const metadata: Metadata = {
@@ -11,6 +10,8 @@ export const metadata: Metadata = {
 }
 
 export default function EpisodesPage() {
+  const episodeCount = episodes.length
+
   const speakers = episodes
     .filter((e) => !!e.artworkUrl)
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
@@ -55,25 +56,65 @@ export default function EpisodesPage() {
                 letterSpacing: '0.12em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
               }}
             >
               ALL EPISODES
             </p>
+
             <h1
               style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                fontSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
-                lineHeight: 1.1,
-                marginBottom: '1.25rem',
+                lineHeight: 1.05,
+                marginBottom: '0.25rem',
+                whiteSpace: 'nowrap',
               }}
             >
               Every conversation.
             </h1>
-            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '38rem' }}>
-              Stories from clinicians, founders, researchers, and policy makers doing real work in digital health across under-resourced settings. Health inequalities are everywhere, and the lessons travel.
+            <p
+              style={{
+                fontFamily: 'var(--font-cormorant, var(--font-display))',
+                fontSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--accent-coral)',
+                lineHeight: 1.05,
+                marginBottom: '2rem',
+              }}
+            >
+              Every continent.
+            </p>
+
+            {/* Episode count */}
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.75rem',
+                letterSpacing: '0.1em',
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+                marginBottom: '1.75rem',
+              }}
+            >
+              <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{episodeCount}</span>
+              {' '}Episodes and counting
+            </p>
+
+            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '36rem', marginBottom: '1.5rem' }}>
+              Clinicians, founders, researchers, and policy makers doing the hard work in digital health across under-resourced settings. The lessons travel.
+            </p>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+              New to the show?{' '}
+              <a
+                href="/episodes/health-data-poverty-part-1-with-xiao-liu"
+                style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
+              >
+                Start with Episode 1 &#8594;
+              </a>
             </p>
           </div>
 
@@ -84,29 +125,25 @@ export default function EpisodesPage() {
         </div>
       </section>
 
-      {/* Meet your host */}
-      <section style={{ padding: '2rem var(--gutter) 0' }}>
-        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-          <HostModal />
-        </div>
-      </section>
+      {/* Org marquee */}
+      <div>
+        <p style={{
+          textAlign: 'center',
+          fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+          fontSize: '0.625rem',
+          letterSpacing: '0.14em',
+          color: 'var(--text-muted)',
+          textTransform: 'uppercase',
+          padding: '1.75rem 0 0.75rem',
+        }}>
+          Guests represent organisations including
+        </p>
+        <OrgMarquee />
+      </div>
 
       {/* Search + grid */}
       <section style={{ padding: '3rem var(--gutter) 4rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-          <div style={{ marginBottom: '2.5rem' }}>
-            <SandiQBridge variant="inline" />
-          </div>
-
-          <p style={{
-            fontSize: '0.9375rem',
-            color: 'var(--text-muted)',
-            marginBottom: '1.75rem',
-            lineHeight: 1.6,
-          }}>
-We&rsquo;ve got a huge back catalogue. Use the search below to find topics, countries, or guests that are relevant to you.
-          </p>
-
           <EpisodeFilter
             episodes={episodes}
             allThemes={ALL_THEMES}

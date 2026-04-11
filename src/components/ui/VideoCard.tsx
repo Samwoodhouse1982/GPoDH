@@ -160,7 +160,7 @@ export default function VideoCard({ video, index = 0 }: { video: Video; index?: 
             marginTop: 'auto',
             paddingTop: '0.75rem',
             fontSize: '0.8125rem',
-            color: palette.border,
+            color: 'var(--accent-teal)',
             fontFamily: 'var(--font-dm-sans, sans-serif)',
           }}
         >

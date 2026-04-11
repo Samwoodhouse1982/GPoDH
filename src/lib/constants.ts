@@ -20,6 +20,7 @@ export const PLATFORMS = {
 }
 
 export const SOCIAL = {
-  linkedin: 'https://linkedin.com/in/shubs-upadhyay',
+  linkedin: 'https://www.linkedin.com/in/dr-shubs-upadhyay-494691132/',
+  linkedinCompany: 'https://www.linkedin.com/company/gpdoh',
   substack: 'https://shubstack.substack.com',
 }

@@ -11,28 +11,24 @@ interface Pin {
 }
 
 const PINS: Pin[] = [
-  { name: 'UK',           coords: [ -1.77,  51.23], label: 'AI equity in healthcare'      },
-  { name: 'Geneva',       coords: [  6.15,  46.20], label: 'WHO & global policy'           },
-  { name: 'Turkey',       coords: [ 28.98,  41.01], label: 'Digital health with refugees'  },
-  { name: 'Jordan',       coords: [ 37.98,  31.24], label: 'Refugee digital health'        },
-  { name: 'Nigeria',      coords: [  8.68,   9.08], label: 'Healthtech, West Africa'       },
-  { name: 'Ghana',        coords: [ -1.02,   7.95], label: 'Community health innovation'   },
-  { name: 'DR Congo',     coords: [ 15.33,  -4.33], label: 'Newborn care at last mile'     },
-  { name: 'Kenya',        coords: [ 36.82,  -1.29], label: 'CHW innovation'                },
-  { name: 'Rwanda',       coords: [ 29.87,  -1.94], label: 'MoH & mental health'           },
-  { name: 'Uganda',       coords: [ 32.29,   1.37], label: 'Health data systems'           },
-  { name: 'Ethiopia',     coords: [ 40.49,   9.15], label: 'Vaccination technology'        },
-  { name: 'Mozambique',   coords: [ 32.57, -25.97], label: 'Impact evaluation'             },
-  { name: 'South Africa', coords: [ 18.42, -33.93], label: 'Digital health equity'         },
-  { name: 'Pakistan',     coords: [ 69.35,  30.38], label: 'mHealth access'                },
-  { name: 'India',        coords: [ 78.96,  20.59], label: 'Rural healthcare & AI'         },
-  { name: 'Bangladesh',   coords: [ 90.39,  23.68], label: 'mHealth & investment'          },
-  { name: 'Philippines',  coords: [121.77,  12.88], label: 'Implementation science'        },
-  { name: 'Indonesia',    coords: [113.92,  -0.79], label: 'Last mile delivery'            },
-  { name: 'Colombia',     coords: [-74.08,   4.71], label: 'Maternal health'               },
-  { name: 'Brazil',       coords: [-51.93, -14.24], label: 'Health data poverty'           },
-  { name: 'Mexico',       coords: [-99.13,  19.43], label: 'Digital health, Latin America' },
-  { name: 'Washington',   coords: [-77.04,  38.91], label: 'USAID & global policy'         },
+  { name: 'UK',           coords: [ -1.77,  51.23], label: 'AI equity in health'          },
+  { name: 'Geneva',       coords: [  6.15,  46.20], label: 'WHO digital health policy'    },
+  { name: 'Turkey',       coords: [ 28.98,  41.01], label: 'Refugee digital health'       },
+  { name: 'Nigeria',      coords: [  8.68,   9.08], label: 'West Africa healthtech'       },
+  { name: 'DR Congo',     coords: [ 15.33,  -4.33], label: 'Newborn care, last mile'      },
+  { name: 'Kenya',        coords: [ 36.82,  -1.29], label: 'Community health workers'     },
+  { name: 'Rwanda',       coords: [ 29.87,  -1.94], label: 'Mental health & policy'       },
+  { name: 'Eswatini',     coords: [ 31.47, -26.52], label: 'Digital health scale-up'      },
+  { name: 'Mozambique',   coords: [ 32.57, -25.97], label: 'Impact evaluation'            },
+  { name: 'South Africa', coords: [ 18.42, -33.93], label: 'Digital health equity'        },
+  { name: 'Pakistan',     coords: [ 69.35,  30.38], label: 'mHealth at scale'             },
+  { name: 'India',        coords: [ 78.96,  20.59], label: 'Rural health & AI'            },
+  { name: 'Bangladesh',   coords: [ 90.39,  23.68], label: 'Healthtech investment'        },
+  { name: 'Philippines',  coords: [121.77,  12.88], label: 'Implementation science'       },
+  { name: 'Indonesia',    coords: [113.92,  -0.79], label: 'Last mile delivery'           },
+  { name: 'Colombia',     coords: [-74.08,   4.71], label: 'Maternal digital health'      },
+  { name: 'Brazil',       coords: [-51.93, -14.24], label: 'Health data poverty'          },
+  { name: 'USA',          coords: [-77.04,  38.91], label: 'USAID & global health'        },
 ]
 
 // Label layout
@@ -59,8 +55,13 @@ type LabelSlot = {
   idx:          number
   alpha:        number
   phase:        'in' | 'hold' | 'out'
-  holdStartMs:  number   // timestamp when 'hold' began
-  holdDuration: number   // how long to hold before fading out (randomised per slot)
+  holdStartMs:  number
+  holdDuration: number
+  // Locked at placement — defines label position relative to the pin direction
+  placed:       boolean
+  angOffset:    number   // angle offset from pin→center direction (radians)
+  outset:       number   // distance beyond sphere radius
+  boxW:         number   // box width (fixed at placement)
 }
 
 function rectsOverlap(
@@ -205,6 +206,8 @@ export default function HeroGlobe() {
           phase: 'in',
           holdStartMs: 0,
           holdDuration: HOLD_MIN_MS + Math.random() * HOLD_RANGE_MS,
+          placed: false,
+          angOffset: 0, outset: OUTSET_BASE, boxW: 0,
         })
         lastAddRef.current = timestamp
       }
@@ -239,70 +242,109 @@ export default function HeroGlobe() {
       ctx.restore()
     })
 
-    // ── Compute label positions for active slots ───────────────────────────
-    type Placed = { slot: LabelSlot; pin: Pin; p: [number,number]; bx: number; by: number; boxW: number }
-    const placed: Placed[] = []
+    // ── Step 1: lock angOffset + outset for newly added slots ─────────────
+    // Existing placed slots contribute their current screen rect for overlap checks.
+    type ActiveLabel = { slot: LabelSlot; pin: Pin; px: number; py: number; bx: number; by: number }
+    const activeLabels: ActiveLabel[] = []
 
+    // First compute current screen positions for already-placed slots
     for (const slot of slotsRef.current) {
+      if (!slot.placed) continue
+      const pin = PINS[slot.idx]
+      const p = projection(pin.coords) as [number, number] | null
+      if (!p) continue
+      const pinAngle = Math.atan2(p[1] - cy, p[0] - cx)
+      const labelAngle = pinAngle + slot.angOffset
+      const lx = cx + Math.cos(labelAngle) * (radius + slot.outset)
+      const ly = cy + Math.sin(labelAngle) * (radius + slot.outset)
+      const bx = Math.max(3, Math.min(W - slot.boxW - 3, lx - slot.boxW / 2))
+      const by = Math.max(3, Math.min(H - BOX_H - 3, ly - BOX_H / 2))
+      activeLabels.push({ slot, pin, px: p[0], py: p[1], bx, by })
+    }
+
+    // Now place any new slots, avoiding current rects of already-active labels
+    for (const slot of slotsRef.current) {
+      if (slot.placed) continue
       const pin = PINS[slot.idx]
       const p = projection(pin.coords) as [number, number] | null
       if (!p) continue
 
       ctx.font = '600 10px "DM Sans", sans-serif'
       const nameW = ctx.measureText(pin.name).width
-      ctx.font = '400 9px "DM Sans", sans-serif'
+      ctx.font = '400 10px "DM Sans", sans-serif'
       const labelW = ctx.measureText(pin.label).width
       const boxW = Math.max(nameW, labelW) + PAD_X * 2
 
-      const dx = p[0] - cx, dy = p[1] - cy
-      const baseAngle = Math.atan2(dy, dx)
-      let finalBx = 0, finalBy = 0
+      const pinAngle = Math.atan2(p[1] - cy, p[0] - cx)
+      let foundAngOffset = 0, foundOutset = OUTSET_BASE
 
       outerSearch:
       for (const angDeg of ANG_STEPS) {
-        const angle = baseAngle + angDeg * (Math.PI / 180)
-        const nx = Math.cos(angle), ny = Math.sin(angle)
+        const angOffset = angDeg * (Math.PI / 180)
         for (let extra = 0; extra <= OUTSET_MAX - OUTSET_BASE; extra += OUTSET_STEP) {
-          const lx = cx + nx * (radius + OUTSET_BASE + extra)
-          const ly = cy + ny * (radius + OUTSET_BASE + extra)
+          const outset = OUTSET_BASE + extra
+          const labelAngle = pinAngle + angOffset
+          const lx = cx + Math.cos(labelAngle) * (radius + outset)
+          const ly = cy + Math.sin(labelAngle) * (radius + outset)
           const bx = Math.max(3, Math.min(W - boxW - 3, lx - boxW / 2))
           const by = Math.max(3, Math.min(H - BOX_H - 3, ly - BOX_H / 2))
           let overlaps = false
-          for (const pl of placed) {
-            if (rectsOverlap(bx, by, boxW, BOX_H, pl.bx, pl.by, pl.boxW, BOX_H)) {
+          for (const al of activeLabels) {
+            if (rectsOverlap(bx, by, boxW, BOX_H, al.bx, al.by, al.slot.boxW, BOX_H)) {
               overlaps = true; break
             }
           }
-          if (!overlaps) { finalBx = bx; finalBy = by; break outerSearch }
+          if (!overlaps) { foundAngOffset = angOffset; foundOutset = outset; break outerSearch }
         }
       }
 
-      placed.push({ slot, pin, p, bx: finalBx, by: finalBy, boxW })
+      slot.angOffset = foundAngOffset
+      slot.outset    = foundOutset
+      slot.boxW      = boxW
+      slot.placed    = true
+
+      // Compute its current position and add to activeLabels for sibling overlap checks
+      const labelAngle = pinAngle + foundAngOffset
+      const lx = cx + Math.cos(labelAngle) * (radius + foundOutset)
+      const ly = cy + Math.sin(labelAngle) * (radius + foundOutset)
+      const bx = Math.max(3, Math.min(W - boxW - 3, lx - boxW / 2))
+      const by = Math.max(3, Math.min(H - BOX_H - 3, ly - BOX_H / 2))
+      activeLabels.push({ slot, pin, px: p[0], py: p[1], bx, by })
     }
 
-    // ── Draw connector lines ───────────────────────────────────────────────
-    for (const { slot, p, bx, by, boxW } of placed) {
+    // ── Step 2: dynamic overlap guard — fade out newer label if they collide ──
+    for (let i = 0; i < activeLabels.length; i++) {
+      for (let j = i + 1; j < activeLabels.length; j++) {
+        const a = activeLabels[i], b = activeLabels[j]
+        if (rectsOverlap(a.bx, a.by, a.slot.boxW, BOX_H, b.bx, b.by, b.slot.boxW, BOX_H)) {
+          if (b.slot.phase !== 'out') b.slot.phase = 'out'
+        }
+      }
+    }
+
+    // ── Draw connector lines — pin dot moves live, box follows via angOffset ──
+    for (const { slot, px, py, bx, by } of activeLabels) {
       const a = slot.alpha
-      const boxCx = bx + boxW / 2, boxCy = by + BOX_H / 2
-      const angle = Math.atan2(boxCy - p[1], boxCx - p[0])
+      const boxCx = bx + slot.boxW / 2, boxCy = by + BOX_H / 2
+      const angle = Math.atan2(boxCy - py, boxCx - px)
       ctx.save()
       ctx.globalAlpha = a * 0.55
       ctx.beginPath()
-      ctx.moveTo(p[0] + Math.cos(angle) * 7, p[1] + Math.sin(angle) * 7)
-      ctx.lineTo(boxCx - Math.cos(angle) * (boxW / 2 + 2), boxCy - Math.sin(angle) * (BOX_H / 2 + 2))
+      ctx.moveTo(px + Math.cos(angle) * 7, py + Math.sin(angle) * 7)
+      ctx.lineTo(boxCx - Math.cos(angle) * (slot.boxW / 2 + 2), boxCy - Math.sin(angle) * (BOX_H / 2 + 2))
       ctx.strokeStyle = 'rgba(212,97,74,0.9)'; ctx.lineWidth = 0.9
       ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([])
-      // Dot at line tip
       ctx.globalAlpha = a
       ctx.beginPath()
-      ctx.arc(boxCx - Math.cos(angle) * (boxW / 2 + 2), boxCy - Math.sin(angle) * (BOX_H / 2 + 2), 2, 0, Math.PI * 2)
+      ctx.arc(boxCx - Math.cos(angle) * (slot.boxW / 2 + 2), boxCy - Math.sin(angle) * (BOX_H / 2 + 2), 2, 0, Math.PI * 2)
       ctx.fillStyle = 'rgba(212,97,74,0.9)'; ctx.fill()
       ctx.restore()
     }
 
     // ── Draw label cards ───────────────────────────────────────────────────
-    for (const { slot, pin, bx, by, boxW } of placed) {
+    for (const { slot, pin, bx, by } of activeLabels) {
       const a = slot.alpha
+      const boxW = slot.boxW
       ctx.save()
       ctx.globalAlpha = a * 0.92
       ctx.fillStyle = 'rgba(10,24,22,0.82)'
@@ -313,8 +355,8 @@ export default function HeroGlobe() {
       ctx.font = '600 10px "DM Sans", sans-serif'
       ctx.fillStyle = 'rgba(255,255,255,0.92)'
       ctx.fillText(pin.name, bx + PAD_X, by + PAD_Y + 8)
-      ctx.font = '400 9px "DM Sans", sans-serif'
-      ctx.fillStyle = 'rgba(212,97,74,0.85)'
+      ctx.font = '400 10px "DM Sans", sans-serif'
+      ctx.fillStyle = 'rgba(255,255,255,0.7)'
       ctx.fillText(pin.label, bx + PAD_X, by + PAD_Y + LINE_H + 8)
       ctx.restore()
     }

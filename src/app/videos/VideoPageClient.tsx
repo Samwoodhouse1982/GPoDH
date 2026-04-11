@@ -328,8 +328,30 @@ export default function VideoPageClient() {
         </div>
       )}
 
+      {/* ——— Hero ——— */}
+      <section style={{ background: 'var(--bg-dark)', padding: '8rem var(--gutter) 3rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.6875rem', letterSpacing: '0.15em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+              Video
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.1, margin: 0 }}>
+              Talks, panels, and conversations.
+            </h1>
+          </div>
+          <Link
+            href="/episodes"
+            style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
+            className="videos-episodes-link"
+          >
+            Prefer audio? Browse all episodes &#8594;
+          </Link>
+        </div>
+        <style>{`.videos-episodes-link:hover { color: rgba(255,255,255,0.85) !important; }`}</style>
+      </section>
+
       {/* ——— Featured ——— */}
-      <section style={{ background: 'var(--bg-dark)', padding: '8rem var(--gutter) 5rem' }}>
+      <section style={{ background: 'var(--bg-dark)', padding: '4rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
 
           {/* Label row */}

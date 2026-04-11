@@ -141,7 +141,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="organisation" style={labelStyle}>Organisation (optional)</label>
+                    <label htmlFor="organisation" style={labelStyle}>Organisation / Role (helps us respond better)</label>
                     <input
                       id="organisation"
                       name="organisation"
@@ -160,6 +160,7 @@ export default function ContactPage() {
                       rows={6}
                       value={form.message}
                       onChange={handleChange}
+                      placeholder="Tell us who you are and what's on your mind"
                       style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
                     />
                   </div>
@@ -202,8 +203,11 @@ export default function ContactPage() {
                 >
                   Response time
                 </p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6 }}>
-                  We aim to respond to all messages within a few days.
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
+                  Shubs reads every message personally. Whether you want to pitch a guest, discuss a partnership, or just say hello, get in touch.
+                </p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6 }}>
+                  We aim to respond within a few days.
                 </p>
               </div>
 
@@ -250,7 +254,16 @@ export default function ContactPage() {
                     style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}
                     className="contact-link"
                   >
-                    LinkedIn &#8599;
+                    LinkedIn (Shubs) &#8599;
+                  </a>
+                  <a
+                    href={SOCIAL.linkedinCompany}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}
+                    className="contact-link"
+                  >
+                    LinkedIn (GPODH) &#8599;
                   </a>
                   <a
                     href={SOCIAL.substack}

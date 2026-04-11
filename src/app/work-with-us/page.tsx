@@ -6,34 +6,6 @@ export const metadata: Metadata = {
   title: 'Work With Us',
 }
 
-const collaborationOptions = [
-  {
-    title: 'Propose a Session or Speaker',
-    description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
-  },
-  {
-    title: 'Sponsored Episodes',
-    description: 'Align your organisation with a specific episode or series. Your message reaches an engaged, specialist audience in the right context.',
-  },
-  {
-    title: 'Mini-Series',
-    description: 'Commission a short series of episodes around a theme relevant to your work. Ideal for investors and donors who want to build thought leadership.',
-  },
-  {
-    title: 'Webinar Hosting',
-    description: 'We host and moderate expert panels and webinars for organisations working in digital health. Structured, substantive, globally minded.',
-  },
-  {
-    title: 'Event Coverage',
-    description: 'On the ground at conferences and summits, capturing conversations and producing content that extends the life of the event.',
-  },
-  {
-    title: 'Video Conversations',
-    description: 'Long-form recorded conversations for your own channels. Shubs brings his clinical and strategic lens to interview your team or partners.',
-  },
-]
-
-
 export default function WorkWithUsPage() {
   return (
     <>
@@ -177,6 +149,29 @@ export default function WorkWithUsPage() {
             </div>
           </ScrollReveal>
 
+          <ScrollReveal delay={200}>
+            <div style={{ marginBottom: '2rem' }}>
+              <a
+                href="/contact"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.6rem 1.5rem',
+                  background: 'var(--accent-coral)',
+                  color: '#fff',
+                  borderRadius: 'var(--radius-md)',
+                  fontWeight: 500,
+                  fontSize: '0.9375rem',
+                  textDecoration: 'none',
+                }}
+              >
+                Get in touch ›
+              </a>
+              <p style={{ marginTop: '0.625rem', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+                Get in touch for a conversation about fit and pricing.
+              </p>
+            </div>
+          </ScrollReveal>
+
           {/* Collaboration options */}
           <ScrollReveal>
             <h2
@@ -185,48 +180,106 @@ export default function WorkWithUsPage() {
                 fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
-                marginBottom: '1.5rem',
+                marginBottom: '2rem',
               }}
             >
               How to get involved
             </h2>
           </ScrollReveal>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-              gap: '1.25rem',
-              marginBottom: '3rem',
-            }}
-          >
-            {collaborationOptions.map((option, i) => (
-              <ScrollReveal key={option.title} delay={i * 60}>
-                <div
-                  style={{
-                    background: 'var(--bg-card)',
-                    border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '1.75rem',
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-cormorant, var(--font-display))',
-                      fontSize: '1.375rem',
-                      fontWeight: 600,
-                      color: 'var(--text-primary)',
-                      marginBottom: '0.75rem',
-                    }}
-                  >
-                    {option.title}
-                  </h3>
-                  <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                    {option.description}
-                  </p>
-                </div>
+
+          {[
+            {
+              group: 'Content Partnerships',
+              options: [
+                {
+                  title: 'Sponsored Episodes',
+                  description: 'Align your organisation with a specific episode or series. Your message reaches an engaged, specialist audience in the right context.',
+                },
+                {
+                  title: 'Mini-Series',
+                  description: 'Commission a short series of episodes around a theme relevant to your work. Ideal for investors and donors who want to build thought leadership.',
+                },
+                {
+                  title: 'Video Conversations',
+                  description: 'Long-form recorded conversations for your own channels. Shubs brings his clinical and strategic lens to interview your team or partners.',
+                },
+              ],
+            },
+            {
+              group: 'Live & Events',
+              options: [
+                {
+                  title: 'Webinar Hosting',
+                  description: 'We host and moderate expert panels and webinars for organisations working in digital health. Structured, substantive, globally minded.',
+                },
+                {
+                  title: 'Event Coverage',
+                  description: 'On the ground at conferences and summits, capturing conversations and producing content that extends the life of the event.',
+                },
+              ],
+            },
+            {
+              group: 'Community',
+              options: [
+                {
+                  title: 'Propose a Session or Speaker',
+                  description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
+                },
+              ],
+            },
+          ].map((section, si) => (
+            <div key={section.group} style={{ marginBottom: '2.5rem' }}>
+              <ScrollReveal delay={si * 40}>
+                <p style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  marginBottom: '1rem',
+                }}>
+                  {section.group}
+                </p>
               </ScrollReveal>
-            ))}
-          </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                  gap: '1.25rem',
+                }}
+              >
+                {section.options.map((option, i) => (
+                  <ScrollReveal key={option.title} delay={si * 40 + i * 60}>
+                    <div
+                      style={{
+                        background: 'var(--bg-card)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 'var(--radius-lg)',
+                        padding: '1.75rem',
+                        height: '100%',
+                      }}
+                    >
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-cormorant, var(--font-display))',
+                          fontSize: '1.375rem',
+                          fontWeight: 600,
+                          color: 'var(--text-primary)',
+                          marginBottom: '0.75rem',
+                        }}
+                      >
+                        {option.title}
+                      </h3>
+                      <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                        {option.description}
+                      </p>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div style={{ marginBottom: '3rem' }} />
 
           <ScrollReveal>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.25rem', fontSize: '0.9375rem' }}>

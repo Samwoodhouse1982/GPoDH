@@ -3,14 +3,15 @@ import Image from 'next/image'
 import VideoCard from '@/components/ui/VideoCard'
 import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
 import PlatformBadge from '@/components/ui/PlatformBadge'
-import SandiQBridge from '@/components/ui/SandiQBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
 import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
+import OrgMarquee from '@/components/ui/OrgMarquee'
+import HostIntroStrip from '@/components/ui/HostIntroStrip'
 import { episodes } from '@/lib/episodes'
 import { videos } from '@/lib/videos'
-import { PLATFORMS, SOCIAL } from '@/lib/constants'
+import { PLATFORMS } from '@/lib/constants'
 
 const testimonials = [
   "It is so valuable to hear insights from people who have already gone through similar challenges.",
@@ -32,7 +33,7 @@ const showCards = [
   {
     eyebrow: 'THE BIG PICTURE',
     text: 'How do we build a more equitable global digital health ecosystem, and who needs to be in the room?',
-    accent: 'var(--accent-teal)',
+    accent: '#3EC9A7',
   },
 ]
 
@@ -72,7 +73,7 @@ const listenerPersonas = [
         <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
       </svg>
     ),
-    accent: 'var(--accent-teal)',
+    accent: '#3EC9A7',
     motionClass: 'icon-spin',
   },
   {
@@ -85,55 +86,12 @@ const listenerPersonas = [
         <polyline points="17 6 23 6 23 12"/>
       </svg>
     ),
-    accent: '#2A6B8A',
+    accent: '#5BB8D4',
     motionClass: 'icon-float',
   },
 ]
 
-const youllHear = [
-  'Honest accounts of what is working and what is failing',
-  'Voices that are rarely on the main stage at major conferences',
-  'Practical frameworks for thinking about equity in digital health',
-  'Context on specific countries and regions',
-  'Conversations about funding, sustainability, and scale',
-]
 
-const stats = [
-  {
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M2 12h20"/>
-        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
-      </svg>
-    ),
-    value: '60+',
-    label: 'Countries reached',
-    detail: undefined as string | undefined,
-  },
-  {
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 18v-6a9 9 0 0118 0v6"/>
-        <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/>
-      </svg>
-    ),
-    value: 'Thousands',
-    label: 'of downloads',
-    detail: undefined,
-  },
-  {
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-    ),
-    value: '3',
-    label: 'Focus regions',
-    detail: 'Africa · Asia · Latin America',
-  },
-]
 
 export default function HomePage() {
   const latestEpisodes = [...episodes]
@@ -288,17 +246,17 @@ export default function HomePage() {
                   marginBottom: '2rem',
                 }}
               >
-                The digital health industry talks too much about the Global North.
+                The perspectives of those innovating in underserved settings are sorely missing from digital health.
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={130}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                The dominant narrative in digital health is one of innovation flowing outward from wealthy systems. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH is built to help change that narrative.
+                The dominant narrative in digital health flows outward from the Global North. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={160}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                We share the stories of clinicians, founders, researchers, and policy makers doing real work in under-resourced settings: the people building solutions in contexts that rarely make it onto the main stage, but whose lessons travel everywhere.
+                Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?
               </p>
             </ScrollReveal>
           </div>
@@ -367,6 +325,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ——— Compact host intro ——— */}
+      <HostIntroStrip />
+
       {/* ——— Promo photo strip ——— */}
       <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(280px, 35vw, 440px)' }}>
         <Image
@@ -419,7 +380,7 @@ export default function HomePage() {
                 color: 'rgba(255,255,255,0.5)',
                 textTransform: 'uppercase',
               }}>
-                HLTH Conference
+                Dr Shubs Upadhyay &middot; HLTH Conference
               </p>
             </div>
           </div>
@@ -584,144 +545,63 @@ export default function HomePage() {
             ))}
           </div>
 
-          <ScrollReveal delay={200}>
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '3rem' }}>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.15em',
-                  color: 'rgba(255,255,255,0.45)',
-                  textTransform: 'uppercase',
-                  marginBottom: '1.25rem',
-                }}
-              >
-                You will hear
-              </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
-                {youllHear.map((item) => (
-                  <li
-                    key={item}
-                    style={{
-                      fontSize: '0.875rem',
-                      color: 'rgba(255,255,255,0.72)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      background: 'rgba(255,255,255,0.06)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: '100px',
-                      padding: '0.5rem 1rem',
-                    }}
-                  >
-                    <span style={{ color: 'var(--accent-coral)', fontSize: '0.75rem' }}>&#8594;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ScrollReveal>
-
         </div>
       </section>
 
-      {/* ——— Stats Band ——— */}
-      <ScrollReveal>
-        <section
-          style={{
-            background: 'linear-gradient(120deg, #C4522A 0%, #D4614A 40%, #C9933A 100%)',
-            padding: '4rem var(--gutter)',
-          }}
-        >
-          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.75rem',
-                letterSpacing: '0.2em',
-                color: 'rgba(255,255,255,0.82)',
-                textTransform: 'uppercase',
-                textAlign: 'center',
-                marginBottom: '3rem',
-              }}
-            >
-              By the numbers
+      {/* ——— Testimonials ——— */}
+      <section style={{ background: 'linear-gradient(120deg, #C4522A 0%, #D4614A 40%, #C9933A 100%)', padding: '4rem var(--gutter)' }}>
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <ScrollReveal>
+            <p style={{
+              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+              fontSize: '0.625rem',
+              letterSpacing: '0.16em',
+              color: 'rgba(255,255,255,0.6)',
+              textTransform: 'uppercase',
+              marginBottom: '2.5rem',
+              textAlign: 'center',
+            }}>
+              What listeners say
             </p>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '2.5rem 1rem',
-                alignItems: 'start',
-              }}
-            >
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    gap: '0.75rem',
-                  }}
-                >
-                  {/* Icon */}
-                  <div style={{ color: 'rgba(255,255,255,0.85)' }}>
-                    {stat.icon}
-                  </div>
-
-                  {/* Value */}
-                  <div style={{ display: 'flex', alignItems: 'flex-end', height: '5.5rem' }}>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-cormorant, var(--font-display))',
-                        fontSize: 'clamp(3.5rem, 6vw, 5.5rem)',
-                        fontWeight: 700,
-                        color: '#ffffff',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {stat.value}
-                    </p>
-                  </div>
-
-                  {/* Label */}
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                      fontSize: '0.875rem',
-                      letterSpacing: '0.14em',
-                      color: 'rgba(255,255,255,1)',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {stat.label}
+          </ScrollReveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem' }}>
+            {testimonials.map((quote, i) => (
+              <ScrollReveal key={i} delay={i * 100}>
+                <blockquote style={{ borderLeft: '3px solid rgba(255,255,255,0.4)', paddingLeft: '1.5rem' }}>
+                  <p style={{
+                    fontFamily: 'var(--font-cormorant, var(--font-display))',
+                    fontSize: '1.25rem',
+                    fontStyle: 'italic',
+                    color: '#ffffff',
+                    lineHeight: 1.6,
+                  }}>
+                    &ldquo;{quote}&rdquo;
                   </p>
-
-                  {/* Detail */}
-                  {stat.detail && (
-                    <p
-                      style={{
-                        fontSize: '0.8125rem',
-                        color: 'rgba(255,255,255,0.85)',
-                        lineHeight: 1.55,
-                        maxWidth: '18ch',
-                      }}
-                    >
-                      {stat.detail}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
+                </blockquote>
+              </ScrollReveal>
+            ))}
           </div>
-        </section>
-      </ScrollReveal>
+        </div>
+      </section>
 
       {/* ——— Globe ——— */}
       <GlobeSection />
+
+      {/* ——— Org Marquee ——— */}
+      <div>
+        <p style={{
+          textAlign: 'center',
+          fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+          fontSize: '0.625rem',
+          letterSpacing: '0.14em',
+          color: 'var(--text-muted)',
+          textTransform: 'uppercase',
+          padding: '2rem 0 0.75rem',
+        }}>
+          Guests represent organisations including
+        </p>
+        <OrgMarquee />
+      </div>
 
       {/* ——— Latest Episodes ——— */}
       <section style={{ padding: '5rem var(--gutter)' }}>
@@ -856,205 +736,39 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ——— Testimonials ——— */}
-      <section
-        style={{
-          background: 'var(--bg-secondary)',
-          padding: '5rem var(--gutter)',
-          borderTop: '1px solid var(--border)',
-          borderBottom: '1px solid var(--border)',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 'var(--max-width)',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-            gap: '2rem',
-          }}
-        >
-          {testimonials.map((quote, i) => (
-            <ScrollReveal key={i} delay={i * 100}>
-              <blockquote
-                style={{
-                  borderLeft: '3px solid var(--accent-coral)',
-                  paddingLeft: '1.5rem',
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: 'var(--font-cormorant, var(--font-display))',
-                    fontSize: '1.25rem',
-                    fontStyle: 'italic',
-                    color: 'var(--text-primary)',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  &ldquo;{quote}&rdquo;
-                </p>
-              </blockquote>
-            </ScrollReveal>
-          ))}
-        </div>
-      </section>
-
       {/* ——— Email Subscribe ——— */}
       <EmailSignup />
-
-      {/* ——— Meet the Host ——— */}
-      <section style={{ padding: '5rem var(--gutter)' }}>
-        <div
-          style={{
-            maxWidth: 'var(--max-width)',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
-            gap: '4rem',
-            alignItems: 'start',
-          }}
-        >
-          {/* Left: text */}
-          <div>
-            <ScrollReveal>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.6875rem',
-                  letterSpacing: '0.12em',
-                  color: 'var(--accent-coral)',
-                  textTransform: 'uppercase',
-                  marginBottom: '0.625rem',
-                }}
-              >
-                Your Host
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-cormorant, var(--font-display))',
-                  fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  marginBottom: '1.5rem',
-                  lineHeight: 1.2,
-                }}
-              >
-                Dr Shubs Upadhyay
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={150}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                  Shubs is a physician, digital health strategist, and the founder of this podcast. He trained in medicine in the UK and has spent the past decade working at the intersection of clinical practice, health technology, and global health systems.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                  His consulting work through SandiQ Global takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                  He started GPODH because the conversations he was having privately deserved a much wider audience. He noticed that the same founders, the same researchers, the same clinicians kept saying the same thing: nobody is talking about this publicly, and nobody outside our region seems to care.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                  This podcast is his attempt to fix that.
-                </p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '0.625rem',
-                  marginBottom: '1.5rem',
-                  padding: '1rem',
-                  background: 'var(--bg-card)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border)',
-                }}
-              >
-                {['Physician', 'Digital Health Strategist', 'Founding Partner, SandiQ Global', 'Podcast Host'].map((cred) => (
-                  <span
-                    key={cred}
-                    style={{
-                      fontSize: '0.75rem',
-                      color: 'var(--text-muted)',
-                      fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                    }}
-                  >
-                    {cred}
-                  </span>
-                ))}
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={230}>
-              <div style={{ display: 'flex', gap: '1.25rem', marginBottom: '2rem' }}>
-                <a
-                  href={SOCIAL.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
-                >
-                  LinkedIn &#8599;
-                </a>
-                <a
-                  href={SOCIAL.substack}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
-                >
-                  Substack &#8599;
-                </a>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={260}>
-              <SandiQBridge variant="card" />
-            </ScrollReveal>
-          </div>
-
-          {/* Right: portrait */}
-          <div
-            style={{
-              aspectRatio: '1',
-              borderRadius: 'var(--radius-lg)',
-              overflow: 'hidden',
-              maxWidth: '400px',
-              width: '100%',
-              margin: '0 auto',
-              position: 'relative',
-            }}
-          >
-            <Image
-              src="/shubs.webp"
-              alt="Dr Shubs Upadhyay"
-              fill
-              style={{ objectFit: 'cover', objectPosition: 'top' }}
-              sizes="(max-width: 768px) 100vw, 400px"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* ——— Platform Follow ——— */}
       <section
         style={{
-          padding: '3.5rem var(--gutter)',
+          padding: '5rem var(--gutter)',
           borderTop: '1px solid var(--border)',
           textAlign: 'center',
+          background: 'var(--bg-secondary)',
         }}
       >
         <ScrollReveal>
           <p
             style={{
-              fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-              fontSize: '0.6875rem',
-              letterSpacing: '0.12em',
-              color: 'var(--text-muted)',
-              textTransform: 'uppercase',
-              marginBottom: '1.5rem',
+              fontFamily: 'var(--font-cormorant, var(--font-display))',
+              fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              marginBottom: '0.75rem',
+              lineHeight: 1.2,
             }}
           >
-            LISTEN AND FOLLOW ON
+            Ready to listen?
+          </p>
+          <p
+            style={{
+              fontSize: '0.9375rem',
+              color: 'var(--text-secondary)',
+              marginBottom: '2rem',
+            }}
+          >
+            Browse all episodes and find where to start.
           </p>
           <div
             style={{
@@ -1064,9 +778,21 @@ export default function HomePage() {
               gap: '0.75rem',
             }}
           >
-            <PlatformBadge platform="apple" href={PLATFORMS.apple} />
-            <PlatformBadge platform="spotify" href={PLATFORMS.spotify} />
-            <PlatformBadge platform="youtube" href={PLATFORMS.youtube} />
+            <Link
+              href="/episodes"
+              style={{
+                display: 'inline-block',
+                padding: '0.875rem 1.75rem',
+                background: 'var(--accent-coral)',
+                color: 'var(--text-primary)',
+                borderRadius: 'var(--radius-md)',
+                fontSize: '0.9375rem',
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+            >
+              Browse all episodes &#8594;
+            </Link>
           </div>
         </ScrollReveal>
       </section>

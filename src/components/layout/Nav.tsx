@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import SubscribeModal from '@/components/ui/SubscribeModal'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -15,6 +16,7 @@ const navLinks = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,8 +130,8 @@ export default function Nav() {
           </nav>
 
           {/* Subscribe Button (desktop) */}
-          <a
-            href="#subscribe"
+          <button
+            onClick={() => setSubscribeOpen(true)}
             className="subscribe-btn desktop-nav"
             style={{
               flexShrink: 0,
@@ -140,11 +142,12 @@ export default function Nav() {
               fontSize: '0.875rem',
               fontWeight: 500,
               transition: 'background var(--transition-fast)',
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
             }}
           >
             Subscribe
-          </a>
+          </button>
 
           {/* Hamburger (mobile) */}
           <button
@@ -215,6 +218,8 @@ export default function Nav() {
           </div>
         </div>
       )}
+
+      <SubscribeModal open={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
 
       <style>{`
         .nav-link:hover {

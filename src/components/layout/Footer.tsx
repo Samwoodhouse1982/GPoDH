@@ -6,7 +6,6 @@ import { SITE, PLATFORMS, SOCIAL } from '@/lib/constants'
 
 const navLinks = [
   { href: '/episodes', label: 'Episodes' },
-  { href: '/about', label: 'About' },
   { href: '/work-with-us', label: 'Work With Us' },
   { href: '/resources', label: 'Resources' },
   { href: '/contact', label: 'Contact' },
@@ -122,7 +121,16 @@ export default function Footer() {
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                LinkedIn
+                LinkedIn (Shubs)
+              </a>
+              <a
+                href={SOCIAL.linkedinCompany}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
+                className="footer-link"
+              >
+                LinkedIn (GPODH)
               </a>
               <a
                 href={SOCIAL.substack}

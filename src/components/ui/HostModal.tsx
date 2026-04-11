@@ -7,10 +7,16 @@ import { SOCIAL } from '@/lib/constants'
 interface Props {
   /** Path to the intro video — leave empty until video is ready */
   videoSrc?: string
+  /** Controlled mode: pass open + onClose to suppress the built-in trigger */
+  open?: boolean
+  onClose?: () => void
 }
 
-export default function HostModal({ videoSrc }: Props) {
-  const [open, setOpen] = useState(false)
+export default function HostModal({ videoSrc, open: controlledOpen, onClose }: Props) {
+  const isControlled = controlledOpen !== undefined
+  const [internalOpen, setInternalOpen] = useState(false)
+  const open = isControlled ? controlledOpen : internalOpen
+  const setOpen = isControlled ? (v: boolean) => { if (!v) onClose?.() } : setInternalOpen
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -33,8 +39,8 @@ export default function HostModal({ videoSrc }: Props) {
 
   return (
     <>
-      {/* ── Trigger strip ─────────────────────────────── */}
-      <button
+      {/* ── Trigger strip (standalone mode only) ──────── */}
+      {!isControlled && <button
         onClick={() => setOpen(true)}
         style={{
           display: 'flex',
@@ -124,7 +130,7 @@ export default function HostModal({ videoSrc }: Props) {
         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', flexShrink: 0 }}>
           About Shubs ›
         </span>
-      </button>
+      </button>}
 
       {/* ── Modal ─────────────────────────────────────── */}
       <style>{`
