@@ -32,6 +32,15 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
     return () => { document.body.style.overflow = '' }
   }, [open])
 
+  // Sync React state when native dialog closes via Escape key
+  useEffect(() => {
+    const el = dialogRef.current
+    if (!el) return
+    const onCancel = () => setOpen(false)
+    el.addEventListener('cancel', onCancel)
+    return () => el.removeEventListener('cancel', onCancel)
+  }, [])
+
   // Close on backdrop click
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === dialogRef.current) setOpen(false)
