@@ -118,10 +118,15 @@ export default function EpisodesPage() {
             </p>
           </div>
 
-          {/* Scrolling speaker columns */}
-          <div style={{ flexShrink: 0 }}>
+          {/* Scrolling speaker columns — hidden on mobile */}
+          <div className="episodes-marquee" style={{ flexShrink: 0 }}>
             <SpeakerMarquee speakers={speakers} />
           </div>
+          <style>{`
+            @media (max-width: 768px) {
+              .episodes-marquee { display: none; }
+            }
+          `}</style>
         </div>
       </section>
 
