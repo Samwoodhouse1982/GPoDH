@@ -4,7 +4,9 @@ import Link from 'next/link'
 import ShareButtons from '@/components/ui/ShareButtons'
 import VideoCard from '@/components/ui/VideoCard'
 import EmailSignup from '@/components/sections/EmailSignup'
+import TranscriptToggle from '@/components/ui/TranscriptToggle'
 import { videos, CATEGORY_LABELS } from '@/lib/videos'
+import { videoTranscripts } from '@/lib/video-transcripts'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -32,6 +34,8 @@ export default async function VideoPage({ params }: Props) {
   const related = videos
     .filter((v) => v.id !== video.id)
     .slice(0, 3)
+
+  const transcript = videoTranscripts[video.slug]
 
   return (
     <>
@@ -202,6 +206,27 @@ export default async function VideoPage({ params }: Props) {
           )}
         </div>
       </section>
+
+      {/* ——— Transcript ——— */}
+      {transcript && (
+        <section style={{ padding: '4rem var(--gutter)', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.12em',
+                color: 'var(--accent-coral)',
+                textTransform: 'uppercase',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Transcript
+            </p>
+            <TranscriptToggle transcript={transcript} />
+          </div>
+        </section>
+      )}
 
       {/* ——— Share ——— */}
       <ShareButtons slug={`videos/${video.slug}`} title={video.title} guest="GPODH" />

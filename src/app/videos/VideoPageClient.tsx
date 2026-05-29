@@ -7,6 +7,7 @@ import { videos, CATEGORY_LABELS } from '@/lib/videos'
 import type { VideoCategory } from '@/lib/videos'
 import VideoCard from '@/components/ui/VideoCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
+import { videoTranscripts } from '@/lib/video-transcripts'
 
 // ─── Semantic concept map ─────────────────────────────────────────────────────
 const CONCEPT_MAP: [string[], string[]][] = [
@@ -103,20 +104,29 @@ export default function VideoPageClient() {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // ── Fuse instance ─────────────────────────────────────────────────────────
+  // Augment each video with its transcript so search can match words spoken
+  // in the video, not just the title/tags/description.
+  const searchDocs = useMemo(
+    () => videos.map((v) => ({ ...v, transcript: videoTranscripts[v.slug] ?? '' })),
+    []
+  )
+
   const fuse = useMemo(
     () =>
-      new Fuse(videos, {
+      new Fuse(searchDocs, {
         keys: [
           { name: 'title',       weight: 0.45 },
           { name: 'tags',        weight: 0.30 },
           { name: 'description', weight: 0.25 },
+          // Full transcript — low weight so a strong title/tag match still wins.
+          { name: 'transcript',  weight: 0.05 },
         ],
         threshold: 0.38,
         includeScore: true,
         ignoreLocation: true,
         minMatchCharLength: 2,
       }),
-    []
+    [searchDocs]
   )
 
   // ── Semantic expansion ────────────────────────────────────────────────────

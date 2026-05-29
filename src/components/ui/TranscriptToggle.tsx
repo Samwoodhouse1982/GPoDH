@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 interface Props {
   transcript: string
-  guest: string
+  guest?: string
 }
 
 export default function TranscriptToggle({ transcript, guest }: Props) {
@@ -71,7 +71,7 @@ export default function TranscriptToggle({ transcript, guest }: Props) {
               marginBottom: '1.5rem',
             }}
           >
-            Transcript · {guest}
+            Transcript{guest ? ` · ${guest}` : ''}
           </p>
           <div
             style={{
