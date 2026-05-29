@@ -8,82 +8,8 @@ import type { VideoCategory } from '@/lib/videos'
 import VideoCard from '@/components/ui/VideoCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
 import { videoTranscripts } from '@/lib/video-transcripts'
+import { expandQuery } from '@/lib/concept-map'
 
-// ─── Semantic concept map ─────────────────────────────────────────────────────
-const CONCEPT_MAP: [string[], string[]][] = [
-  [
-    ['ai', 'artificial intelligence', 'machine learning', 'ml', 'llm'],
-    ['machine learning', 'artificial intelligence', 'ai', 'algorithm', 'diagnostic', 'llm', 'chatgpt', 'generative', 'deep learning'],
-  ],
-  [
-    ['digital health', 'mhealth', 'healthtech', 'health tech'],
-    ['digital health', 'mhealth', 'healthtech', 'app', 'platform', 'technology', 'innovation'],
-  ],
-  [
-    ['africa', 'sub-saharan', 'subsaharan'],
-    ['africa', 'kenya', 'nigeria', 'ghana', 'rwanda', 'ethiopia', 'uganda', 'malawi', 'mozambique', 'sierra leone', 'south africa', 'tanzania'],
-  ],
-  [
-    ['asia', 'south asia', 'southeast asia'],
-    ['india', 'bangladesh', 'pakistan', 'philippines', 'indonesia', 'myanmar', 'cambodia', 'nepal'],
-  ],
-  [
-    ['equity', 'underserved', 'lmic', 'inequality'],
-    ['equity', 'underserved', 'disparities', 'low-income', 'lmic', 'marginalised', 'marginalized', 'excluded'],
-  ],
-  [
-    ['funding', 'money', 'investment', 'grants', 'donors', 'finance', 'financial', 'capital', 'cash', 'revenue', 'economics'],
-    ['funding', 'money', 'investment', 'grant', 'finance', 'financial', 'capital', 'cash', 'dollars', 'revenue', 'profit', 'roi', 'economics', 'budget', 'fundraising', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
-  ],
-  [
-    ['usaid', 'aid cuts', 'funding cuts'],
-    ['usaid', 'aid', 'cuts', 'funding', 'withdrawal', 'foreign aid'],
-  ],
-  [
-    ['implementation', 'scale', 'scaling', 'deploy'],
-    ['implementation', 'scale', 'deploy', 'rollout', 'adoption', 'pilot', 'operationalise'],
-  ],
-  [
-    ['community health', 'chw', 'primary care', 'last mile'],
-    ['community health', 'chw', 'primary care', 'last mile', 'frontline', 'grassroots'],
-  ],
-  [
-    ['mental health', 'psychology', 'wellbeing'],
-    ['mental health', 'psychology', 'wellbeing', 'depression', 'anxiety', 'psychosocial'],
-  ],
-  [
-    ['regulation', 'regulatory', 'governance', 'policy'],
-    ['regulatory', 'regulation', 'approval', 'compliance', 'policy', 'governance', 'legislation'],
-  ],
-  [
-    ['hot takes', 'opinion', 'commentary', 'debate'],
-    ['hot takes', 'opinion', 'commentary', 'debate', 'controversial', 'take'],
-  ],
-  [
-    ['refugee', 'humanitarian', 'displaced'],
-    ['refugee', 'displaced', 'humanitarian', 'crisis', 'asylum', 'camp'],
-  ],
-  [
-    ['data', 'health data', 'health records'],
-    ['health data', 'electronic health record', 'ehr', 'analytics', 'interoperability', 'surveillance'],
-  ],
-]
-
-function expandQuery(raw: string): { terms: string[]; concepts: string[] } {
-  const q = raw.toLowerCase().trim()
-  if (!q) return { terms: [], concepts: [] }
-  const extraTerms = new Set<string>()
-  const matchedConcepts: string[] = []
-  for (const [triggers, synonyms] of CONCEPT_MAP) {
-    const hit = triggers.some((t) => q.includes(t) || t.includes(q))
-    const synHit = !hit && synonyms.some((s) => q.includes(s) || (s.length > 3 && s.startsWith(q)))
-    if (hit || synHit) {
-      matchedConcepts.push(triggers[0])
-      synonyms.forEach((s) => extraTerms.add(s))
-    }
-  }
-  return { terms: [q, ...Array.from(extraTerms)], concepts: matchedConcepts }
-}
 
 const ALL_CATEGORIES: VideoCategory[] = ['talk', 'panel', 'explainer', 'clip']
 const TRAILER_ID = '29' // Always pinned to first grid position

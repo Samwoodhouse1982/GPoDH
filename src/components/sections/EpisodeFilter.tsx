@@ -6,6 +6,7 @@ import Fuse from 'fuse.js'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
 import { Episode } from '@/lib/episodes'
+import { expandQuery } from '@/lib/concept-map'
 
 interface EpisodeFilterProps {
   episodes: Episode[]
@@ -13,111 +14,6 @@ interface EpisodeFilterProps {
   allCountries: string[]
 }
 
-// ─── Semantic concept map ────────────────────────────────────────────────────
-// Maps search terms/concepts to related keywords in the episode corpus.
-// When a user's query matches a concept key, its synonyms are added to the
-// search — giving "AI" results for "machine learning", "Africa" results for
-// individual countries, etc.
-const CONCEPT_MAP: [string[], string[]][] = [
-  [
-    ['ai', 'artificial intelligence', 'machine learning', 'ml', 'algorithm'],
-    ['machine learning', 'artificial intelligence', 'ai', 'algorithm', 'diagnostic', 'prediction', 'model', 'data science'],
-  ],
-  [
-    ['equity', 'inequality', 'disparities', 'underserved', 'marginalised', 'marginalized'],
-    ['equity', 'underserved', 'disparities', 'marginalised', 'low-income', 'lmic', 'excluded', 'vulnerable'],
-  ],
-  [
-    ['africa', 'sub-saharan', 'subsaharan'],
-    ['africa', 'kenya', 'nigeria', 'ghana', 'rwanda', 'ethiopia', 'uganda', 'malawi', 'mozambique', 'sierra leone', 'south africa', 'tanzania', 'drc', 'senegal', 'accra', 'nairobi', 'lagos'],
-  ],
-  [
-    ['asia', 'south asia', 'southeast asia'],
-    ['india', 'bangladesh', 'pakistan', 'philippines', 'indonesia', 'myanmar', 'cambodia', 'nepal', 'sri lanka', 'mumbai', 'dhaka'],
-  ],
-  [
-    ['latin america', 'latam', 'south america'],
-    ['colombia', 'brazil', 'peru', 'bolivia', 'mexico', 'bogota', 'sao paulo'],
-  ],
-  [
-    ['middle east', 'mena'],
-    ['jordan', 'lebanon', 'syria', 'palestine', 'iraq', 'amman'],
-  ],
-  [
-    ['funding', 'money', 'grants', 'investment', 'finance', 'financial', 'capital', 'cash', 'donors', 'revenue', 'economics'],
-    ['funding', 'money', 'investment', 'grant', 'finance', 'financial', 'capital', 'cash', 'dollars', 'revenue', 'profit', 'roi', 'economics', 'budget', 'fundraising', 'monetisation', 'monetization', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
-  ],
-  [
-    ['community health', 'chw', 'community health worker', 'last mile'],
-    ['community health worker', 'chw', 'primary care', 'last mile', 'grassroots', 'village', 'frontline'],
-  ],
-  [
-    ['implementation', 'scale', 'scaling', 'deploy', 'rollout'],
-    ['implementation', 'deploy', 'scale', 'rollout', 'adoption', 'operationalise', 'pilot'],
-  ],
-  [
-    ['data', 'health data', 'health records', 'ehr'],
-    ['health data', 'electronic health record', 'ehr', 'surveillance', 'analytics', 'interoperability', 'data poverty'],
-  ],
-  [
-    ['refugee', 'refugees', 'displaced', 'humanitarian'],
-    ['refugee', 'displaced', 'humanitarian', 'forced migration', 'asylum', 'camp', 'crisis'],
-  ],
-  [
-    ['maternal', 'maternal health', 'pregnancy', 'antenatal'],
-    ['maternal', 'pregnancy', 'antenatal', 'postnatal', 'birth', 'mother', 'obstetric', 'midwife'],
-  ],
-  [
-    ['regulation', 'regulatory', 'governance'],
-    ['regulatory', 'regulation', 'approval', 'compliance', 'policy', 'governance', 'legislation'],
-  ],
-  [
-    ['identity', 'digital identity', 'id'],
-    ['digital identity', 'id', 'verification', 'credentials', 'biometric', 'authentication'],
-  ],
-  [
-    ['usaid', 'aid cuts', 'funding cuts'],
-    ['usaid', 'aid', 'cuts', 'funding withdrawal', 'us government', 'foreign aid'],
-  ],
-  [
-    ['who', 'world health organization', 'world health organisation'],
-    ['who', 'world health', 'global health', 'geneva', 'un', 'multilateral'],
-  ],
-  [
-    ['telehealth', 'telemedicine', 'remote'],
-    ['telehealth', 'telemedicine', 'remote care', 'virtual', 'mhealth', 'mobile health'],
-  ],
-  [
-    ['mental health', 'psychology', 'wellbeing'],
-    ['mental health', 'psychology', 'wellbeing', 'depression', 'anxiety', 'psychosocial'],
-  ],
-  [
-    ['diagnostics', 'diagnosis', 'testing'],
-    ['diagnostic', 'diagnosis', 'test', 'screening', 'point-of-care', 'rapid test'],
-  ],
-]
-
-function expandQuery(raw: string): { terms: string[]; concepts: string[] } {
-  const q = raw.toLowerCase().trim()
-  if (!q) return { terms: [], concepts: [] }
-
-  const extraTerms = new Set<string>()
-  const matchedConcepts: string[] = []
-
-  for (const [triggers, synonyms] of CONCEPT_MAP) {
-    const hit = triggers.some((t) => q.includes(t) || t.includes(q))
-    const synHit = !hit && synonyms.some((s) => q.includes(s) || (s.length > 3 && s.startsWith(q)))
-    if (hit || synHit) {
-      matchedConcepts.push(triggers[0])
-      synonyms.forEach((s) => extraTerms.add(s))
-    }
-  }
-
-  return {
-    terms: [q, ...Array.from(extraTerms)],
-    concepts: matchedConcepts,
-  }
-}
 
 // ─── Suggestion types ────────────────────────────────────────────────────────
 interface Suggestion {
