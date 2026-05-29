@@ -204,7 +204,7 @@ export default function ContactPage() {
                   Response time
                 </p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                  Shubs reads every message personally. Whether you want to pitch a guest, discuss a partnership, or just say hello, get in touch.
+                  Whether you want to pitch a guest, discuss a partnership, or just say hello, we'd love to hear from you.
                 </p>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6 }}>
                   We aim to respond within a few days.
@@ -298,9 +298,25 @@ export default function ContactPage() {
                 >
                   Consulting
                 </p>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+                <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 1rem' }}>
                   Shubs takes on consulting work around clinical strategy, evidence, and market access in digital health. For enquiries, use the form to get in touch.
                 </p>
+                <a
+                  href="https://www.shubs.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    fontSize: '0.9375rem',
+                    fontWeight: 500,
+                    color: 'var(--accent-amber)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Visit shubs.me &#8599;
+                </a>
               </div>
             </div>
           </div>
