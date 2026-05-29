@@ -813,14 +813,22 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       {/* ── Episode grid ────────────────────────────────────────────────── */}
       {filtered.length > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
-          {filtered.map((episode, i) => (
-            <Fragment key={episode.id}>
-              <EpisodeCard episode={episode} />
-              {i === Math.min(5, filtered.length - 1) && (
-                <EmailSignupTile />
-              )}
-            </Fragment>
-          ))}
+          {filtered.map((episode, i) => {
+            const firstTileAt = Math.min(5, filtered.length - 1)
+            const secondTileAt = filtered.length >= 16 ? Math.floor(filtered.length * 0.6) : -1
+            return (
+              <Fragment key={episode.id}>
+                <EpisodeCard episode={episode} />
+                {i === firstTileAt && <EmailSignupTile />}
+                {i === secondTileAt && secondTileAt !== firstTileAt && (
+                  <EmailSignupTile
+                    eyebrow="Never miss an episode"
+                    title="New conversations, straight to your inbox."
+                  />
+                )}
+              </Fragment>
+            )
+          })}
         </div>
       ) : (
         <div style={{ textAlign: 'center', padding: '4rem 0' }}>

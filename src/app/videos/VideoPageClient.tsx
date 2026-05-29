@@ -804,14 +804,24 @@ export default function VideoPageClient() {
               gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
               gap: '1.75rem',
             }}>
-              {filteredVideos.map((video, i) => (
-                <Fragment key={video.id}>
-                  <VideoCard video={video} index={i} />
-                  {i === Math.min(5, filteredVideos.length - 1) && (
-                    <EmailSignupTile title="Get new videos and episodes in your inbox." />
-                  )}
-                </Fragment>
-              ))}
+              {filteredVideos.map((video, i) => {
+                const firstTileAt = Math.min(5, filteredVideos.length - 1)
+                const secondTileAt = filteredVideos.length >= 16 ? Math.floor(filteredVideos.length * 0.6) : -1
+                return (
+                  <Fragment key={video.id}>
+                    <VideoCard video={video} index={i} />
+                    {i === firstTileAt && (
+                      <EmailSignupTile title="Get new videos and episodes in your inbox." />
+                    )}
+                    {i === secondTileAt && secondTileAt !== firstTileAt && (
+                      <EmailSignupTile
+                        eyebrow="Never miss a drop"
+                        title="New videos, straight to your inbox."
+                      />
+                    )}
+                  </Fragment>
+                )
+              })}
             </div>
           ) : (
             <div style={{ textAlign: 'center', padding: '4rem 0' }}>
