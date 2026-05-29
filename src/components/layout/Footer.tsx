@@ -14,8 +14,6 @@ const navLinks = [
 export default function Footer() {
   return (
     <footer style={{ borderTop: '1px solid var(--border)' }}>
-      <ConsultingBridge variant="footer-strip" />
-
       {/* Main footer grid */}
       <div
         style={{
@@ -146,6 +144,9 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Consulting strip */}
+      <ConsultingBridge variant="footer-strip" />
+
       {/* Bottom bar */}
       <div
         style={{
@@ -162,10 +163,7 @@ export default function Footer() {
             color: 'var(--text-muted)',
           }}
         >
-          &copy; 2026 Global Perspectives on Digital Health &middot; Hosted by Dr Shubs Upadhyay &middot;{' '}
-          <Link href="/contact" style={{ color: 'var(--text-secondary)' }} className="footer-link">
-            Consulting enquiries &#8594;
-          </Link>
+          &copy; 2026 Global Perspectives on Digital Health &middot; Hosted by Dr Shubs Upadhyay
         </p>
       </div>
 
