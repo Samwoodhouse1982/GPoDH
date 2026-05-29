@@ -44,8 +44,8 @@ const CONCEPT_MAP: [string[], string[]][] = [
     ['jordan', 'lebanon', 'syria', 'palestine', 'iraq', 'amman'],
   ],
   [
-    ['funding', 'grants', 'investment', 'finance', 'donors'],
-    ['funding', 'investment', 'grant', 'finance', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
+    ['funding', 'money', 'grants', 'investment', 'finance', 'financial', 'capital', 'cash', 'donors', 'revenue', 'economics'],
+    ['funding', 'money', 'investment', 'grant', 'finance', 'financial', 'capital', 'cash', 'dollars', 'revenue', 'profit', 'roi', 'economics', 'budget', 'fundraising', 'monetisation', 'monetization', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
   ],
   [
     ['community health', 'chw', 'community health worker', 'last mile'],
@@ -144,14 +144,21 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     () =>
       new Fuse(episodes, {
         keys: [
-          { name: 'title',       weight: 0.35 },
-          { name: 'guest',       weight: 0.28 },
-          { name: 'description', weight: 0.18 },
-          { name: 'themes',      weight: 0.22 },
-          { name: 'topics',      weight: 0.18 },
-          { name: 'tags',        weight: 0.12 },
-          { name: 'guestRole',   weight: 0.12 },
-          { name: 'country',     weight: 0.12 },
+          { name: 'title',             weight: 0.35 },
+          { name: 'guest',             weight: 0.28 },
+          { name: 'description',       weight: 0.18 },
+          { name: 'themes',            weight: 0.22 },
+          { name: 'topics',            weight: 0.18 },
+          { name: 'tags',              weight: 0.12 },
+          { name: 'guestRole',         weight: 0.12 },
+          { name: 'country',           weight: 0.12 },
+          // Deeper content — transcripts and page copy. Low weights so a
+          // strong title/guest match still ranks above a passing transcript
+          // mention, but a word only ever *spoken* is still findable.
+          { name: 'pullQuote',         weight: 0.10 },
+          { name: 'timestamps.label',  weight: 0.10 },
+          { name: 'bio',               weight: 0.07 },
+          { name: 'transcript',        weight: 0.05 },
         ],
         threshold: 0.38,
         includeScore: true,

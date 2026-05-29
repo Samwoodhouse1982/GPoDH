@@ -31,8 +31,8 @@ const CONCEPT_MAP: [string[], string[]][] = [
     ['equity', 'underserved', 'disparities', 'low-income', 'lmic', 'marginalised', 'marginalized', 'excluded'],
   ],
   [
-    ['funding', 'investment', 'grants', 'donors'],
-    ['funding', 'investment', 'grant', 'finance', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
+    ['funding', 'money', 'investment', 'grants', 'donors', 'finance', 'financial', 'capital', 'cash', 'revenue', 'economics'],
+    ['funding', 'money', 'investment', 'grant', 'finance', 'financial', 'capital', 'cash', 'dollars', 'revenue', 'profit', 'roi', 'economics', 'budget', 'fundraising', 'donor', 'usaid', 'wellcome', 'gates', 'philanthropy', 'venture'],
   ],
   [
     ['usaid', 'aid cuts', 'funding cuts'],
