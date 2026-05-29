@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export const metadata: Metadata = {
@@ -207,7 +206,7 @@ export default function WorkWithUsPage() {
               ],
             },
             {
-              group: 'Live & Events',
+              group: 'Community and engagement',
               options: [
                 {
                   title: 'Webinar Hosting',
@@ -217,11 +216,6 @@ export default function WorkWithUsPage() {
                   title: 'Event Coverage',
                   description: 'On the ground at conferences and summits, capturing conversations and producing content that extends the life of the event.',
                 },
-              ],
-            },
-            {
-              group: 'Community',
-              options: [
                 {
                   title: 'Propose a Session or Speaker',
                   description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
@@ -363,7 +357,7 @@ export default function WorkWithUsPage() {
         </div>
       </div>
 
-      {/* ——— Consulting Bridge Section ——— */}
+      {/* ——— Consulting Section ——— */}
       <section style={{ padding: '3.5rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ maxWidth: 'var(--content-width)' }}>
@@ -378,16 +372,87 @@ export default function WorkWithUsPage() {
                   lineHeight: 1.2,
                 }}
               >
-                Need more than a podcast appearance?
+                From promising to proven.
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
-                Shubs provides strategic consulting to companies, investors, and global organisations working in digital health. If you need clinical leadership, evidence strategy, market access support, or help navigating a specific health system context, that is the right conversation to have.
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.0625rem', marginBottom: '2rem', maxWidth: '46ch' }}>
+                Shubs provides senior clinical and product counsel for clinical AI, for teams where both speed and evidence matter. That&rsquo;s the difference between a product that&rsquo;s promising and one that&rsquo;s proven.
               </p>
             </ScrollReveal>
+
             <ScrollReveal delay={150}>
-              <ConsultingBridge variant="card" />
+              <div
+                style={{
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border-accent)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.12em',
+                    color: 'var(--accent-coral)',
+                    textTransform: 'uppercase',
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  Who Shubs works with
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', marginBottom: '1.75rem' }}>
+                  {['Digital health companies', 'Philanthropy, foundations, and impact investors'].map((who) => (
+                    <div key={who} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                      <span
+                        aria-hidden
+                        style={{
+                          color: 'var(--accent-coral)',
+                          fontWeight: 700,
+                          lineHeight: 1.6,
+                          flexShrink: 0,
+                        }}
+                      >
+                        &#8594;
+                      </span>
+                      <span style={{ fontSize: '1rem', color: 'var(--text-primary)', fontWeight: 500, lineHeight: 1.6 }}>
+                        {who}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <p
+                  style={{
+                    fontSize: '0.875rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: 1.6,
+                    marginBottom: '1.75rem',
+                    paddingTop: '1.25rem',
+                    borderTop: '1px solid var(--border)',
+                  }}
+                >
+                  Trusted by clinical, tech, and product leaders.
+                </p>
+
+                <a
+                  href="/contact"
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.7rem 1.5rem',
+                    background: 'var(--accent-coral)',
+                    color: '#fff',
+                    borderRadius: 'var(--radius-md)',
+                    fontWeight: 500,
+                    fontSize: '0.9375rem',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Reach out to Shubs ›
+                </a>
+              </div>
             </ScrollReveal>
           </div>
         </div>
