@@ -334,7 +334,24 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
               </div>
 
               {/* Links */}
-              <div style={{ display: 'flex', gap: '1.25rem' }}>
+              <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <a
+                  href="https://www.shubs.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.55rem 1.25rem',
+                    background: 'var(--accent-coral)',
+                    color: '#fff',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Visit shubs.me &#8594;
+                </a>
                 <a
                   href={SOCIAL.linkedin}
                   target="_blank"
