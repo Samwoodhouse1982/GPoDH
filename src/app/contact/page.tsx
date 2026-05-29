@@ -277,7 +277,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Consulting / SandiQ inline */}
+              {/* Consulting inline */}
               <div
                 style={{
                   padding: '1.5rem',
@@ -298,21 +298,9 @@ export default function ContactPage() {
                 >
                   Consulting
                 </p>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
-                  Shubs is Founding Partner of SandiQ Global. For consulting enquiries around clinical strategy, evidence, or market access in digital health, visit SandiQ directly.
+                <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+                  Shubs takes on consulting work around clinical strategy, evidence, and market access in digital health. For enquiries, use the form to get in touch.
                 </p>
-                <a
-                  href="https://sandiq.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: 'var(--accent-amber)',
-                    fontWeight: 500,
-                    fontSize: '0.9375rem',
-                  }}
-                >
-                  sandiq.com &#8599;
-                </a>
               </div>
             </div>
           </div>

@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import Fuse from 'fuse.js'
 import { videos, CATEGORY_LABELS } from '@/lib/videos'
 import type { VideoCategory } from '@/lib/videos'
 import VideoCard from '@/components/ui/VideoCard'
+import EmailSignupTile from '@/components/ui/EmailSignupTile'
 
 // ─── Semantic concept map ─────────────────────────────────────────────────────
 const CONCEPT_MAP: [string[], string[]][] = [
@@ -804,7 +805,12 @@ export default function VideoPageClient() {
               gap: '1.75rem',
             }}>
               {filteredVideos.map((video, i) => (
-                <VideoCard key={video.id} video={video} index={i} />
+                <Fragment key={video.id}>
+                  <VideoCard video={video} index={i} />
+                  {i === Math.min(5, filteredVideos.length - 1) && (
+                    <EmailSignupTile title="Get new videos and episodes in your inbox." />
+                  )}
+                </Fragment>
               ))}
             </div>
           ) : (

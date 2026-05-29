@@ -296,7 +296,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   Shubs is a physician, digital health strategist, and the founder of this podcast. He trained in medicine in the UK and has spent the past decade working at the intersection of clinical practice, health technology, and global health systems.
                 </p>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
-                  His consulting work through SandiQ Global takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.
+                  His consulting work takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.
                 </p>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
                   He started GPODH because the conversations he was having privately deserved a much wider audience. He noticed that the same founders, the same researchers, the same clinicians kept saying the same thing: nobody is talking about this publicly, and nobody outside our region seems to care.
@@ -319,7 +319,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   border: '1px solid var(--border)',
                 }}
               >
-                {['Physician', 'Digital Health Strategist', 'Founding Partner, SandiQ Global', 'Podcast Host'].map((cred) => (
+                {['Physician', 'Digital Health Strategist', 'Consultant', 'Podcast Host'].map((cred) => (
                   <span
                     key={cred}
                     style={{

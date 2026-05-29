@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import SandiQBridge from '@/components/ui/SandiQBridge'
+import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export const metadata: Metadata = {
@@ -363,7 +363,7 @@ export default function WorkWithUsPage() {
         </div>
       </div>
 
-      {/* ——— SandiQ Bridge Section ——— */}
+      {/* ——— Consulting Bridge Section ——— */}
       <section style={{ padding: '3.5rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ maxWidth: 'var(--content-width)' }}>
@@ -383,11 +383,11 @@ export default function WorkWithUsPage() {
             </ScrollReveal>
             <ScrollReveal delay={100}>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
-                Through SandiQ Global, Shubs and the broader SandiQ network provide strategic consulting to companies, investors, and global organisations working in digital health. If you need clinical leadership, evidence strategy, market access support, or help navigating a specific health system context, that is the right conversation to have.
+                Shubs provides strategic consulting to companies, investors, and global organisations working in digital health. If you need clinical leadership, evidence strategy, market access support, or help navigating a specific health system context, that is the right conversation to have.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={150}>
-              <SandiQBridge variant="card" />
+              <ConsultingBridge variant="card" />
             </ScrollReveal>
           </div>
         </div>

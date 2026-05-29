@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
+import { useState, useMemo, useRef, useEffect, useCallback, Fragment } from 'react'
 import Link from 'next/link'
 import Fuse from 'fuse.js'
 import EpisodeCard from '@/components/ui/EpisodeCard'
+import EmailSignupTile from '@/components/ui/EmailSignupTile'
 import { Episode } from '@/lib/episodes'
 
 interface EpisodeFilterProps {
@@ -812,8 +813,13 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       {/* ── Episode grid ────────────────────────────────────────────────── */}
       {filtered.length > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
-          {filtered.map((episode) => (
-            <EpisodeCard key={episode.id} episode={episode} />
+          {filtered.map((episode, i) => (
+            <Fragment key={episode.id}>
+              <EpisodeCard episode={episode} />
+              {i === Math.min(5, filtered.length - 1) && (
+                <EmailSignupTile />
+              )}
+            </Fragment>
           ))}
         </div>
       ) : (

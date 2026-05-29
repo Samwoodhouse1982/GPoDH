@@ -6,11 +6,11 @@ export const SITE = {
   email: 'hello@shubs.me',
 }
 
-export const SANDIQ = {
-  url: 'https://sandiq.com',
+export const CONSULTING = {
+  url: '/contact',
   ctaText: 'Working on something in digital health?',
-  ctaLinkText: 'Visit SandiQ',
-  description: 'Shubs is Founding Partner of SandiQ Global, a digital health consultancy working with startups, investors, and global organisations.',
+  ctaLinkText: 'Get in touch',
+  description: 'Shubs takes on consulting work with startups, investors, and global organisations across digital health.',
 }
 
 export const PLATFORMS = {

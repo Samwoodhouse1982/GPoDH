@@ -1,10 +1,11 @@
-import { SANDIQ } from '@/lib/constants'
+import Link from 'next/link'
+import { CONSULTING } from '@/lib/constants'
 
-interface SandiQBridgeProps {
+interface ConsultingBridgeProps {
   variant: 'inline' | 'card' | 'footer-strip'
 }
 
-export default function SandiQBridge({ variant }: SandiQBridgeProps) {
+export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
   if (variant === 'inline') {
     return (
       <p
@@ -14,17 +15,13 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
           fontSize: '0.875rem',
         }}
       >
-        {SANDIQ.ctaText}{' '}
-        <a
-          href={SANDIQ.url}
-          target="_blank"
-          rel="noopener noreferrer"
+        {CONSULTING.ctaText}{' '}
+        <Link
+          href={CONSULTING.url}
           style={{ color: 'var(--accent-coral)', fontWeight: 500 }}
         >
-          {SANDIQ.ctaLinkText} &#8599;
-        </a>
-        {' '}
-        <span style={{ color: 'var(--text-muted)' }}>sandiq.com</span>
+          {CONSULTING.ctaLinkText} &#8594;
+        </Link>
       </p>
     )
   }
@@ -47,7 +44,7 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             marginBottom: '1rem',
           }}
         >
-          {SANDIQ.description}
+          {CONSULTING.description}
         </p>
         <p
           style={{
@@ -56,12 +53,10 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             marginBottom: '0.5rem',
           }}
         >
-          {SANDIQ.ctaText}
+          {CONSULTING.ctaText}
         </p>
-        <a
-          href={SANDIQ.url}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={CONSULTING.url}
           style={{
             color: 'var(--accent-coral)',
             fontWeight: 500,
@@ -71,11 +66,8 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             gap: '0.25rem',
           }}
         >
-          &#8594; {SANDIQ.ctaLinkText}{' '}
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>
-            sandiq.com &#8599;
-          </span>
-        </a>
+          &#8594; {CONSULTING.ctaLinkText}
+        </Link>
       </div>
     )
   }
@@ -105,7 +97,7 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             marginBottom: '0.75rem',
           }}
         >
-          CONSULTING &middot; sandiq.com
+          CONSULTING
         </p>
         <p
           style={{
@@ -116,12 +108,10 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             marginBottom: '1.25rem',
           }}
         >
-          Shubs and the SandiQ network work directly with companies and investors on clinical leadership, evidence strategy, and market access.
+          Shubs works directly with companies and investors on clinical leadership, evidence strategy, and market access.
         </p>
-        <a
-          href={SANDIQ.url}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={CONSULTING.url}
           style={{
             color: 'var(--accent-amber)',
             fontWeight: 500,
@@ -131,11 +121,8 @@ export default function SandiQBridge({ variant }: SandiQBridgeProps) {
             gap: '0.25rem',
           }}
         >
-          &#8594; Work with SandiQ{' '}
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>
-            sandiq.com &#8599;
-          </span>
-        </a>
+          &#8594; Work with Shubs
+        </Link>
       </div>
     </div>
   )

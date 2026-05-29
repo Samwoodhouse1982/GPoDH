@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import SandiQBridge from '@/components/ui/SandiQBridge'
+import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import { SITE, PLATFORMS, SOCIAL } from '@/lib/constants'
 
@@ -14,7 +14,7 @@ const navLinks = [
 export default function Footer() {
   return (
     <footer style={{ borderTop: '1px solid var(--border)' }}>
-      <SandiQBridge variant="footer-strip" />
+      <ConsultingBridge variant="footer-strip" />
 
       {/* Main footer grid */}
       <div
@@ -163,16 +163,9 @@ export default function Footer() {
           }}
         >
           &copy; 2026 Global Perspectives on Digital Health &middot; Hosted by Dr Shubs Upadhyay &middot;{' '}
-          Consulting:{' '}
-          <a
-            href="https://sandiq.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: 'var(--text-secondary)' }}
-            className="footer-link"
-          >
-            sandiq.com &#8599;
-          </a>
+          <Link href="/contact" style={{ color: 'var(--text-secondary)' }} className="footer-link">
+            Consulting enquiries &#8594;
+          </Link>
         </p>
       </div>
 

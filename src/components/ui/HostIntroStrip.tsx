@@ -21,7 +21,7 @@ export default function HostIntroStrip() {
             <div style={{ flex: 1, minWidth: '220px' }}>
               <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.625rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Your host</p>
               <p style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>Dr Shubs Upadhyay</p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '52ch' }}>Physician, digital health strategist, and Founding Partner of SandiQ Global. He started GPODH because the conversations he was having privately deserved a much wider audience.</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '52ch' }}>Physician and digital health strategist. He started GPODH because the conversations he was having privately deserved a much wider audience.</p>
             </div>
           </ScrollReveal>
           <ScrollReveal delay={150}>

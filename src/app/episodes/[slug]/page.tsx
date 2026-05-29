@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { withUtm } from '@/lib/utm'
-import SandiQBridge from '@/components/ui/SandiQBridge'
+import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import EmailSignup from '@/components/sections/EmailSignup'
 import TranscriptToggle from '@/components/ui/TranscriptToggle'
 import RelatedEpisodes from '@/components/ui/RelatedEpisodes'
@@ -881,7 +881,7 @@ export default async function EpisodePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ——— SandiQ bridge ——— */}
+      {/* ——— Consulting bridge ——— */}
       <section
         style={{
           background: 'var(--bg-secondary)',
@@ -932,11 +932,11 @@ export default async function EpisodePage({ params }: Props) {
                 maxWidth: '44ch',
               }}
             >
-              Shubs consults through SandiQ Global on clinical leadership, evidence strategy, and digital health market access. If this conversation sparked something, it is worth a conversation.
+              Shubs consults on clinical leadership, evidence strategy, and digital health market access. If this conversation sparked something, it is worth a conversation.
             </p>
           </div>
           <div>
-            <SandiQBridge variant="card" />
+            <ConsultingBridge variant="card" />
           </div>
         </div>
       </section>
