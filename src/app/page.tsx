@@ -9,6 +9,7 @@ import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
 import OrgMarquee from '@/components/ui/OrgMarquee'
 import HostIntroStrip from '@/components/ui/HostIntroStrip'
 import TrailerModal from '@/components/ui/TrailerModal'
+import FeaturedEpisodeBanner from '@/components/ui/FeaturedEpisodeBanner'
 import { episodes } from '@/lib/episodes'
 import { videos } from '@/lib/videos'
 
@@ -219,6 +220,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ——— Featured latest episode banner ——— */}
+      {latestEpisodes[0] && <FeaturedEpisodeBanner episode={latestEpisodes[0]} />}
 
       {/* ——— Gradient divider ——— */}
       <div style={{ height: '3px', background: 'linear-gradient(to right, var(--accent-coral), #3EC9A7, var(--accent-coral))' }} />
