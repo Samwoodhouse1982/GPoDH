@@ -31,8 +31,7 @@ export default function EpisodesPage() {
       {/* Hero */}
       <section
         style={{
-          paddingTop: '8rem',
-          paddingBottom: '0',
+          padding: '10rem var(--gutter) 0',
           overflow: 'hidden',
           borderBottom: '1px solid var(--border)',
         }}
@@ -41,7 +40,7 @@ export default function EpisodesPage() {
           style={{
             maxWidth: 'var(--max-width)',
             margin: '0 auto',
-            padding: '0 var(--gutter) 4rem',
+            paddingBottom: '4rem',
             display: 'flex',
             alignItems: 'center',
             gap: '3rem',

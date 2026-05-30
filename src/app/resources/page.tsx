@@ -250,7 +250,7 @@ export default function ResourcesPage() {
       {/* Hero */}
       <section
         style={{
-          padding: '8rem var(--gutter) 4rem',
+          padding: '10rem var(--gutter) 4rem',
           borderBottom: '1px solid var(--border)',
         }}
       >

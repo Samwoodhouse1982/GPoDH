@@ -286,25 +286,25 @@ export default function VideoPageClient() {
       )}
 
       {/* ——— Hero ——— */}
-      <section style={{ background: 'var(--bg-dark)', padding: '8rem var(--gutter) 4rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+      <section style={{ padding: '10rem var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.6875rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
               Video
             </p>
-            <h1 style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.1, margin: 0 }}>
+            <h1 style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.1, margin: 0 }}>
               Talks, panels, and conversations.
             </h1>
           </div>
           <Link
             href="/episodes"
-            style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
+            style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
             className="videos-episodes-link"
           >
             Prefer audio? Browse all episodes &#8594;
           </Link>
         </div>
-        <style>{`.videos-episodes-link:hover { color: rgba(255,255,255,0.85) !important; }`}</style>
+        <style>{`.videos-episodes-link:hover { color: var(--accent-coral) !important; }`}</style>
       </section>
 
       {/* ——— Featured ——— */}
