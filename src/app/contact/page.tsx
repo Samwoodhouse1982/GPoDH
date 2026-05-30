@@ -54,18 +54,21 @@ export default function ContactPage() {
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ marginBottom: '3rem' }}>
             <p
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.6875rem',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.15em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
+                animationDelay: '0ms',
               }}
             >
               CONTACT
             </p>
             <h1
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
                 fontSize: 'clamp(2.5rem, 5vw, 4rem)',
@@ -73,6 +76,7 @@ export default function ContactPage() {
                 color: 'var(--text-primary)',
                 lineHeight: 1.1,
                 marginBottom: '1rem',
+                animationDelay: '100ms',
               }}
             >
               Get in touch.
