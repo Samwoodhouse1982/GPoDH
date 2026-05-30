@@ -312,7 +312,7 @@ export default function VideoPageClient() {
       </section>
 
       {/* ——— Featured ——— */}
-      <section style={{ background: 'var(--bg-dark)', padding: '4rem var(--gutter) 5rem' }}>
+      <section style={{ padding: '4rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
 
           {/* Label row */}
@@ -400,7 +400,7 @@ export default function VideoPageClient() {
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.6875rem',
                 letterSpacing: '0.12em',
-                color: 'rgba(255,255,255,0.45)',
+                color: 'var(--text-muted)',
                 textTransform: 'uppercase',
               }}>
                 {featured.date}
@@ -410,7 +410,7 @@ export default function VideoPageClient() {
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
                 fontSize: 'clamp(1.75rem, 3vw, 2.75rem)',
                 fontWeight: 700,
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 lineHeight: 1.15,
                 margin: 0,
               }}>
@@ -419,7 +419,7 @@ export default function VideoPageClient() {
 
               <p style={{
                 fontSize: '0.9375rem',
-                color: 'rgba(255,255,255,0.65)',
+                color: 'var(--text-secondary)',
                 lineHeight: 1.7,
                 margin: 0,
                 display: '-webkit-box',
@@ -436,9 +436,9 @@ export default function VideoPageClient() {
                     <span key={tag} style={{
                       padding: '0.2rem 0.65rem',
                       borderRadius: '100px',
-                      border: '1px solid rgba(255,255,255,0.15)',
+                      border: '1px solid var(--border)',
                       fontSize: '0.75rem',
-                      color: 'rgba(255,255,255,0.55)',
+                      color: 'var(--text-muted)',
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                     }}>
                       {tag}
