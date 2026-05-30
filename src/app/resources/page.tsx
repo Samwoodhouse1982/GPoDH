@@ -254,7 +254,8 @@ export default function ResourcesPage() {
           borderBottom: '1px solid var(--border)',
         }}
       >
-        <div style={{ maxWidth: 'var(--content-width)', margin: '0 auto' }}>
+        <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
+          <div style={{ maxWidth: 'var(--content-width)' }}>
           <ScrollReveal>
             <p
               style={{
@@ -277,7 +278,7 @@ export default function ResourcesPage() {
                 fontWeight: 700,
                 color: 'var(--text-primary)',
                 lineHeight: 1.1,
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
               }}
             >
               Useful reading. Essential organisations.
@@ -288,6 +289,7 @@ export default function ResourcesPage() {
               An ongoing list of resources we collect along the way. Articles, organisations, frameworks, and funding sources at the intersection of digital health and underserved communities.
             </p>
           </ScrollReveal>
+          </div>
         </div>
       </section>
 

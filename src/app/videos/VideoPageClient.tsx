@@ -286,10 +286,10 @@ export default function VideoPageClient() {
       )}
 
       {/* ——— Hero ——— */}
-      <section style={{ background: 'var(--bg-dark)', padding: '8rem var(--gutter) 3rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+      <section style={{ background: 'var(--bg-dark)', padding: '8rem var(--gutter) 4rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.6875rem', letterSpacing: '0.15em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+            <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.6875rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
               Video
             </p>
             <h1 style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.1, margin: 0 }}>

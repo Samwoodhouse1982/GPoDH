@@ -56,7 +56,7 @@ export default function EpisodesPage() {
                 letterSpacing: '0.12em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '1.5rem',
+                marginBottom: '1.25rem',
               }}
             >
               ALL EPISODES

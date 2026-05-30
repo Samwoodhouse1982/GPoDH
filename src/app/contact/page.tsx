@@ -50,7 +50,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <section style={{ padding: '8rem var(--gutter) 5rem' }}>
+      <section style={{ padding: '8rem var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ marginBottom: '3rem' }}>
             <p
