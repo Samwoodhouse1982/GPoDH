@@ -121,8 +121,10 @@ export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
             Senior clinical &amp; product counsel for clinical AI.
           </p>
         </div>
-        <Link
-          href={CONSULTING.url}
+        <a
+          href="https://www.shubs.me"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             flexShrink: 0,
             display: 'inline-flex',
@@ -138,7 +140,7 @@ export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
           }}
         >
           Work with Shubs &#8594;
-        </Link>
+        </a>
       </div>
     </div>
   )
