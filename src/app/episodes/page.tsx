@@ -49,40 +49,45 @@ export default function EpisodesPage() {
           {/* Text */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <p
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.6875rem',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.15em',
                 color: 'var(--accent-coral)',
                 textTransform: 'uppercase',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
+                animationDelay: '0ms',
               }}
             >
               ALL EPISODES
             </p>
 
             <h1
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
+                fontSize: 'clamp(3rem, 7vw, 5.5rem)',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
                 lineHeight: 1.05,
                 marginBottom: '0.25rem',
-                whiteSpace: 'nowrap',
+                animationDelay: '100ms',
               }}
             >
               Every conversation.
             </h1>
             <p
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
+                fontSize: 'clamp(3rem, 7vw, 5.5rem)',
                 fontWeight: 400,
                 fontStyle: 'italic',
                 color: 'var(--accent-coral)',
                 lineHeight: 1.05,
                 marginBottom: '2rem',
+                animationDelay: '160ms',
               }}
             >
               Every continent.
@@ -90,6 +95,7 @@ export default function EpisodesPage() {
 
             {/* Episode count */}
             <p
+              className="animate-fade-up"
               style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.75rem',
@@ -97,16 +103,17 @@ export default function EpisodesPage() {
                 color: 'var(--text-muted)',
                 textTransform: 'uppercase',
                 marginBottom: '1.75rem',
+                animationDelay: '220ms',
               }}
             >
               <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{episodeCount}</span>
               {' '}Episodes and counting
             </p>
 
-            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '36rem', marginBottom: '1.5rem' }}>
+            <p className="animate-fade-up" style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '36rem', marginBottom: '1.5rem', animationDelay: '280ms' }}>
               Clinicians, founders, researchers, and policy makers doing the hard work in digital health across under-resourced settings. The lessons travel.
             </p>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+            <p className="animate-fade-up" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6, animationDelay: '340ms' }}>
               New to the show?{' '}
               <a
                 href="/episodes/health-data-poverty-part-1-with-xiao-liu"
@@ -118,7 +125,7 @@ export default function EpisodesPage() {
           </div>
 
           {/* Scrolling speaker columns — hidden on mobile */}
-          <div className="episodes-marquee" style={{ flexShrink: 0 }}>
+          <div className="episodes-marquee animate-fade-up" style={{ flexShrink: 0, animationDelay: '300ms' }}>
             <SpeakerMarquee speakers={speakers} />
           </div>
           <style>{`
