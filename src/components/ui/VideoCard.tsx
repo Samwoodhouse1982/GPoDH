@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Video } from '@/lib/videos'
 import { CATEGORY_LABELS } from '@/lib/videos'
 
@@ -32,11 +33,12 @@ export default function VideoCard({ video, index = 0 }: { video: Video; index?: 
     >
       {/* Thumbnail */}
       <div style={{ position: 'relative', aspectRatio: '16/9', background: '#0D1E1C', overflow: 'hidden' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={thumb}
           alt={video.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: video.thumbnailPosition ?? 'center', display: 'block' }}
+          fill
+          sizes="(max-width: 768px) 100vw, 400px"
+          style={{ objectFit: 'cover', objectPosition: video.thumbnailPosition ?? 'center' }}
         />
         {/* Play overlay */}
         <div

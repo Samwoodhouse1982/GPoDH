@@ -52,7 +52,7 @@ export default function Footer() {
           </div>
 
           {/* Center: nav links */}
-          <nav>
+          <nav aria-label="Footer">
             <p
               style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',

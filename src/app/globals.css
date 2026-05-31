@@ -12,7 +12,7 @@
   --color-accent-coral-dim: #B84D38;
   --color-text-primary: #0D1E1C;
   --color-text-secondary: #254E48;
-  --color-text-muted: #4A6E6A;
+  --color-text-muted: #3D5B56;
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
@@ -30,7 +30,7 @@
   --accent-coral-dim: #B84D38;
   --text-primary:     #0D1E1C;
   --text-secondary:   #254E48;
-  --text-muted:       #4A6E6A;
+  --text-muted:       #3D5B56;
   --border:           rgba(13, 30, 28, 0.15);
   --border-accent:    rgba(212, 97, 74, 0.35);
   --font-display:     'Cormorant Garamond', Georgia, serif;
@@ -118,4 +118,43 @@ button {
 .animate-fade-up {
   animation: fadeUp 0.6s ease forwards;
   opacity: 0;
+}
+
+/* Skip to content — visible only on keyboard focus */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  background: var(--bg-dark);
+  color: #fff;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  transition: transform var(--transition-base);
+}
+.skip-link:focus {
+  transform: translate(-50%, 0.5rem);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-fade-up {
+    opacity: 1 !important;
+  }
 }

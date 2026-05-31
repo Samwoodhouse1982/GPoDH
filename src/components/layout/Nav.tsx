@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import SubscribeModal from '@/components/ui/SubscribeModal'
 
@@ -97,16 +98,19 @@ export default function Nav() {
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'block' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/logo-gpodh.png"
               alt="GPODH: Global Perspectives on Digital Health"
+              width={174}
+              height={48}
+              priority
               style={{ height: '48px', width: 'auto', display: 'block' }}
             />
           </Link>
 
           {/* Desktop Nav */}
           <nav
+            aria-label="Primary"
             className="desktop-nav"
             style={{
               display: 'flex',
@@ -200,7 +204,7 @@ export default function Nav() {
             gap: '2.5rem',
           }}
         >
-          <nav style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
+          <nav aria-label="Mobile" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
             {navLinks.map((link) => {
               const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
               return (

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Episode } from '@/lib/episodes'
 
 interface EpisodeCardProps {
@@ -55,6 +56,7 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
       {/* Artwork */}
       <div
         style={{
+          position: 'relative',
           aspectRatio: '1',
           background: episode.artworkUrl ? 'var(--bg-surface)' : palette.artworkBg,
           display: 'flex',
@@ -64,11 +66,12 @@ export default function EpisodeCard({ episode }: EpisodeCardProps) {
         }}
       >
         {episode.artworkUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={episode.artworkUrl}
             alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            fill
+            sizes="(max-width: 768px) 100vw, 380px"
+            style={{ objectFit: 'cover' }}
           />
         ) : (
           <span
