@@ -202,6 +202,9 @@ export default function Nav() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '2.5rem',
+            paddingTop: 'calc(var(--topbar-height) + 4.5rem)',
+            paddingBottom: '2rem',
+            overflowY: 'auto',
           }}
         >
           <nav aria-label="Mobile" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
