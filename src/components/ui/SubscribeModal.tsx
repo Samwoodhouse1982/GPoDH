@@ -96,7 +96,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
         </button>
 
         {submitted ? (
-          <>
+          <div role="status" aria-live="polite">
             <p
               style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
@@ -111,7 +111,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
             <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               New episodes will land in your inbox when they drop. No spam, ever.
             </p>
-          </>
+          </div>
         ) : (
           <>
             <p
@@ -143,6 +143,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
               <input
                 ref={inputRef}
                 type="email"
+                aria-label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"

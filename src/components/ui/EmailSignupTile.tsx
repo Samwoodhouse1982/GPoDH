@@ -70,6 +70,8 @@ export default function EmailSignupTile({
 
       {submitted ? (
         <div
+          role="status"
+          aria-live="polite"
           style={{
             background: 'var(--bg-card)',
             borderRadius: 'var(--radius-md)',

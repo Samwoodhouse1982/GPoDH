@@ -59,6 +59,8 @@ export default function EmailSignup() {
 
         {submitted ? (
           <div
+            role="status"
+            aria-live="polite"
             style={{
               background: 'var(--bg-card)',
               border: '1px solid var(--border-accent)',
@@ -87,6 +89,7 @@ export default function EmailSignup() {
           >
             <input
               type="email"
+              aria-label="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"

@@ -95,6 +95,8 @@ export default function ContactPage() {
             <div>
               {submitted ? (
                 <div
+                  role="status"
+                  aria-live="polite"
                   style={{
                     background: 'var(--bg-card)',
                     border: '1px solid var(--border-accent)',
@@ -171,6 +173,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={loading}
+                    aria-busy={loading}
                     style={{
                       padding: '0.875rem 1.75rem',
                       background: 'var(--accent-coral)',
