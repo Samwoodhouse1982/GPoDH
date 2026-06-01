@@ -40,9 +40,11 @@ export interface Episode {
 }
 
 // ─── Episode library ──────────────────────────────────────────────────────────
-// The list lives in src/data/episodes.json so it can be edited in the CMS
-// (see public/admin) and by hand. Order is preserved as authored; newest first.
-export const episodes: Episode[] = episodesData as unknown as Episode[]
+// The list lives in src/data/episodes.json (under the "episodes" key) so it can
+// be edited in the CMS (see public/admin) and by hand. Order is preserved as
+// authored; newest first.
+export const episodes: Episode[] = (episodesData as { episodes: unknown[] })
+  .episodes as unknown as Episode[]
 
 export const ALL_THEMES = [...new Set(episodes.flatMap((e) => e.themes))].sort()
 export const ALL_COUNTRIES = [...new Set(episodes.map((e) => e.country))].sort()

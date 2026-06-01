@@ -1,0 +1,86 @@
+# Decap CMS configuration for GPODH.
+#
+# Auth: GitHub backend via a self-hosted OAuth handshake (see src/app/api/auth
+# and src/app/api/callback). You will need a GitHub OAuth App and two env vars
+# in Vercel: GITHUB_OAUTH_CLIENT_ID and GITHUB_OAUTH_CLIENT_SECRET.
+#
+# IMPORTANT: set base_url to your canonical production origin (the same domain
+# you open /admin on). Update the GitHub OAuth App callback URL to match
+# <base_url>/api/callback.
+
+backend:
+  name: github
+  repo: samwoodhouse1982/gpodh
+  branch: master
+  base_url: https://www.gpodh.org
+  auth_endpoint: api/auth
+
+# Episode guest photos upload into public/guests and are referenced as /guests/<file>.
+media_folder: public/guests
+public_folder: /guests
+
+# Commit straight to master. Switch to an editorial workflow (PRs) by setting
+# `publish_mode: editorial_workflow` if you'd rather review before going live.
+# publish_mode: editorial_workflow
+
+collections:
+  - name: content
+    label: Content
+    files:
+      - name: episodes
+        label: Episodes
+        file: src/data/episodes.json
+        format: json
+        description: >-
+          The podcast episode library. Add a new episode with "Add episodes",
+          then drag it to the top of the list so it appears first. Tick
+          "Featured" to pin it as the homepage banner.
+        fields:
+          - name: episodes
+            label: Episodes
+            label_singular: Episode
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: featured, label: 'Featured (pin as homepage banner)', widget: boolean, required: false, default: false }
+              - { name: title, label: Title, widget: string }
+              - { name: slug, label: 'Slug (URL, no spaces)', widget: string, hint: 'e.g. my-episode-title — becomes /episodes/my-episode-title' }
+              - { name: id, label: 'ID (unique)', widget: string }
+              - { name: episodeNumber, label: Episode number, widget: number, required: false, value_type: int }
+              - { name: guest, label: Guest, widget: string }
+              - { name: guestRole, label: Guest role, widget: string }
+              - { name: date, label: 'Date (e.g. Apr 2026)', widget: string }
+              - { name: duration, label: 'Duration (e.g. 1hr 8min)', widget: string, required: false }
+              - { name: description, label: Description, widget: text }
+              - { name: url, label: 'Canonical URL', widget: string }
+              - { name: artworkUrl, label: Guest photo, widget: image, required: false, choose_url: true }
+              - { name: country, label: Country, widget: string }
+              - name: themes
+                label: Themes
+                widget: list
+                field: { name: theme, label: Theme, widget: string }
+              - name: tags
+                label: Tags
+                widget: list
+                field: { name: tag, label: Tag, widget: string }
+              - { name: pullQuote, label: Pull quote, widget: text, required: false }
+              - { name: bio, label: Guest bio, widget: text, required: false }
+              - name: topics
+                label: Key topics
+                widget: list
+                required: false
+                field: { name: topic, label: Topic, widget: text }
+              - name: timestamps
+                label: Timestamps
+                widget: list
+                required: false
+                fields:
+                  - { name: time, label: Time, widget: string }
+                  - { name: label, label: Label, widget: string }
+              - { name: transcript, label: Transcript, widget: text, required: false }
+              - { name: transistorUrl, label: 'Transistor share URL', widget: string, required: false }
+              - { name: spotifyEpisodeId, label: 'Spotify episode ID', widget: string, required: false }
+              - { name: youtubeVideoId, label: 'YouTube video ID', widget: string, required: false }
+              - { name: audioUrl, label: 'MP3 URL', widget: string, required: false }
+              - { name: teaserVideoUrl, label: 'Teaser video URL', widget: string, required: false }
+              - { name: guestLinkedIn, label: 'Guest LinkedIn URL', widget: string, required: false }
