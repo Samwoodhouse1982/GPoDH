@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import Fuse from 'fuse.js'
-import { videos, CATEGORY_LABELS } from '@/lib/videos'
+import { videos, CATEGORY_LABELS, featuredVideo } from '@/lib/videos'
 import type { VideoCategory } from '@/lib/videos'
 import VideoCard from '@/components/ui/VideoCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
@@ -15,8 +15,8 @@ const ALL_CATEGORIES: VideoCategory[] = ['talk', 'panel', 'explainer', 'clip']
 const TRAILER_ID = '29' // Always pinned to first grid position
 
 export default function VideoPageClient() {
-  // ── Featured (static — always first video) ───────────────────────────────
-  const featured = videos[0]
+  // ── Featured (flagged video, else newest) ────────────────────────────────
+  const featured = featuredVideo
 
   // ── Surprise modal state ──────────────────────────────────────────────────
   const [surpriseVideo, setSurpriseVideo] = useState<typeof videos[0] | null>(null)

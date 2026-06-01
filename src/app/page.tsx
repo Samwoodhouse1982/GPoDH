@@ -100,6 +100,9 @@ export default function HomePage() {
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
     .slice(0, 6)
 
+  // Featured banner: an explicitly flagged episode, otherwise the newest.
+  const featuredEpisode = episodes.find((e) => e.featured) ?? latestEpisodes[0]
+
 
   return (
     <>
@@ -222,7 +225,7 @@ export default function HomePage() {
       </section>
 
       {/* ——— Featured latest episode banner ——— */}
-      {latestEpisodes[0] && <FeaturedEpisodeBanner episode={latestEpisodes[0]} />}
+      {featuredEpisode && <FeaturedEpisodeBanner episode={featuredEpisode} />}
 
       {/* ——— Gradient divider ——— */}
       <div style={{ height: '3px', background: 'linear-gradient(to right, var(--accent-coral), #3EC9A7, var(--accent-coral))' }} />

@@ -34,6 +34,7 @@ export interface Episode {
   pullQuote?: string
   transcript?: string
   guestLinkedIn?: string
+  featured?: boolean          // pin as the featured episode; otherwise the newest is used
 }
 
 export const episodes: Episode[] = [
