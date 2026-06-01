@@ -33,7 +33,7 @@ export default function VideoPageClient() {
   // Augment each video with its transcript so search can match words spoken
   // in the video, not just the title/tags/description.
   const searchDocs = useMemo(
-    () => videos.map((v) => ({ ...v, transcript: videoTranscripts[v.slug] ?? '' })),
+    () => videos.map((v) => ({ ...v, transcript: v.transcript ?? videoTranscripts[v.slug] ?? '' })),
     []
   )
 

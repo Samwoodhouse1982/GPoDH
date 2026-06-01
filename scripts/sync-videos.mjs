@@ -74,7 +74,8 @@ async function fetchFeed(channelId) {
 }
 
 async function main() {
-  const videos = JSON.parse(await readFile(DATA_PATH, 'utf8'))
+  const store = JSON.parse(await readFile(DATA_PATH, 'utf8'))
+  const videos = store.videos
   const existingIds = new Set(videos.map((v) => v.youtubeVideoId))
   const existingSlugs = new Set(videos.map((v) => v.slug))
   let maxId = videos.reduce((m, v) => Math.max(m, Number(v.id) || 0), 0)
@@ -113,7 +114,7 @@ async function main() {
     added.push(entry)
   }
 
-  await writeFile(DATA_PATH, JSON.stringify(videos, null, 2) + '\n')
+  await writeFile(DATA_PATH, JSON.stringify(store, null, 2) + '\n')
 
   const summary = added.map((v) => `- ${v.title} (${v.youtubeVideoId})`).join('\n')
   console.log(`Added ${added.length} video(s):\n${summary}`)

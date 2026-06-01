@@ -19,9 +19,9 @@ backend:
 media_folder: public/guests
 public_folder: /guests
 
-# Commit straight to master. Switch to an editorial workflow (PRs) by setting
-# `publish_mode: editorial_workflow` if you'd rather review before going live.
-# publish_mode: editorial_workflow
+# Review before publishing: saving creates a draft pull request you approve
+# (Workflow tab) before it goes live.
+publish_mode: editorial_workflow
 
 collections:
   - name: content
@@ -77,10 +77,48 @@ collections:
                 fields:
                   - { name: time, label: Time, widget: string }
                   - { name: label, label: Label, widget: string }
-              - { name: transcript, label: Transcript, widget: text, required: false }
+              - { name: transcript, label: 'Transcript (included in search)', widget: text, required: false }
               - { name: transistorUrl, label: 'Transistor share URL', widget: string, required: false }
               - { name: spotifyEpisodeId, label: 'Spotify episode ID', widget: string, required: false }
               - { name: youtubeVideoId, label: 'YouTube video ID', widget: string, required: false }
               - { name: audioUrl, label: 'MP3 URL', widget: string, required: false }
               - { name: teaserVideoUrl, label: 'Teaser video URL', widget: string, required: false }
               - { name: guestLinkedIn, label: 'Guest LinkedIn URL', widget: string, required: false }
+
+      - name: videos
+        label: Videos
+        file: src/data/videos.json
+        format: json
+        description: >-
+          The video library. New uploads are added automatically by the daily
+          sync as a pull request — use this to add the category and tags, paste
+          a transcript (which feeds search), or add a video by hand. Drag an
+          entry to the top to feature it, or tick "Featured".
+        fields:
+          - name: videos
+            label: Videos
+            label_singular: Video
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: featured, label: 'Featured (pin to top of /videos)', widget: boolean, required: false, default: false }
+              - { name: title, label: Title, widget: string }
+              - { name: slug, label: 'Slug (URL, no spaces)', widget: string }
+              - { name: id, label: 'ID (unique)', widget: string }
+              - { name: youtubeVideoId, label: 'YouTube video ID', widget: string }
+              - { name: date, label: 'Date (e.g. Mar 2026)', widget: string }
+              - name: category
+                label: Category
+                widget: select
+                required: false
+                options: ['talk', 'panel', 'explainer', 'clip']
+              - { name: duration, label: 'Duration (e.g. 12:34)', widget: string, required: false }
+              - { name: description, label: Description, widget: text }
+              - name: tags
+                label: Tags
+                widget: list
+                required: false
+                field: { name: tag, label: Tag, widget: string }
+              - { name: transcript, label: 'Transcript (included in search)', widget: text, required: false }
+              - { name: thumbnailUrl, label: 'Thumbnail override (optional)', widget: image, required: false, choose_url: true }
+              - { name: thumbnailPosition, label: 'Thumbnail position (e.g. center 20%)', widget: string, required: false }
