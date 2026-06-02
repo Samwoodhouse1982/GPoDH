@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import RichText from '@/components/ui/RichText'
 import { withUtm } from '@/lib/utm'
+import content from '@/data/site/resources.json'
 
 export const metadata: Metadata = {
-  title: 'Resources | GPODH',
-  description: 'An ongoing list of great resources from the podcast and beyond: articles, organisations, and tools at the intersection of digital health and underserved communities.',
+  title: content.meta.title,
+  description: content.meta.description,
 }
 
 interface Resource {
@@ -20,229 +22,9 @@ interface ResourceCategory {
   items: Resource[]
 }
 
-const resourceCategories: ResourceCategory[] = [
-  {
-    id: 'articles',
-    title: 'Articles & Resources',
-    items: [
-      {
-        label: 'Standing Together Initiative',
-        description: 'We spoke to Dr Xiao Liu in Episode 1 about what actionable things we can do about health data poverty. This is a great resource.',
-        url: 'https://www.datadiversity.org/about',
-      },
-      {
-        label: "Rowena Luk's Africa Health Ventures",
-        description: 'About the digital health investment landscape in Africa. Listen to our discussion with Rowena on Episode 14.',
-        url: 'https://rowenaluk.substack.com/',
-      },
-      {
-        label: 'The Agency Fund',
-        description: 'We like their view on what needs to change in funding.',
-        url: 'https://www.agency.fund/',
-      },
-      {
-        label: 'The 5 Stages of Regulatory Grief',
-        description: 'Regulatory expert Hugh Harvey of Hardian Health, who we spoke to in Episode 13, wrote and spoke about this excellent article on regulatory strategy pitfalls.',
-        url: 'https://www.hardianhealth.com/insights/five-stages-of-regulatory-grief',
-      },
-      {
-        label: 'Seyi Abimbola: The Foreign Gaze',
-        description: 'Seyi writes compellingly about how global health needs to change. He recently published a book called The Foreign Gaze. Read it. Be changed.',
-        url: 'https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2025-01/010093002.pdf',
-      },
-      {
-        label: 'Community Health Impact Coalition: Community Health Worker video series',
-        description: 'Check out their series on community health workers. Essential viewing.',
-        url: 'https://www.youtube.com/@communityhealthimpactcoalition/videos',
-      },
-      {
-        label: 'Geneva Digital Health Hub',
-        description: 'GDHD lead a great community called Implementome, for anyone implementing digital health and AI tools across the world. Also a great conference every year. Check out the episode we did with GDHD director Caroline Perrin (episode 15).',
-        url: 'https://gdhub.org/',
-      },
-    ],
-  },
-  {
-    id: 'policy',
-    title: 'Policy & Frameworks',
-    items: [
-      {
-        label: 'WHO Global Strategy on Digital Health 2020–2025',
-        description: 'The foundational WHO framework for digital health.',
-        url: 'https://www.who.int/docs/default-source/documents/gs4dhdaa2a9f352b0445bafbc79ca03c2d.pdf',
-      },
-      {
-        label: 'ITU Digital Inclusion Framework',
-        description: 'Addressing connectivity and access as prerequisites for digital health.',
-        url: 'https://www.itu.int/en/ITU-D/Digital-Inclusion/Pages/default.aspx',
-      },
-      {
-        label: 'PHCPI Primary Health Care Framework',
-        description: 'How digital tools fit into primary care strengthening.',
-        url: 'https://improvingphc.org/',
-      },
-      {
-        label: 'MAPS Toolkit',
-        description: 'WHO framework for mHealth assessment and planning.',
-        url: 'https://www.who.int/reproductivehealth/topics/mhealth/maps-toolkit/en/',
-      },
-      {
-        label: 'GRADE Approach',
-        description: 'Grading the quality of evidence for clinical decision making.',
-        url: 'https://www.gradeworkinggroup.org/',
-      },
-      {
-        label: 'Digital Health Monitor (WHO)',
-        description: 'Tracking digital health policy progress globally.',
-        url: 'https://digitalhealthmonitor.org/',
-      },
-      {
-        label: 'Classification of Digital Health Interventions (WHO)',
-        description: 'The taxonomy for understanding what digital health tools do.',
-        url: 'https://www.who.int/reproductivehealth/publications/mhealth/classification-digital-health-interventions/en/',
-      },
-      {
-        label: 'Consolidated Telemedicine Implementation Guide (WHO)',
-        description: 'Practical guidance for telemedicine deployment.',
-        url: 'https://www.who.int/publications/i/item/9789240050709',
-      },
-      {
-        label: 'Digital Health Country Assessments (ITU/WHO)',
-        description: 'Country-level readiness and capacity assessments.',
-        url: 'https://www.itu.int/en/ITU-D/ICT-Applications/eHEALTH/Pages/default.aspx',
-      },
-    ],
-  },
-  {
-    id: 'reading',
-    title: 'Recommended Reading',
-    items: [
-      {
-        label: 'Lancet Digital Health',
-        description: 'Peer-reviewed research on digital health interventions, including extensive coverage of LMICs.',
-        url: 'https://www.thelancet.com/journals/landig/home',
-      },
-      {
-        label: 'The Digital Health Atlas',
-        description: 'Mapping digital health implementations across the world.',
-        url: 'https://digitalhealthatlas.org/',
-      },
-      {
-        label: 'GSMA Mobile for Development Insights',
-        description: 'How mobile technology is being used in emerging markets.',
-        url: 'https://www.gsma.com/mobilefordevelopment/',
-      },
-    ],
-  },
-  {
-    id: 'organisations',
-    title: 'Organisations',
-    items: [
-      {
-        label: 'Digital Square',
-        description: 'A PATH-led initiative to strengthen global goods for digital health.',
-        url: 'https://digitalsquare.org/',
-      },
-      {
-        label: 'Access Health International',
-        description: 'Advisory on health reform and systems strengthening.',
-        url: 'https://accessh.org/',
-      },
-      {
-        label: 'Resolve to Save Lives',
-        description: 'Cardiovascular disease prevention at scale in LMICs.',
-        url: 'https://resolvetosavelives.org/',
-      },
-    ],
-  },
-  {
-    id: 'funding',
-    title: 'Funding',
-    items: [
-      {
-        label: 'Grand Challenges Canada',
-        description: 'Funds bold ideas with the potential to save and improve lives in LMICs, including digital health and AI applications. The Stars in Global Health programme is particularly relevant.',
-        url: 'https://www.grandchallenges.ca/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'Grand Challenges (Gates Foundation)',
-        description: 'Open calls for innovation addressing health challenges in the developing world. Regularly funds digital health, diagnostics, and AI in global health.',
-        url: 'https://gcgh.grandchallenges.org/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'Wellcome Trust: Discovery Research and Innovations',
-        description: 'Funds research across global health including digital and data science applications. Their health inequities and infectious disease portfolios are relevant to LMIC digital health.',
-        url: 'https://wellcome.org/grant-funding',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'The Skoll Foundation',
-        description: 'Supports social entrepreneurs tackling systemic global challenges. Several Skoll awardees work in digital health and health equity.',
-        url: 'https://skoll.org/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'Omidyar Network',
-        description: 'Invests in market-based and policy approaches to increase inclusion and opportunity. Relevant for digital health ventures addressing underserved populations.',
-        url: 'https://omidyar.com/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'Google.org',
-        description: "Google's philanthropic arm funds nonprofits and social enterprises using technology for social impact, including AI for health in underserved settings.",
-        url: 'https://www.google.org/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'Rockefeller Foundation: Health Initiative',
-        description: 'Long-standing funder of global health innovation, with a focus on health system strengthening and equity. Active in digital health and AI.',
-        url: 'https://www.rockefellerfoundation.org/initiative/health/',
-        subgroup: 'Philanthropic Foundations',
-      },
-      {
-        label: 'USAID Digital Development',
-        description: "USAID's digital development team funds and supports digital tools and infrastructure in developing countries. Their Digital Strategy sets the framework.",
-        url: 'https://www.usaid.gov/digital-development',
-        subgroup: 'Governmental & Bilateral',
-      },
-      {
-        label: 'IDRC: International Development Research Centre',
-        description: 'Canadian public funder supporting research-based solutions in developing countries. Strong portfolio in digital health, AI for development, and data systems.',
-        url: 'https://idrc.ca/',
-        subgroup: 'Governmental & Bilateral',
-      },
-      {
-        label: 'The Fleming Fund',
-        description: 'UK-funded programme supporting countries in generating and using data to tackle antimicrobial resistance. A useful model for health data funding in LMICs.',
-        url: 'https://www.flemingfund.org/',
-        subgroup: 'Governmental & Bilateral',
-      },
-      {
-        label: 'World Bank Digital Development Partnership',
-        description: 'A multi-donor trust fund supporting countries in developing digital infrastructure and policies. Useful for government and systems-level digital health projects.',
-        url: 'https://www.worldbank.org/en/programs/digital-development-partnership',
-        subgroup: 'Multilateral',
-      },
-      {
-        label: 'The Global Fund',
-        description: 'Primary funder of HIV, TB, and malaria programmes globally. Increasingly funds digital health components including surveillance, supply chain, and community health systems.',
-        url: 'https://www.theglobalfund.org/',
-        subgroup: 'Multilateral',
-      },
-    ],
-  },
-]
-
-// Short labels for quick nav
-const NAV_LABELS: Record<string, string> = {
-  articles: 'Articles',
-  policy: 'Policy & Frameworks',
-  reading: 'Reading',
-  organisations: 'Organisations',
-  funding: 'Funding',
-}
+const { hero, shubstack, jumpToLabel, footerNote } = content
+const resourceCategories = content.categories as ResourceCategory[]
+const NAV_LABELS = content.navLabels as Record<string, string>
 
 export default function ResourcesPage() {
   return (
@@ -267,7 +49,7 @@ export default function ResourcesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              Resources
+              {hero.eyebrow}
             </p>
           </ScrollReveal>
           <ScrollReveal delay={100}>
@@ -281,13 +63,13 @@ export default function ResourcesPage() {
                 marginBottom: '1.5rem',
               }}
             >
-              Useful reading. Essential organisations.
+              {hero.title}
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={150}>
-            <p style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-              An ongoing list of resources we collect along the way. Articles, organisations, frameworks, and funding sources at the intersection of digital health and underserved communities.
-            </p>
+            <RichText style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+              {hero.intro}
+            </RichText>
           </ScrollReveal>
           </div>
         </div>
@@ -298,7 +80,7 @@ export default function ResourcesPage() {
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <ScrollReveal>
             <a
-              href={withUtm('https://shubstack.substack.com/', { campaign: 'resources', content: 'shubstack-card' })}
+              href={withUtm(shubstack.url, { campaign: 'resources', content: 'shubstack-card' })}
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: 'none', display: 'block' }}
@@ -348,7 +130,7 @@ export default function ResourcesPage() {
                       marginBottom: '0.75rem',
                     }}
                   >
-                    Newsletter
+                    {shubstack.eyebrow}
                   </p>
                   <p
                     style={{
@@ -360,7 +142,7 @@ export default function ResourcesPage() {
                       marginBottom: '1rem',
                     }}
                   >
-                    Shubstack
+                    {shubstack.title}
                   </p>
                   <p
                     style={{
@@ -371,7 +153,7 @@ export default function ResourcesPage() {
                       marginBottom: '1.5rem',
                     }}
                   >
-                    Shubs writes regularly on current issues in digital health, reflects on podcast conversations, and shares perspectives on what&rsquo;s changing in the field. A companion to the podcast. Read between episodes.
+                    {shubstack.body}
                   </p>
                   <span
                     style={{
@@ -386,7 +168,7 @@ export default function ResourcesPage() {
                       fontWeight: 600,
                     }}
                   >
-                    Read on Substack ↗
+                    {shubstack.ctaText}
                   </span>
                 </div>
 
@@ -436,7 +218,7 @@ export default function ResourcesPage() {
                 textTransform: 'uppercase',
                 marginBottom: '0.75rem',
               }}>
-                Jump to
+                {jumpToLabel}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
                 {resourceCategories.map(cat => (
@@ -565,16 +347,15 @@ export default function ResourcesPage() {
                               </p>
                             )}
                           </div>
-                          <p
+                          <RichText
                             style={{
                               fontSize: '0.9375rem',
                               color: 'var(--text-secondary)',
                               lineHeight: 1.7,
-                              margin: 0,
                             }}
                           >
                             {item.description}
-                          </p>
+                          </RichText>
                         </li>
                       )
                       return elements
@@ -595,10 +376,9 @@ export default function ResourcesPage() {
                 marginBottom: '3rem',
               }}
             >
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>
-                This list is updated periodically. Got a recommendation?{' '}
-                <a href="/contact" style={{ color: 'var(--accent-coral)' }}>Let us know</a>
-              </p>
+              <RichText style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7 }}>
+                {footerNote}
+              </RichText>
             </div>
           </ScrollReveal>
 

@@ -296,3 +296,62 @@ collections:
                 fields:
                   - { name: text, label: Button text, widget: string }
                   - { name: url, label: Button link, widget: string }
+
+      - name: resources
+        label: Resources page
+        file: src/data/site/resources.json
+        format: json
+        description: >-
+          The Resources page — hero, Shubstack callout, and every resource
+          category and link. Descriptions support basic formatting (bold,
+          italic, links).
+        fields:
+          - name: meta
+            label: SEO / browser tab
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Meta description, widget: text }
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: intro, label: Intro paragraph, widget: markdown }
+          - name: shubstack
+            label: Shubstack callout
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: ctaText, label: Button text, widget: string }
+              - { name: url, label: Substack URL, widget: string }
+          - { name: jumpToLabel, label: '"Jump to" label', widget: string }
+          - name: navLabels
+            label: Quick-nav short labels
+            widget: object
+            fields:
+              - { name: articles, label: Articles, widget: string }
+              - { name: policy, label: Policy, widget: string }
+              - { name: reading, label: Reading, widget: string }
+              - { name: organisations, label: Organisations, widget: string }
+              - { name: funding, label: Funding, widget: string }
+          - { name: footerNote, label: Footer note, widget: markdown }
+          - name: categories
+            label: Resource categories
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { name: id, label: 'ID (anchor, no spaces)', widget: string }
+              - { name: title, label: Category title, widget: string }
+              - name: items
+                label: Items
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: description, label: Description, widget: markdown }
+                  - { name: url, label: Link URL, widget: string, required: false }
+                  - { name: subgroup, label: Subgroup heading, widget: string, required: false }
