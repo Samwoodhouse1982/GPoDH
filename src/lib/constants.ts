@@ -1,26 +1,8 @@
-export const SITE = {
-  name: 'Global Perspectives on Digital Health',
-  shortName: 'GPODH',
-  description: 'The podcast sharing stories of AI and digital health for impact with underserved communities worldwide.',
-  url: 'https://gpodh.org',
-  email: 'hello@shubs.me',
-}
+// Shared site copy and links. The values live in src/data/site/settings.json
+// so they can be edited in the CMS ("Site settings") without touching code.
+import settings from '@/data/site/settings.json'
 
-export const CONSULTING = {
-  url: '/contact',
-  ctaText: 'Working on something in digital health?',
-  ctaLinkText: 'Get in touch',
-  description: 'Shubs takes on consulting work with startups, investors, and global organisations across digital health.',
-}
-
-export const PLATFORMS = {
-  apple: 'https://podcasts.apple.com/us/podcast/id1744026517?mt=2&ls=1',
-  spotify: 'https://open.spotify.com/show/15zbPaJeOknH1qZNL4Spau',
-  youtube: 'https://www.youtube.com/@globalpdhpodcast',
-}
-
-export const SOCIAL = {
-  linkedin: 'https://www.linkedin.com/in/dr-shubs-upadhyay-494691132/',
-  linkedinCompany: 'https://www.linkedin.com/company/gpdoh',
-  substack: 'https://shubstack.substack.com',
-}
+export const SITE = settings.site
+export const CONSULTING = settings.consulting
+export const PLATFORMS = settings.platforms
+export const SOCIAL = settings.social

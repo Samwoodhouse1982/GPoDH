@@ -1,0 +1,25 @@
+{
+  "site": {
+    "name": "Global Perspectives on Digital Health",
+    "shortName": "GPODH",
+    "description": "The podcast sharing stories of AI and digital health for impact with underserved communities worldwide.",
+    "url": "https://gpodh.org",
+    "email": "hello@shubs.me"
+  },
+  "consulting": {
+    "url": "/contact",
+    "ctaText": "Working on something in digital health?",
+    "ctaLinkText": "Get in touch",
+    "description": "Shubs takes on consulting work with startups, investors, and global organisations across digital health."
+  },
+  "platforms": {
+    "apple": "https://podcasts.apple.com/us/podcast/id1744026517?mt=2&ls=1",
+    "spotify": "https://open.spotify.com/show/15zbPaJeOknH1qZNL4Spau",
+    "youtube": "https://www.youtube.com/@globalpdhpodcast"
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/dr-shubs-upadhyay-494691132/",
+    "linkedinCompany": "https://www.linkedin.com/company/gpdoh",
+    "substack": "https://shubstack.substack.com"
+  }
+}

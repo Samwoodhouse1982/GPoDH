@@ -27,6 +27,46 @@ collections:
   - name: content
     label: Content
     files:
+      - name: settings
+        label: Site settings
+        file: src/data/site/settings.json
+        format: json
+        description: >-
+          Global site details, podcast platform links, social links and the
+          consulting call-to-action used across the site.
+        fields:
+          - name: site
+            label: Site details
+            widget: object
+            fields:
+              - { name: name, label: Site name, widget: string }
+              - { name: shortName, label: Short name, widget: string }
+              - { name: description, label: Description (SEO), widget: text }
+              - { name: url, label: Site URL, widget: string }
+              - { name: email, label: Contact email, widget: string }
+          - name: consulting
+            label: Consulting call-to-action
+            widget: object
+            fields:
+              - { name: ctaText, label: Heading, widget: string }
+              - { name: ctaLinkText, label: Link text, widget: string }
+              - { name: url, label: Link destination, widget: string }
+              - { name: description, label: Description, widget: text }
+          - name: platforms
+            label: Podcast platforms
+            widget: object
+            fields:
+              - { name: apple, label: Apple Podcasts URL, widget: string }
+              - { name: spotify, label: Spotify URL, widget: string }
+              - { name: youtube, label: YouTube URL, widget: string }
+          - name: social
+            label: Social links
+            widget: object
+            fields:
+              - { name: linkedin, label: LinkedIn (personal) URL, widget: string }
+              - { name: linkedinCompany, label: LinkedIn (company) URL, widget: string }
+              - { name: substack, label: Substack URL, widget: string }
+
       - name: episodes
         label: Episodes
         file: src/data/episodes.json
