@@ -33,8 +33,10 @@ hosted by Dr Shubs Upadhyay. It showcases podcast **episodes**, **videos**
 page, and a contact page. It also funnels toward Shubs' consulting
 (`shubs.me`) and newsletter (Shubstack).
 
-- **Production site:** https://www.gpodh.org  (confirm whether the canonical is
-  `www.gpodh.org` or the apex `gpodh.org` — see [§11 Blockers](#11-known-blockers-gotchas--decisions)).
+- **Current deployment URL:** **https://g-po-dh.vercel.app** (the Vercel default
+  domain). A custom domain (`gpodh.org` / `www.gpodh.org`) may be attached later;
+  if so, update the CMS `base_url` and the OAuth callback to match — see
+  [§5 CMS](#5-content-management-decap-cms) and [§11 Blockers](#11-known-blockers-gotchas--decisions).
 - **Repository:** `samwoodhouse1982/gpodh` (GitHub), default branch **`master`**.
 - **Hosting/deploy:** **Vercel** (auto-deploys on push to `master`).
 - **YouTube channel:** https://www.youtube.com/@globalpdhpodcast
@@ -132,14 +134,14 @@ files.
 
 ## 5. Content management (Decap CMS)
 
-A git-based CMS lives at **`/admin`** (e.g. https://www.gpodh.org/admin). It
-edits the JSON data files and commits back to the repo.
+A git-based CMS lives at **`/admin`** (currently https://g-po-dh.vercel.app/admin).
+It edits the JSON data files and commits back to the repo.
 
 ### How it works
 - `public/admin/index.html` loads Decap CMS from a CDN (no build step / npm dep).
 - `public/admin/config.yml` defines:
   - **backend:** GitHub, repo `samwoodhouse1982/gpodh`, branch `master`,
-    `base_url: https://www.gpodh.org`, `auth_endpoint: api/auth`.
+    `base_url: https://g-po-dh.vercel.app`, `auth_endpoint: api/auth`.
   - **publish_mode: `editorial_workflow`** — saving creates a **draft pull
     request**; approve it in the CMS **Workflow** tab (or merge the PR) to publish.
   - **media_folder:** `public/guests` (public path `/guests`) — image uploads.
@@ -152,8 +154,8 @@ edits the JSON data files and commits back to the repo.
 ### ⚙️ One-time setup required to switch the CMS on
 1. **Create a GitHub OAuth App:** GitHub → *Settings → Developer settings →
    OAuth Apps → New OAuth App*.
-   - Homepage URL: `https://www.gpodh.org`
-   - **Authorization callback URL:** `https://www.gpodh.org/api/callback`
+   - Homepage URL: `https://g-po-dh.vercel.app`
+   - **Authorization callback URL:** `https://g-po-dh.vercel.app/api/callback`
    - Copy the **Client ID**; generate and copy a **Client secret**.
 2. **Add env vars in Vercel** (Project → Settings → Environment Variables), then redeploy:
    - `GITHUB_OAUTH_CLIENT_ID`
@@ -166,8 +168,10 @@ edits the JSON data files and commits back to the repo.
 - **"Appears at the top":** new entries are appended; **drag them to the top** of
   the list so they show first in list order. The homepage banner / featured video
   use the **`featured`** boolean regardless of position.
-- If the canonical domain is the apex (`gpodh.org`, no `www`), change `base_url`
-  in `config.yml` **and** the OAuth callback URL to match, or login will fail.
+- `base_url` in `config.yml` and the OAuth callback URL **must match the domain
+  you actually open `/admin` on.** It is currently `https://g-po-dh.vercel.app`.
+  If you attach a custom domain (e.g. `www.gpodh.org`) and use it for `/admin`,
+  update both to that domain or login will fail.
 
 ---
 
@@ -271,9 +275,11 @@ and in Vercel's encrypted env vars. Inventory:
    data is captured or sent.** Wire these to a real service (e.g. a Next API
    route + email provider, or Mailchimp/ConvertKit/Buttondown, or Formspree)
    before relying on them.
-2. **Canonical domain ambiguity.** Episode `url` fields use `www.gpodh.org`, and
-   the CMS `base_url` is set to `www.gpodh.org`. Confirm whether production is
-   `www` or apex and make `base_url` + the OAuth callback URL match.
+2. **Domain.** The live deployment is **`https://g-po-dh.vercel.app`** and the CMS
+   `base_url` + OAuth callback are set to it. Episode `url` fields still point at
+   `www.gpodh.org` (the intended custom domain). If/when a custom domain is
+   attached and used for `/admin`, update `base_url` in `config.yml` and the
+   OAuth App callback URL to match.
 3. **CMS not live until OAuth set up.** `/admin` exists but login fails until the
    GitHub OAuth App + Vercel env vars are configured (§5). The OAuth popup flow
    could not be tested during the build (needs the deployed app + the OAuth App);

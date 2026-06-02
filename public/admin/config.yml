@@ -12,7 +12,7 @@ backend:
   name: github
   repo: samwoodhouse1982/gpodh
   branch: master
-  base_url: https://www.gpodh.org
+  base_url: https://g-po-dh.vercel.app
   auth_endpoint: api/auth
 
 # Episode guest photos upload into public/guests and are referenced as /guests/<file>.
