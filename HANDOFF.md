@@ -175,6 +175,49 @@ It edits the JSON data files and commits back to the repo.
 
 ---
 
+## 5a. Editable site content (pages & global copy)
+
+Beyond Episodes/Videos, page copy, images and links are being moved out of the
+JSX into editable JSON under **`src/data/site/`**, each exposed as a CMS section.
+This lets a non-technical editor change wording, images and links **without
+touching code**, while the **designed layout stays fixed** (this is structured
+content editing, not a freeform drag-and-drop page builder).
+
+**Pattern (how each page is made editable):**
+1. Create `src/data/site/<page>.json` holding every editable string/link/image
+   path for that page (group related items as nested objects/arrays).
+2. In the page/component, `import content from '@/data/site/<page>.json'` and
+   replace hard-coded text/links/images with `content.*` references. (Works in
+   both server and client components — it's a static import, no new deps.)
+3. Add a **file collection** to `public/admin/config.yml` pointing at that JSON,
+   with fields mirroring its shape (`object`/`list`/`image`/`string`/`text`
+   widgets). Images use `widget: image` (uploads land in `media_folder`).
+4. `npm run build` to verify, then commit.
+
+**No new dependencies / no markdown renderer:** rich formatting is achieved with
+structure (separate heading/body fields, `list` widgets for bullet points,
+explicit link `url` fields), not a markdown parser. If true inline rich text
+(bold/links within a paragraph) is needed later, add a renderer (e.g.
+`react-markdown`) and switch those fields to `markdown` widgets.
+
+**Status of the rollout:**
+
+| Area | Editable? | Data file |
+|---|---|---|
+| Episodes | ✅ | `src/data/episodes.json` |
+| Videos | ✅ | `src/data/videos.json` |
+| Site settings (social, platforms, consulting CTA, SEO) | ✅ | `src/data/site/settings.json` |
+| Contact page | ✅ | `src/data/site/contact.json` |
+| Home page | ⬜ TODO | `src/data/site/home.json` |
+| Work With Us page | ⬜ TODO | `src/data/site/work-with-us.json` |
+| Resources page (intro + link lists) | ⬜ TODO | `src/data/site/resources.json` |
+| Footer / Nav (labels, links) | ⬜ TODO | `src/data/site/global.json` |
+| Reusable copy (email signup, modals, host bio) | ⬜ TODO | component-level JSON |
+
+To finish a TODO page, follow the 4-step pattern above. The Contact page
+(`contact.json` + the "Contact page" CMS section + `src/app/contact/page.tsx`)
+is the reference example to copy.
+
 ## 6. Automated video sync (YouTube → PR)
 
 New uploads on the channel are pulled in automatically for review.
