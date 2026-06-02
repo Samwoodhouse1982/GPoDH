@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import RichText from '@/components/ui/RichText'
+import content from '@/data/site/work-with-us.json'
 
 export const metadata: Metadata = {
   title: 'Work With Us',
 }
 
 export default function WorkWithUsPage() {
+  const { partnerships, photos, consulting } = content
   return (
     <>
       {/* ——— Podcast Partnerships ——— */}
@@ -24,7 +27,7 @@ export default function WorkWithUsPage() {
                   marginBottom: '1.25rem',
                 }}
               >
-                COLLABORATE WITH THE PODCAST
+                {partnerships.eyebrow}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={100}>
@@ -38,13 +41,13 @@ export default function WorkWithUsPage() {
                   marginBottom: '1.5rem',
                 }}
               >
-                Work with an audience that actually cares.
+                {partnerships.title}
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={150}>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
-                GPODH reaches a specialist global audience of clinicians, digital health founders, global health professionals, and investors. They are not passive listeners. They are practitioners who are actively building and funding the future of digital health in underserved settings.
-              </p>
+              <RichText style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
+                {partnerships.intro}
+              </RichText>
             </ScrollReveal>
           </div>
 
@@ -70,10 +73,7 @@ export default function WorkWithUsPage() {
                   marginBottom: '2.25rem',
                 }}
               >
-                {[
-                  { value: '60+', label: 'Countries reached' },
-                  { value: 'Thousands', label: 'of specialist listeners' },
-                ].map((stat, i) => (
+                {partnerships.stats.map((stat, i) => (
                   <div
                     key={stat.label}
                     style={{
@@ -124,10 +124,10 @@ export default function WorkWithUsPage() {
                     marginBottom: '1rem',
                   }}
                 >
-                  Core audience
+                  {partnerships.audienceLabel}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem', justifyContent: 'center' }}>
-                  {['Clinicians', 'Founders', 'NGOs & Policy', 'Investors'].map((type) => (
+                  {partnerships.audienceTypes.map((type) => (
                     <span
                       key={type}
                       style={{
@@ -152,7 +152,7 @@ export default function WorkWithUsPage() {
           <ScrollReveal delay={200}>
             <div style={{ marginBottom: '2rem' }}>
               <a
-                href="/contact"
+                href={partnerships.primaryCta.url}
                 style={{
                   display: 'inline-block',
                   padding: '0.6rem 1.5rem',
@@ -164,10 +164,10 @@ export default function WorkWithUsPage() {
                   textDecoration: 'none',
                 }}
               >
-                Get in touch ›
+                {partnerships.primaryCta.text}
               </a>
               <p style={{ marginTop: '0.625rem', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
-                Get in touch for a conversation about fit and pricing.
+                {partnerships.primaryCta.note}
               </p>
             </div>
           </ScrollReveal>
@@ -183,46 +183,11 @@ export default function WorkWithUsPage() {
                 marginBottom: '2rem',
               }}
             >
-              How to get involved
+              {partnerships.optionsHeading}
             </h2>
           </ScrollReveal>
 
-          {[
-            {
-              group: 'Content Partnerships',
-              options: [
-                {
-                  title: 'Sponsored Episodes',
-                  description: 'Align your organisation with a specific episode or series. Your message reaches an engaged, specialist audience in the right context.',
-                },
-                {
-                  title: 'Mini-Series',
-                  description: 'Commission a short series of episodes around a theme relevant to your work. Ideal for investors and donors who want to build thought leadership.',
-                },
-                {
-                  title: 'Video Conversations',
-                  description: 'Long-form recorded conversations for your own channels. Shubs brings his clinical and strategic lens to interview your team or partners.',
-                },
-              ],
-            },
-            {
-              group: 'Community and engagement',
-              options: [
-                {
-                  title: 'Webinar Hosting',
-                  description: 'We host and moderate expert panels and webinars for organisations working in digital health. Structured, substantive, globally minded.',
-                },
-                {
-                  title: 'Event Coverage',
-                  description: 'On the ground at conferences and summits, capturing conversations and producing content that extends the life of the event.',
-                },
-                {
-                  title: 'Propose a Session or Speaker',
-                  description: 'Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We\'re always looking for the next compelling conversation.',
-                },
-              ],
-            },
-          ].map((section, si) => (
+          {partnerships.optionGroups.map((section, si) => (
             <div key={section.group} style={{ marginBottom: '2.5rem' }}>
               <ScrollReveal delay={si * 40}>
                 <p style={{
@@ -265,9 +230,9 @@ export default function WorkWithUsPage() {
                       >
                         {option.title}
                       </h3>
-                      <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                      <RichText style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                         {option.description}
-                      </p>
+                      </RichText>
                     </div>
                   </ScrollReveal>
                 ))}
@@ -277,11 +242,11 @@ export default function WorkWithUsPage() {
           <div style={{ marginBottom: '3rem' }} />
 
           <ScrollReveal>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.25rem', fontSize: '0.9375rem' }}>
-              To discuss a partnership, use the contact form and tell us what you have in mind.
-            </p>
+            <RichText style={{ color: 'var(--text-secondary)', marginBottom: '1.25rem', fontSize: '0.9375rem' }}>
+              {partnerships.closingBody}
+            </RichText>
             <a
-              href="/contact"
+              href={partnerships.closingCta.url}
               style={{
                 display: 'inline-block',
                 padding: '0.6rem 1.5rem',
@@ -293,7 +258,7 @@ export default function WorkWithUsPage() {
                 textDecoration: 'none',
               }}
             >
-              Get in touch ›
+              {partnerships.closingCta.text}
             </a>
           </ScrollReveal>
         </div>
@@ -309,24 +274,17 @@ export default function WorkWithUsPage() {
           overflow: 'hidden',
         }}
       >
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <Image
-            src="/shubs-presenting.jpg"
-            alt="Shubs presenting to an audience"
-            fill
-            style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
-            sizes="50vw"
-          />
-        </div>
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <Image
-            src="/shubs-hosting.jpg"
-            alt="Shubs hosting a panel at IBIS Capital"
-            fill
-            style={{ objectFit: 'cover', objectPosition: 'center 15%' }}
-            sizes="50vw"
-          />
-        </div>
+        {photos.map((photo, i) => (
+          <div key={photo.src} style={{ position: 'relative', overflow: 'hidden' }}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              style={{ objectFit: 'cover', objectPosition: photo.position }}
+              sizes="50vw"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Coral divider with CONSULTING label */}
@@ -351,7 +309,7 @@ export default function WorkWithUsPage() {
               flexShrink: 0,
             }}
           >
-            CONSULTING
+            {content.consultingLabel}
           </span>
           <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--accent-coral)', opacity: 0.4 }} />
         </div>
@@ -372,13 +330,13 @@ export default function WorkWithUsPage() {
                   lineHeight: 1.2,
                 }}
               >
-                From promising to proven.
+                {consulting.title}
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.0625rem', marginBottom: '2rem', maxWidth: '46ch' }}>
-                Shubs provides senior clinical and product counsel for clinical AI, for teams where both speed and evidence matter. That&rsquo;s the difference between a product that&rsquo;s promising and one that&rsquo;s proven.
-              </p>
+              <RichText style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.0625rem', marginBottom: '2rem', maxWidth: '46ch' }}>
+                {consulting.body}
+              </RichText>
             </ScrollReveal>
 
             <ScrollReveal delay={150}>
@@ -400,11 +358,11 @@ export default function WorkWithUsPage() {
                     marginBottom: '1.25rem',
                   }}
                 >
-                  Who Shubs works with
+                  {consulting.whoLabel}
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', marginBottom: '1.75rem' }}>
-                  {['Digital health companies', 'Philanthropy, foundations, and impact investors'].map((who) => (
+                  {consulting.who.map((who) => (
                     <div key={who} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
                       <span
                         aria-hidden
@@ -434,11 +392,11 @@ export default function WorkWithUsPage() {
                     borderTop: '1px solid var(--border)',
                   }}
                 >
-                  Trusted by clinical, tech, and product leaders.
+                  {consulting.trustNote}
                 </p>
 
                 <a
-                  href="/contact"
+                  href={consulting.cta.url}
                   style={{
                     display: 'inline-block',
                     padding: '0.7rem 1.5rem',
@@ -450,7 +408,7 @@ export default function WorkWithUsPage() {
                     textDecoration: 'none',
                   }}
                 >
-                  Reach out to Shubs ›
+                  {consulting.cta.text}
                 </a>
               </div>
             </ScrollReveal>

@@ -212,3 +212,87 @@ collections:
               - { name: body, label: Body, widget: text }
               - { name: linkText, label: Link text, widget: string }
               - { name: linkUrl, label: Link URL, widget: string }
+
+      - name: work-with-us
+        label: Work With Us page
+        file: src/data/site/work-with-us.json
+        format: json
+        description: >-
+          All text on the Work With Us page — the podcast partnerships section
+          and the consulting section. Body fields support basic formatting
+          (bold, italic, links).
+        fields:
+          - name: partnerships
+            label: Podcast partnerships section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: intro, label: Intro paragraph, widget: markdown }
+              - name: stats
+                label: Audience stats
+                widget: list
+                max: 2
+                fields:
+                  - { name: value, label: 'Value (e.g. 60+)', widget: string }
+                  - { name: label, label: Label, widget: string }
+              - { name: audienceLabel, label: '"Core audience" label', widget: string }
+              - name: audienceTypes
+                label: Audience type pills
+                widget: list
+                field: { name: type, label: Type, widget: string }
+              - name: primaryCta
+                label: Primary call-to-action
+                widget: object
+                fields:
+                  - { name: text, label: Button text, widget: string }
+                  - { name: url, label: Button link, widget: string }
+                  - { name: note, label: Note under button, widget: string }
+              - { name: optionsHeading, label: '"How to get involved" heading', widget: string }
+              - name: optionGroups
+                label: Option groups
+                widget: list
+                summary: '{{fields.group}}'
+                fields:
+                  - { name: group, label: Group heading, widget: string }
+                  - name: options
+                    label: Options
+                    widget: list
+                    summary: '{{fields.title}}'
+                    fields:
+                      - { name: title, label: Title, widget: string }
+                      - { name: description, label: Description, widget: markdown }
+              - { name: closingBody, label: Closing paragraph, widget: markdown }
+              - name: closingCta
+                label: Closing call-to-action
+                widget: object
+                fields:
+                  - { name: text, label: Button text, widget: string }
+                  - { name: url, label: Button link, widget: string }
+          - name: photos
+            label: Photo strip
+            widget: list
+            max: 2
+            fields:
+              - { name: src, label: Image, widget: image, choose_url: true }
+              - { name: alt, label: Alt text, widget: string }
+              - { name: position, label: 'Focus point (e.g. center 25%)', widget: string }
+          - { name: consultingLabel, label: Consulting divider label, widget: string }
+          - name: consulting
+            label: Consulting section
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Body, widget: markdown }
+              - { name: whoLabel, label: '"Who Shubs works with" label', widget: string }
+              - name: who
+                label: Who Shubs works with
+                widget: list
+                field: { name: item, label: Item, widget: string }
+              - { name: trustNote, label: Trust note, widget: string }
+              - name: cta
+                label: Call-to-action
+                widget: object
+                fields:
+                  - { name: text, label: Button text, widget: string }
+                  - { name: url, label: Button link, widget: string }

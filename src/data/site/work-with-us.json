@@ -1,0 +1,73 @@
+{
+  "partnerships": {
+    "eyebrow": "COLLABORATE WITH THE PODCAST",
+    "title": "Work with an audience that actually cares.",
+    "intro": "GPODH reaches a specialist global audience of clinicians, digital health founders, global health professionals, and investors. They are not passive listeners. They are practitioners who are actively building and funding the future of digital health in underserved settings.",
+    "stats": [
+      { "value": "60+", "label": "Countries reached" },
+      { "value": "Thousands", "label": "of specialist listeners" }
+    ],
+    "audienceLabel": "Core audience",
+    "audienceTypes": ["Clinicians", "Founders", "NGOs & Policy", "Investors"],
+    "primaryCta": {
+      "text": "Get in touch ›",
+      "url": "/contact",
+      "note": "Get in touch for a conversation about fit and pricing."
+    },
+    "optionsHeading": "How to get involved",
+    "optionGroups": [
+      {
+        "group": "Content Partnerships",
+        "options": [
+          {
+            "title": "Sponsored Episodes",
+            "description": "Align your organisation with a specific episode or series. Your message reaches an engaged, specialist audience in the right context."
+          },
+          {
+            "title": "Mini-Series",
+            "description": "Commission a short series of episodes around a theme relevant to your work. Ideal for investors and donors who want to build thought leadership."
+          },
+          {
+            "title": "Video Conversations",
+            "description": "Long-form recorded conversations for your own channels. Shubs brings his clinical and strategic lens to interview your team or partners."
+          }
+        ]
+      },
+      {
+        "group": "Community and engagement",
+        "options": [
+          {
+            "title": "Webinar Hosting",
+            "description": "We host and moderate expert panels and webinars for organisations working in digital health. Structured, substantive, globally minded."
+          },
+          {
+            "title": "Event Coverage",
+            "description": "On the ground at conferences and summits, capturing conversations and producing content that extends the life of the event."
+          },
+          {
+            "title": "Propose a Session or Speaker",
+            "description": "Want us to explore a great story or talk to an incredible individual? Know someone doing fascinating work in digital health? Let us know. We're always looking for the next compelling conversation."
+          }
+        ]
+      }
+    ],
+    "closingBody": "To discuss a partnership, use the contact form and tell us what you have in mind.",
+    "closingCta": { "text": "Get in touch ›", "url": "/contact" }
+  },
+  "photos": [
+    { "src": "/shubs-presenting.jpg", "alt": "Shubs presenting to an audience", "position": "center 25%" },
+    { "src": "/shubs-hosting.jpg", "alt": "Shubs hosting a panel at IBIS Capital", "position": "center 15%" }
+  ],
+  "consultingLabel": "CONSULTING",
+  "consulting": {
+    "title": "From promising to proven.",
+    "body": "Shubs provides senior clinical and product counsel for clinical AI, for teams where both speed and evidence matter. That's the difference between a product that's promising and one that's proven.",
+    "whoLabel": "Who Shubs works with",
+    "who": [
+      "Digital health companies",
+      "Philanthropy, foundations, and impact investors"
+    ],
+    "trustNote": "Trusted by clinical, tech, and product leaders.",
+    "cta": { "text": "Reach out to Shubs ›", "url": "/contact" }
+  }
+}
