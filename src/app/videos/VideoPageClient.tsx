@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect, Fragment } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Fuse from 'fuse.js'
 import { videos, CATEGORY_LABELS, featuredVideo } from '@/lib/videos'
 import type { VideoCategory } from '@/lib/videos'
@@ -339,12 +340,13 @@ export default function VideoPageClient() {
             {/* Thumbnail */}
             <Link href={`/videos/${featured.slug}`} style={{ display: 'block', textDecoration: 'none', flexShrink: 0 }}>
               <div style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', aspectRatio: '16/9', background: '#060F0D' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={thumb}
                   alt={featured.title}
+                  fill
+                  sizes="(max-width: 760px) 100vw, 50vw"
                   className="featured-thumb"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{ objectFit: 'cover', display: 'block' }}
                 />
                 <div style={{
                   position: 'absolute',

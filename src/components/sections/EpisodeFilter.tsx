@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback, Fragment } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Fuse from 'fuse.js'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
@@ -655,8 +656,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
               </div>
             ) : surpriseEpisode.artworkUrl ? (
               <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={surpriseEpisode.artworkUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <Image src={surpriseEpisode.artworkUrl} alt="" fill sizes="(max-width: 700px) 100vw, 420px" style={{ objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)' }} />
               </div>
             ) : null}

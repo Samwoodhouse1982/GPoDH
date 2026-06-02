@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { withUtm } from '@/lib/utm'
 import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import EmailSignup from '@/components/sections/EmailSignup'
@@ -292,9 +293,11 @@ export default async function EpisodePage({ params }: Props) {
           {/* Right: artwork */}
           <div
             style={{
+              position: 'relative',
               aspectRatio: '1',
               background: 'var(--bg-surface)',
               borderRadius: 'var(--radius-lg)',
+              overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -305,11 +308,12 @@ export default async function EpisodePage({ params }: Props) {
             }}
           >
             {episode.artworkUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={episode.artworkUrl}
                 alt={episode.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+                fill
+                sizes="420px"
+                style={{ objectFit: 'cover' }}
               />
             ) : (
               <div style={{ textAlign: 'center', padding: '2rem' }}>
