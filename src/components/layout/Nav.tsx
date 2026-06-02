@@ -5,15 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import SubscribeModal from '@/components/ui/SubscribeModal'
+import { PLATFORMS } from '@/lib/constants'
+import global from '@/data/site/global.json'
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/episodes', label: 'Episodes' },
-  { href: '/videos', label: 'Videos' },
-  { href: '/work-with-us', label: 'Work With Us' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/contact', label: 'Contact' },
-]
+const navLinks = global.nav
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(true)
@@ -67,7 +62,7 @@ export default function Nav() {
             textTransform: 'uppercase',
           }}
         >
-          AI &amp; digital health in underserved communities
+          {global.topbarText}
         </p>
       </div>
 
@@ -157,7 +152,7 @@ export default function Nav() {
               cursor: 'pointer',
             }}
           >
-            Subscribe
+            {global.subscribeLabel}
           </button>
 
           {/* Hamburger (mobile) */}
@@ -229,9 +224,9 @@ export default function Nav() {
             })}
           </nav>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a href="https://podcasts.apple.com/us/podcast/id1744026517?mt=2&ls=1" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Apple Podcasts</a>
-            <a href="https://open.spotify.com/show/15zbPaJeOknH1qZNL4Spau" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Spotify</a>
-            <a href="https://www.youtube.com/@globalpdhpodcast" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>YouTube</a>
+            <a href={PLATFORMS.apple} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Apple Podcasts</a>
+            <a href={PLATFORMS.spotify} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Spotify</a>
+            <a href={PLATFORMS.youtube} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>YouTube</a>
           </div>
         </div>
       )}

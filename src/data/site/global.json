@@ -1,0 +1,29 @@
+{
+  "topbarText": "AI & digital health in underserved communities",
+  "subscribeLabel": "Subscribe",
+  "nav": [
+    { "href": "/", "label": "Home" },
+    { "href": "/episodes", "label": "Episodes" },
+    { "href": "/videos", "label": "Videos" },
+    { "href": "/work-with-us", "label": "Work With Us" },
+    { "href": "/resources", "label": "Resources" },
+    { "href": "/contact", "label": "Contact" }
+  ],
+  "footer": {
+    "pagesHeading": "Pages",
+    "navLinks": [
+      { "href": "/episodes", "label": "Episodes" },
+      { "href": "/work-with-us", "label": "Work With Us" },
+      { "href": "/resources", "label": "Resources" },
+      { "href": "/contact", "label": "Contact" }
+    ],
+    "listenHeading": "Listen",
+    "contactLabel": "Get in touch",
+    "socialLabels": {
+      "linkedin": "LinkedIn (Shubs)",
+      "linkedinCompany": "LinkedIn (GPODH)",
+      "substack": "Substack"
+    },
+    "copyright": "© 2026 Global Perspectives on Digital Health · Hosted by Dr Shubs Upadhyay"
+  }
+}

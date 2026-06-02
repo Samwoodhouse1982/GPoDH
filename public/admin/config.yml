@@ -67,6 +67,46 @@ collections:
               - { name: linkedinCompany, label: LinkedIn (company) URL, widget: string }
               - { name: substack, label: Substack URL, widget: string }
 
+      - name: global
+        label: Header & footer
+        file: src/data/site/global.json
+        format: json
+        description: >-
+          Site-wide navigation and footer text. Social and podcast links live
+          in "Site settings".
+        fields:
+          - { name: topbarText, label: Top bar text, widget: string }
+          - { name: subscribeLabel, label: Subscribe button label, widget: string }
+          - name: nav
+            label: Header navigation
+            widget: list
+            summary: '{{fields.label}}'
+            fields:
+              - { name: href, label: 'Link (e.g. /episodes)', widget: string }
+              - { name: label, label: Label, widget: string }
+          - name: footer
+            label: Footer
+            widget: object
+            fields:
+              - { name: pagesHeading, label: '"Pages" heading', widget: string }
+              - name: navLinks
+                label: Footer page links
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: href, label: Link, widget: string }
+                  - { name: label, label: Label, widget: string }
+              - { name: listenHeading, label: '"Listen" heading', widget: string }
+              - { name: contactLabel, label: '"Get in touch" label', widget: string }
+              - name: socialLabels
+                label: Social link labels
+                widget: object
+                fields:
+                  - { name: linkedin, label: LinkedIn (personal) label, widget: string }
+                  - { name: linkedinCompany, label: LinkedIn (company) label, widget: string }
+                  - { name: substack, label: Substack label, widget: string }
+              - { name: copyright, label: Copyright line, widget: string }
+
       - name: episodes
         label: Episodes
         file: src/data/episodes.json

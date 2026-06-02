@@ -3,13 +3,10 @@ import Image from 'next/image'
 import ConsultingBridge from '@/components/ui/ConsultingBridge'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import { SITE, PLATFORMS, SOCIAL } from '@/lib/constants'
+import global from '@/data/site/global.json'
 
-const navLinks = [
-  { href: '/episodes', label: 'Episodes' },
-  { href: '/work-with-us', label: 'Work With Us' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/contact', label: 'Contact' },
-]
+const { footer } = global
+const navLinks = footer.navLinks
 
 export default function Footer() {
   return (
@@ -63,7 +60,7 @@ export default function Footer() {
                 marginBottom: '1rem',
               }}
             >
-              Pages
+              {footer.pagesHeading}
             </p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
               {navLinks.map((link) => (
@@ -97,7 +94,7 @@ export default function Footer() {
                 marginBottom: '1rem',
               }}
             >
-              Listen
+              {footer.listenHeading}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
               <PlatformBadge platform="apple" href={PLATFORMS.apple} />
@@ -110,7 +107,7 @@ export default function Footer() {
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                Get in touch
+                {footer.contactLabel}
               </a>
               <a
                 href={SOCIAL.linkedin}
@@ -119,7 +116,7 @@ export default function Footer() {
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                LinkedIn (Shubs)
+                {footer.socialLabels.linkedin}
               </a>
               <a
                 href={SOCIAL.linkedinCompany}
@@ -128,7 +125,7 @@ export default function Footer() {
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                LinkedIn (GPODH)
+                {footer.socialLabels.linkedinCompany}
               </a>
               <a
                 href={SOCIAL.substack}
@@ -137,7 +134,7 @@ export default function Footer() {
                 style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
                 className="footer-link"
               >
-                Substack
+                {footer.socialLabels.substack}
               </a>
             </div>
           </div>
@@ -163,7 +160,7 @@ export default function Footer() {
             color: 'var(--text-muted)',
           }}
         >
-          &copy; 2026 Global Perspectives on Digital Health &middot; Hosted by Dr Shubs Upadhyay
+          {footer.copyright}
         </p>
       </div>
 
