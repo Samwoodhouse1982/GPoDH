@@ -6,10 +6,17 @@ import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 
 export function GET() {
+  // Names only (never values) of env vars that look related — reveals typos
+  // like GITHUB_CLIENT_ID or a trailing space, or shows [] if none are present.
+  const matchingKeys = Object.keys(process.env)
+    .filter((k) => /(GITHUB|OAUTH|CLIENT)/i.test(k))
+    .sort()
+
   return NextResponse.json({
     clientIdSet: Boolean(process.env.GITHUB_OAUTH_CLIENT_ID),
     clientSecretSet: Boolean(process.env.GITHUB_OAUTH_CLIENT_SECRET),
     clientIdLength: (process.env.GITHUB_OAUTH_CLIENT_ID || '').trim().length,
+    matchingKeys,
     vercelEnv: process.env.VERCEL_ENV || null,
     vercelUrl: process.env.VERCEL_URL || null,
   })
