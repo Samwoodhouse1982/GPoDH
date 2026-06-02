@@ -21,5 +21,18 @@
     "linkedin": "https://www.linkedin.com/in/dr-shubs-upadhyay-494691132/",
     "linkedinCompany": "https://www.linkedin.com/company/gpdoh",
     "substack": "https://shubstack.substack.com"
+  },
+  "seo": {
+    "defaultTitle": "Global Perspectives on Digital Health",
+    "titleTemplate": "%s | Global Perspectives on Digital Health",
+    "description": "The podcast sharing stories of AI and digital health for impact with underserved communities worldwide. Hosted by Dr Shubs Upadhyay.",
+    "episodes": {
+      "title": "Episodes",
+      "description": "All conversations from Global Perspectives on Digital Health. Stories of AI and digital health for impact with underserved communities worldwide."
+    },
+    "videos": {
+      "title": "Videos",
+      "description": "Talks, panels, and video content from Global Perspectives on Digital Health."
+    }
   }
 }

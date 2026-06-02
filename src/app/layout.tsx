@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 import Nav from '@/components/layout/Nav'
 import Footer from '@/components/layout/Footer'
+import { SEO } from '@/lib/constants'
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -28,10 +29,10 @@ const dmMono = DM_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Global Perspectives on Digital Health',
-    default: 'Global Perspectives on Digital Health',
+    template: SEO.titleTemplate,
+    default: SEO.defaultTitle,
   },
-  description: 'The podcast sharing stories of AI and digital health for impact with underserved communities worldwide. Hosted by Dr Shubs Upadhyay.',
+  description: SEO.description,
 }
 
 export default function RootLayout({

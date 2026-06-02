@@ -5,7 +5,8 @@ import RichText from '@/components/ui/RichText'
 import content from '@/data/site/work-with-us.json'
 
 export const metadata: Metadata = {
-  title: 'Work With Us',
+  title: content.meta.title,
+  description: content.meta.description,
 }
 
 export default function WorkWithUsPage() {

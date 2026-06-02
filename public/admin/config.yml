@@ -66,6 +66,25 @@ collections:
               - { name: linkedin, label: LinkedIn (personal) URL, widget: string }
               - { name: linkedinCompany, label: LinkedIn (company) URL, widget: string }
               - { name: substack, label: Substack URL, widget: string }
+          - name: seo
+            label: SEO defaults & list pages
+            widget: object
+            fields:
+              - { name: defaultTitle, label: Default browser-tab title, widget: string }
+              - { name: titleTemplate, label: 'Title template (use %s for page name)', widget: string }
+              - { name: description, label: Default meta description, widget: text }
+              - name: episodes
+                label: Episodes page
+                widget: object
+                fields:
+                  - { name: title, label: Title, widget: string }
+                  - { name: description, label: Meta description, widget: text }
+              - name: videos
+                label: Videos page
+                widget: object
+                fields:
+                  - { name: title, label: Title, widget: string }
+                  - { name: description, label: Meta description, widget: text }
 
       - name: global
         label: Header & footer
@@ -262,6 +281,12 @@ collections:
           and the consulting section. Body fields support basic formatting
           (bold, italic, links).
         fields:
+          - name: meta
+            label: SEO / browser tab
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Meta description, widget: text }
           - name: partnerships
             label: Podcast partnerships section
             widget: object
@@ -404,6 +429,12 @@ collections:
           The home page. Text, images and links are editable here; the animated
           globe, card colours and persona icons are fixed in the design.
         fields:
+          - name: meta
+            label: SEO / browser tab
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Meta description, widget: text }
           - name: hero
             label: Hero
             widget: object

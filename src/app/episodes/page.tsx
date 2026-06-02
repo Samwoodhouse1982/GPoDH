@@ -3,10 +3,11 @@ import EpisodeFilter from '@/components/sections/EpisodeFilter'
 import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
 import OrgMarquee from '@/components/ui/OrgMarquee'
 import { episodes, ALL_THEMES, ALL_COUNTRIES } from '@/lib/episodes'
+import { SEO } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Episodes',
-  description: 'All conversations from Global Perspectives on Digital Health. Stories of AI and digital health for impact with underserved communities worldwide.',
+  title: SEO.episodes.title,
+  description: SEO.episodes.description,
 }
 
 export default function EpisodesPage() {

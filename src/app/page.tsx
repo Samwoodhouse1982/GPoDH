@@ -11,9 +11,15 @@ import OrgMarquee from '@/components/ui/OrgMarquee'
 import HostIntroStrip from '@/components/ui/HostIntroStrip'
 import TrailerModal from '@/components/ui/TrailerModal'
 import FeaturedEpisodeBanner from '@/components/ui/FeaturedEpisodeBanner'
+import type { Metadata } from 'next'
 import { episodes } from '@/lib/episodes'
 import { videos } from '@/lib/videos'
 import content from '@/data/site/home.json'
+
+export const metadata: Metadata = {
+  title: { absolute: content.meta.title },
+  description: content.meta.description,
+}
 
 // Editable copy lives in src/data/site/home.json. The arrays below hold the
 // design-only parts (accent colours, SVG icons, animations) that stay fixed in

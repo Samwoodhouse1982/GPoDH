@@ -6,3 +6,4 @@ export const SITE = settings.site
 export const CONSULTING = settings.consulting
 export const PLATFORMS = settings.platforms
 export const SOCIAL = settings.social
+export const SEO = settings.seo
