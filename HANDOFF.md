@@ -208,15 +208,28 @@ explicit link `url` fields), not a markdown parser. If true inline rich text
 | Videos | ✅ | `src/data/videos.json` |
 | Site settings (social, platforms, consulting CTA, SEO) | ✅ | `src/data/site/settings.json` |
 | Contact page | ✅ | `src/data/site/contact.json` |
-| Home page | ⬜ TODO | `src/data/site/home.json` |
-| Work With Us page | ⬜ TODO | `src/data/site/work-with-us.json` |
-| Resources page (intro + link lists) | ⬜ TODO | `src/data/site/resources.json` |
-| Footer / Nav (labels, links) | ⬜ TODO | `src/data/site/global.json` |
-| Reusable copy (email signup, modals, host bio) | ⬜ TODO | component-level JSON |
+| Home page | ✅ | `src/data/site/home.json` |
+| Work With Us page | ✅ | `src/data/site/work-with-us.json` |
+| Resources page (intro + link lists) | ✅ | `src/data/site/resources.json` |
+| Footer / Nav (labels, links) | ✅ | `src/data/site/global.json` |
+| Reusable copy (email signup, modals, host bio) | ✅ | `src/data/site/reusable.json` |
+| SEO titles & meta descriptions | ✅ | per-page `meta` + `settings.json` → `seo` |
 
-To finish a TODO page, follow the 4-step pattern above. The Contact page
+The whole site is now content-editable. Every page and shared block reads from
+JSON under `src/data/site/`, each exposed as a CMS section. The Contact page
 (`contact.json` + the "Contact page" CMS section + `src/app/contact/page.tsx`)
-is the reference example to copy.
+remains the simplest reference example if you add a new page.
+
+**Rich text:** prose fields (intros, bios, descriptions) are stored as Markdown
+and rendered by `src/components/ui/RichText.tsx` — a small, dependency-free
+renderer supporting **bold**, *italic*, links, line breaks and bullet lists.
+In the CMS these fields use the `markdown` widget. If you ever need richer
+formatting (tables, images-in-prose), swap `RichText` for `react-markdown`;
+the field data is already plain Markdown so no content migration is needed.
+
+**What stays fixed in code (by design):** layout/spacing, colours, the animated
+hero globe, persona SVG icons and card-accent colours, and section animations.
+These live in the components, not the JSON, so editors can't break the design.
 
 ## 6. Automated video sync (YouTube → PR)
 
