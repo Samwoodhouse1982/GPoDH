@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import reusable from '@/data/site/reusable.json'
+
+const copy = reusable.subscribeModal
 
 interface Props {
   open: boolean
@@ -106,10 +109,10 @@ export default function SubscribeModal({ open, onClose }: Props) {
                 marginBottom: '0.625rem',
               }}
             >
-              You&rsquo;re in.
+              {copy.success.heading}
             </p>
             <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-              New episodes will land in your inbox when they drop. No spam, ever.
+              {copy.success.body}
             </p>
           </div>
         ) : (
@@ -124,7 +127,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
                 marginBottom: '0.75rem',
               }}
             >
-              Join the conversation
+              {copy.eyebrow}
             </p>
             <p
               style={{
@@ -136,7 +139,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
                 marginBottom: '1.5rem',
               }}
             >
-              Get new episodes direct to your inbox.
+              {copy.heading}
             </p>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -146,7 +149,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
                 aria-label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder={copy.placeholder}
                 required
                 style={{
                   width: '100%',
@@ -177,12 +180,12 @@ export default function SubscribeModal({ open, onClose }: Props) {
                   transition: 'background var(--transition-fast)',
                 }}
               >
-                {loading ? 'Subscribing…' : 'Subscribe'}
+                {loading ? copy.submittingLabel : copy.submitLabel}
               </button>
             </form>
 
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.875rem' }}>
-              No spam. Unsubscribe at any time.
+              {copy.note}
             </p>
           </>
         )}

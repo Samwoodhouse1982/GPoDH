@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { SOCIAL } from '@/lib/constants'
+import RichText from '@/components/ui/RichText'
+import reusable from '@/data/site/reusable.json'
+
+const copy = reusable.hostModal
 
 interface Props {
   /** Path to the intro video — leave empty until video is ready */
@@ -84,8 +88,8 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
             }}
           >
             <Image
-              src="/shubs.webp"
-              alt="Dr Shubs Upadhyay"
+              src={reusable.hostIntro.image}
+              alt={copy.name}
               width={48}
               height={48}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
@@ -125,19 +129,19 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
               marginBottom: '0.2rem',
             }}
           >
-            Meet your host
+            {copy.triggerEyebrow}
           </p>
           <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.3 }}>
-            Dr Shubs Upadhyay
+            {copy.name}
           </p>
           <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', lineHeight: 1.4, marginTop: '0.15rem' }}>
-            Physician &middot; Digital health strategist &middot; Podcast founder
+            {copy.triggerSubtitle}
           </p>
         </div>
 
         {/* Arrow */}
         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', flexShrink: 0 }}>
-          About Shubs ›
+          {copy.triggerLinkText}
         </span>
       </button>}
 
@@ -173,8 +177,8 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
         {/* Hero photo */}
         <div style={{ position: 'relative', height: '260px', overflow: 'hidden', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0' }}>
           <Image
-            src="/shubs-podcasting.jpg"
-            alt="Shubs interviewing a guest at HLTH Conference"
+            src={copy.heroImage}
+            alt={copy.heroAlt}
             fill
             style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
             sizes="860px"
@@ -255,8 +259,8 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                 }}
               >
                 <Image
-                  src="/shubs.webp"
-                  alt="Dr Shubs Upadhyay"
+                  src={reusable.hostIntro.image}
+                  alt={copy.name}
                   width={96}
                   height={96}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
@@ -276,7 +280,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   marginBottom: '0.5rem',
                 }}
               >
-                Your Host
+                {copy.eyebrow}
               </p>
               <h2
                 style={{
@@ -288,23 +292,12 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   lineHeight: 1.2,
                 }}
               >
-                Dr Shubs Upadhyay
+                {copy.name}
               </h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', marginBottom: '1.5rem' }}>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
-                  Shubs is a physician, digital health strategist, and the founder of this podcast. He trained in medicine in the UK and has spent the past decade working at the intersection of clinical practice, health technology, and global health systems.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
-                  His consulting work takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
-                  He started GPODH because the conversations he was having privately deserved a much wider audience. He noticed that the same founders, the same researchers, the same clinicians kept saying the same thing: nobody is talking about this publicly, and nobody outside our region seems to care.
-                </p>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem' }}>
-                  This podcast is his attempt to fix that.
-                </p>
-              </div>
+              <RichText style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '0.9375rem', marginBottom: '1.5rem' }}>
+                {copy.bio}
+              </RichText>
 
               {/* Credentials */}
               <div
@@ -319,7 +312,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   border: '1px solid var(--border)',
                 }}
               >
-                {['Physician', 'Digital Health Strategist', 'Consultant', 'Podcast Host'].map((cred) => (
+                {copy.credentials.map((cred) => (
                   <span
                     key={cred}
                     style={{
@@ -336,7 +329,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
               {/* Links */}
               <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <a
-                  href="https://www.shubs.me"
+                  href={copy.siteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -350,7 +343,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                     textDecoration: 'none',
                   }}
                 >
-                  Visit shubs.me &#8594;
+                  {copy.siteLinkText}
                 </a>
                 <a
                   href={SOCIAL.linkedin}
@@ -358,7 +351,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   rel="noopener noreferrer"
                   style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
                 >
-                  LinkedIn &#8599;
+                  {copy.linkedinLabel}
                 </a>
                 <a
                   href={SOCIAL.substack}
@@ -366,7 +359,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
                   rel="noopener noreferrer"
                   style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', textDecoration: 'none' }}
                 >
-                  Substack &#8599;
+                  {copy.substackLabel}
                 </a>
               </div>
             </div>

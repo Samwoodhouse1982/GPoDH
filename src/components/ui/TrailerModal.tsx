@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import reusable from '@/data/site/reusable.json'
+
+const copy = reusable.trailer
 
 export default function TrailerModal() {
   const [open, setOpen] = useState(false)
@@ -52,8 +55,8 @@ export default function TrailerModal() {
           }}
         >
           <Image
-            src="/shubs.webp"
-            alt="Shubs Upadhyay — GPODH host"
+            src={copy.thumbnail}
+            alt={copy.thumbnailAlt}
             fill
             style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
             sizes="(min-width: 760px) 50vw, 100vw"
@@ -150,7 +153,7 @@ export default function TrailerModal() {
         <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
           {open && (
             <iframe
-              src="https://www.youtube.com/embed/ABmm7iO9sDc?autoplay=1"
+              src={`https://www.youtube.com/embed/${copy.youtubeId}?autoplay=1`}
               title="GPODH Trailer"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
               allowFullScreen

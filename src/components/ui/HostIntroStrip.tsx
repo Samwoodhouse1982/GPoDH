@@ -4,6 +4,9 @@ import { useState } from 'react'
 import Image from 'next/image'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 import HostModal from '@/components/ui/HostModal'
+import reusable from '@/data/site/reusable.json'
+
+const copy = reusable.hostIntro
 
 export default function HostIntroStrip() {
   const [open, setOpen] = useState(false)
@@ -14,14 +17,14 @@ export default function HostIntroStrip() {
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
           <ScrollReveal>
             <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid var(--accent-coral)', position: 'relative' }}>
-              <Image src="/shubs.webp" alt="Dr Shubs Upadhyay" fill style={{ objectFit: 'cover', objectPosition: 'top' }} sizes="80px" />
+              <Image src={copy.image} alt={copy.name} fill style={{ objectFit: 'cover', objectPosition: 'top' }} sizes="80px" />
             </div>
           </ScrollReveal>
           <ScrollReveal delay={80}>
             <div style={{ flex: 1, minWidth: '220px' }}>
-              <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.625rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Your host</p>
-              <p style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>Dr Shubs Upadhyay</p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '52ch' }}>Physician and digital health strategist. He started GPODH because the conversations he was having privately deserved a much wider audience.</p>
+              <p style={{ fontFamily: 'var(--font-dm-mono, var(--font-mono))', fontSize: '0.625rem', letterSpacing: '0.12em', color: 'var(--accent-coral)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>{copy.eyebrow}</p>
+              <p style={{ fontFamily: 'var(--font-cormorant, var(--font-display))', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>{copy.name}</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '52ch' }}>{copy.bio}</p>
             </div>
           </ScrollReveal>
           <ScrollReveal delay={150}>
@@ -30,7 +33,7 @@ export default function HostIntroStrip() {
               style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap', transition: 'color var(--transition-fast)', padding: 0 }}
               className="host-intro-link"
             >
-              More about Shubs ↗
+              {copy.linkText}
             </button>
           </ScrollReveal>
         </div>

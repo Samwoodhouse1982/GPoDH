@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import reusable from '@/data/site/reusable.json'
+
+const copy = reusable.emailSignup
 
 export default function EmailSignup() {
   const [email, setEmail] = useState('')
@@ -42,7 +45,7 @@ export default function EmailSignup() {
             marginBottom: '1rem',
           }}
         >
-          JOIN THE CONVERSATION
+          {copy.eyebrow}
         </p>
         <h2
           style={{
@@ -54,7 +57,7 @@ export default function EmailSignup() {
             marginBottom: '1.5rem',
           }}
         >
-          Get new episodes direct to your inbox.
+          {copy.heading}
         </h2>
 
         {submitted ? (
@@ -70,10 +73,10 @@ export default function EmailSignup() {
             }}
           >
             <p style={{ fontSize: '1.125rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-              You are subscribed.
+              {copy.success.heading}
             </p>
             <p style={{ fontSize: '0.875rem' }}>
-              New episodes will arrive in your inbox when they drop.
+              {copy.success.body}
             </p>
           </div>
         ) : (
@@ -92,7 +95,7 @@ export default function EmailSignup() {
               aria-label="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder={copy.placeholder}
               required
               style={{
                 flex: '1 1 280px',
@@ -123,14 +126,14 @@ export default function EmailSignup() {
                 flexShrink: 0,
               }}
             >
-              {loading ? 'Subscribing...' : 'Subscribe'}
+              {loading ? copy.submittingLabel : copy.submitLabel}
             </button>
           </form>
         )}
 
         {!submitted && (
           <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
-            No spam. Unsubscribe at any time.
+            {copy.note}
           </p>
         )}
       </div>

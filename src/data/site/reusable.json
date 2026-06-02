@@ -1,0 +1,60 @@
+{
+  "emailSignup": {
+    "eyebrow": "JOIN THE CONVERSATION",
+    "heading": "Get new episodes direct to your inbox.",
+    "placeholder": "your@email.com",
+    "submitLabel": "Subscribe",
+    "submittingLabel": "Subscribing...",
+    "note": "No spam. Unsubscribe at any time.",
+    "success": {
+      "heading": "You are subscribed.",
+      "body": "New episodes will arrive in your inbox when they drop."
+    }
+  },
+  "subscribeModal": {
+    "eyebrow": "Join the conversation",
+    "heading": "Get new episodes direct to your inbox.",
+    "placeholder": "your@email.com",
+    "submitLabel": "Subscribe",
+    "submittingLabel": "Subscribing…",
+    "note": "No spam. Unsubscribe at any time.",
+    "success": {
+      "heading": "You're in.",
+      "body": "New episodes will land in your inbox when they drop. No spam, ever."
+    }
+  },
+  "hostIntro": {
+    "eyebrow": "Your host",
+    "name": "Dr Shubs Upadhyay",
+    "bio": "Physician and digital health strategist. He started GPODH because the conversations he was having privately deserved a much wider audience.",
+    "linkText": "More about Shubs ↗",
+    "image": "/shubs.webp"
+  },
+  "consultingStrip": {
+    "eyebrow": "Consulting",
+    "title": "From promising to proven.",
+    "body": "Senior clinical & product counsel for clinical AI.",
+    "ctaText": "Work with Shubs →",
+    "url": "https://www.shubs.me"
+  },
+  "trailer": {
+    "youtubeId": "ABmm7iO9sDc",
+    "thumbnail": "/shubs.webp",
+    "thumbnailAlt": "Shubs Upadhyay — GPODH host"
+  },
+  "hostModal": {
+    "triggerEyebrow": "Meet your host",
+    "triggerSubtitle": "Physician · Digital health strategist · Podcast founder",
+    "triggerLinkText": "About Shubs ›",
+    "eyebrow": "Your Host",
+    "name": "Dr Shubs Upadhyay",
+    "heroImage": "/shubs-podcasting.jpg",
+    "heroAlt": "Shubs interviewing a guest at HLTH Conference",
+    "bio": "Shubs is a physician, digital health strategist, and the founder of this podcast. He trained in medicine in the UK and has spent the past decade working at the intersection of clinical practice, health technology, and global health systems.\n\nHis consulting work takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.\n\nHe started GPODH because the conversations he was having privately deserved a much wider audience. He noticed that the same founders, the same researchers, the same clinicians kept saying the same thing: nobody is talking about this publicly, and nobody outside our region seems to care.\n\nThis podcast is his attempt to fix that.",
+    "credentials": ["Physician", "Digital Health Strategist", "Consultant", "Podcast Host"],
+    "siteLinkText": "Visit shubs.me →",
+    "siteUrl": "https://www.shubs.me",
+    "linkedinLabel": "LinkedIn ↗",
+    "substackLabel": "Substack ↗"
+  }
+}

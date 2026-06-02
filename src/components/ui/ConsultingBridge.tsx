@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { CONSULTING } from '@/lib/constants'
+import reusable from '@/data/site/reusable.json'
+
+const strip = reusable.consultingStrip
 
 interface ConsultingBridgeProps {
   variant: 'inline' | 'card' | 'footer-strip'
@@ -103,7 +106,7 @@ export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
               marginBottom: '0.5rem',
             }}
           >
-            Consulting
+            {strip.eyebrow}
           </p>
           <p
             style={{
@@ -115,14 +118,14 @@ export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
               margin: '0 0 0.4rem',
             }}
           >
-            From promising to proven.
+            {strip.title}
           </p>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', margin: 0 }}>
-            Senior clinical &amp; product counsel for clinical AI.
+            {strip.body}
           </p>
         </div>
         <a
-          href="https://www.shubs.me"
+          href={strip.url}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -139,7 +142,7 @@ export default function ConsultingBridge({ variant }: ConsultingBridgeProps) {
             textDecoration: 'none',
           }}
         >
-          Work with Shubs &#8594;
+          {strip.ctaText}
         </a>
       </div>
     </div>
