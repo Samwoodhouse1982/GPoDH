@@ -372,16 +372,24 @@ and in Vercel's encrypted env vars. Inventory:
 
 ## 12. Outstanding TODO / suggested next steps
 
-- [ ] **Wire up forms to a real backend** (contact + email capture) — highest value.
-- [ ] Configure the **GitHub OAuth App + Vercel env vars** to enable the CMS.
-- [ ] Enable **Actions PR permissions** so the video-sync workflow can open PRs.
+- [ ] **Wire up forms to a real backend** (contact + email capture) — highest value. *(On hold — owner will revisit.)*
+- [ ] Configure the **GitHub OAuth App + Vercel env vars** to enable the CMS. *(Believed done — confirm by logging in at `/admin`.)*
+- [ ] Enable **Actions PR permissions** so the video-sync workflow can open PRs. *(Repo → Settings → Actions → General → Workflow permissions.)*
 - [ ] **Confirm canonical domain** and align `base_url` + OAuth callback.
 - [ ] **Revoke the exposed PATs**; create fresh fine-grained tokens as needed.
-- [ ] (Optional) Display CMS video transcripts on the **video detail pages** (they
-      currently only feed search).
-- [ ] (Optional) Convert `OrgMarquee` + remaining raw `<img>` to `next/image`.
-- [ ] (Optional) Pre-seed `concept-map.ts` synonyms for upcoming topics.
-- [ ] (Optional) Consider Decap **folder collections** for nicer per-item review.
+- [x] Display CMS video transcripts on the **video detail pages** (now prefers the
+      CMS `transcript` field, falling back to the bundled library).
+- [x] Convert remaining photo `<img>` to `next/image` (banner, episode/video
+      artwork, surprise-pick thumbnail). **OrgMarquee left as raw `<img>` on
+      purpose** — mixed remote SVG logos that `next/image` can't optimise without
+      `dangerouslyAllowSVG`.
+- [x] Pre-seed `concept-map.ts` synonyms for upcoming topics (10 new clusters).
+- [x] ~~Consider Decap **folder collections** for nicer per-item review.~~
+      **Decision: skip.** The single-file list collections work; folder
+      collections would force a build-time codegen step (client search needs the
+      data statically bundled) and a rewrite of the video-sync workflow, for a
+      mostly cosmetic per-item-review gain. Revisit only if per-item review
+      becomes a real need.
 
 ---
 
