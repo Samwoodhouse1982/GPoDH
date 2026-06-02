@@ -35,7 +35,9 @@ export default async function VideoPage({ params }: Props) {
     .filter((v) => v.id !== video.id)
     .slice(0, 3)
 
-  const transcript = videoTranscripts[video.slug]
+  // Prefer an editor-entered transcript from the CMS; fall back to the bundled
+  // transcript library. (Matches the merge order used by video search.)
+  const transcript = video.transcript ?? videoTranscripts[video.slug]
 
   return (
     <>
