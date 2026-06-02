@@ -355,3 +355,111 @@ collections:
                   - { name: description, label: Description, widget: markdown }
                   - { name: url, label: Link URL, widget: string, required: false }
                   - { name: subgroup, label: Subgroup heading, widget: string, required: false }
+
+      - name: home
+        label: Home page
+        file: src/data/site/home.json
+        format: json
+        description: >-
+          The home page. Text, images and links are editable here; the animated
+          globe, card colours and persona icons are fixed in the design.
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: subtitle, label: Subtitle, widget: text }
+              - name: primaryCta
+                label: Primary button
+                widget: object
+                fields:
+                  - { name: text, label: Text, widget: string }
+                  - { name: href, label: Link, widget: string }
+              - name: secondaryCta
+                label: Secondary link
+                widget: object
+                fields:
+                  - { name: text, label: Text, widget: string }
+                  - { name: href, label: Link, widget: string }
+          - name: about
+            label: About the show
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: heading, label: Heading, widget: text }
+              - { name: body1, label: First paragraph, widget: markdown }
+              - { name: body2, label: Second paragraph, widget: markdown }
+              - { name: trailerLabel, label: Trailer label, widget: string }
+          - name: showCards
+            label: Three question cards
+            widget: list
+            max: 3
+            summary: '{{fields.eyebrow}}'
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: text, label: Question, widget: text }
+          - name: promo
+            label: Promo photo strip
+            widget: object
+            fields:
+              - { name: image, label: Image, widget: image, choose_url: true }
+              - { name: alt, label: Alt text, widget: string }
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: quote, label: Quote, widget: text }
+              - { name: attribution, label: Attribution, widget: string }
+          - name: whoListens
+            label: Who listens
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: heading, label: Heading, widget: string }
+              - name: personas
+                label: Personas
+                widget: list
+                max: 4
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: description, label: Description, widget: string }
+                  - name: tags
+                    label: Tags
+                    widget: list
+                    field: { name: tag, label: Tag, widget: string }
+          - name: testimonials
+            label: Testimonials
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - name: quotes
+                label: Quotes
+                widget: list
+                field: { name: quote, label: Quote, widget: text }
+          - name: orgMarquee
+            label: Organisations marquee
+            widget: object
+            fields:
+              - { name: label, label: Label, widget: string }
+          - name: latestEpisodes
+            label: Latest episodes heading
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: heading, label: Heading, widget: string }
+              - { name: linkText, label: Link text, widget: string }
+          - name: featuredVideos
+            label: Featured videos heading
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: heading, label: Heading, widget: string }
+              - { name: linkText, label: Link text, widget: string }
+          - name: finalCta
+            label: Final call-to-action
+            widget: object
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Body, widget: string }
+              - { name: buttonText, label: Button text, widget: string }
+              - { name: buttonHref, label: Button link, widget: string }

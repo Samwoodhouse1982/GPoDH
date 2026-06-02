@@ -1,0 +1,90 @@
+{
+  "hero": {
+    "eyebrow": "GLOBAL PERSPECTIVES ON DIGITAL HEALTH",
+    "title": "Break out of your bubble.",
+    "subtitle": "The podcast that shares stories from people doing AI and digital health in low-resourced settings, because health inequalities are everywhere and the lessons travel.",
+    "primaryCta": { "text": "Listen to episodes →", "href": "/episodes" },
+    "secondaryCta": { "text": "What is this podcast? ↓", "href": "#about-section" }
+  },
+  "about": {
+    "eyebrow": "The Show",
+    "heading": "The perspectives of those innovating in underserved settings are sorely missing from digital health.",
+    "body1": "The dominant narrative in digital health flows outward from the Global North. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.",
+    "body2": "Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?",
+    "trailerLabel": "Watch the trailer"
+  },
+  "showCards": [
+    {
+      "eyebrow": "VISIBILITY",
+      "text": "Who is actually building digital health tools in low-resource settings, and what does their work look like?"
+    },
+    {
+      "eyebrow": "LEARNING",
+      "text": "What can high-income country health systems learn from the ingenuity and constraint-led innovation happening elsewhere?"
+    },
+    {
+      "eyebrow": "THE BIG PICTURE",
+      "text": "How do we build a more equitable global digital health ecosystem, and who needs to be in the room?"
+    }
+  ],
+  "promo": {
+    "image": "/shubs-interview.jpg",
+    "alt": "Shubs Upadhyay interviewing a guest at HLTH Conference",
+    "eyebrow": "In the room",
+    "quote": "Getting the conversations that never make it onto the main stage.",
+    "attribution": "Dr Shubs Upadhyay · HLTH Conference"
+  },
+  "whoListens": {
+    "eyebrow": "Who listens",
+    "heading": "Find your place in this conversation.",
+    "personas": [
+      {
+        "label": "Clinicians",
+        "description": "Curious about digital health beyond your own system",
+        "tags": ["Physicians", "Nurses", "Allied Health"]
+      },
+      {
+        "label": "Digital Health",
+        "description": "Building tools for or entering emerging markets",
+        "tags": ["Founders", "Product", "Consultants"]
+      },
+      {
+        "label": "Global Health",
+        "description": "Navigating digital transformation on the ground",
+        "tags": ["NGOs", "Policy", "Researchers"]
+      },
+      {
+        "label": "Funders",
+        "description": "Tracking where health tech is heading in emerging markets",
+        "tags": ["Investors", "Philanthropy", "Development Funds"]
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "What listeners say",
+    "quotes": [
+      "It is so valuable to hear insights from people who have already gone through similar challenges.",
+      "This perspective is sorely missing from our industry, so glad you are doing this.",
+      "No-one else talks about this topic with this level of depth and engagement."
+    ]
+  },
+  "orgMarquee": {
+    "label": "Guests represent organisations including"
+  },
+  "latestEpisodes": {
+    "eyebrow": "LATEST EPISODES",
+    "heading": "Recent conversations",
+    "linkText": "View all episodes →"
+  },
+  "featuredVideos": {
+    "eyebrow": "Watch",
+    "heading": "From the GPODH archive",
+    "linkText": "View all videos →"
+  },
+  "finalCta": {
+    "heading": "Ready to listen?",
+    "body": "Browse all episodes and find where to start.",
+    "buttonText": "Browse all episodes →",
+    "buttonHref": "/episodes"
+  }
+}

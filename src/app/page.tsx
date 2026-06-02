@@ -3,6 +3,7 @@ import Image from 'next/image'
 import VideoCard from '@/components/ui/VideoCard'
 import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import RichText from '@/components/ui/RichText'
 import EmailSignup from '@/components/sections/EmailSignup'
 import GlobeSection from '@/components/sections/GlobeSection'
 import HeroGlobeWrapper from '@/components/ui/HeroGlobeWrapper'
@@ -12,36 +13,15 @@ import TrailerModal from '@/components/ui/TrailerModal'
 import FeaturedEpisodeBanner from '@/components/ui/FeaturedEpisodeBanner'
 import { episodes } from '@/lib/episodes'
 import { videos } from '@/lib/videos'
+import content from '@/data/site/home.json'
 
-const testimonials = [
-  "It is so valuable to hear insights from people who have already gone through similar challenges.",
-  "This perspective is sorely missing from our industry, so glad you are doing this.",
-  "No-one else talks about this topic with this level of depth and engagement.",
-]
+// Editable copy lives in src/data/site/home.json. The arrays below hold the
+// design-only parts (accent colours, SVG icons, animations) that stay fixed in
+// code, zipped onto the editable text by index.
+const showCardAccents = ['var(--accent-coral)', 'var(--accent-amber)', '#3EC9A7']
 
-const showCards = [
+const personaDesign = [
   {
-    eyebrow: 'VISIBILITY',
-    text: 'Who is actually building digital health tools in low-resource settings, and what does their work look like?',
-    accent: 'var(--accent-coral)',
-  },
-  {
-    eyebrow: 'LEARNING',
-    text: 'What can high-income country health systems learn from the ingenuity and constraint-led innovation happening elsewhere?',
-    accent: 'var(--accent-amber)',
-  },
-  {
-    eyebrow: 'THE BIG PICTURE',
-    text: 'How do we build a more equitable global digital health ecosystem, and who needs to be in the room?',
-    accent: '#3EC9A7',
-  },
-]
-
-const listenerPersonas = [
-  {
-    label: 'Clinicians',
-    description: 'Curious about digital health beyond your own system',
-    tags: ['Physicians', 'Nurses', 'Allied Health'],
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
@@ -53,9 +33,6 @@ const listenerPersonas = [
     motionClass: 'icon-heartbeat',
   },
   {
-    label: 'Digital Health',
-    description: 'Building tools for or entering emerging markets',
-    tags: ['Founders', 'Product', 'Consultants'],
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 21h6M12 3C8.686 3 6 5.686 6 9c0 2.21 1.197 4.14 3 5.197V17a1 1 0 001 1h4a1 1 0 001-1v-2.803C16.803 13.14 18 11.21 18 9c0-3.314-2.686-6-6-6z"/>
@@ -66,9 +43,6 @@ const listenerPersonas = [
     motionClass: 'icon-glow',
   },
   {
-    label: 'Global Health',
-    description: 'Navigating digital transformation on the ground',
-    tags: ['NGOs', 'Policy', 'Researchers'],
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
@@ -80,9 +54,6 @@ const listenerPersonas = [
     motionClass: 'icon-spin',
   },
   {
-    label: 'Funders',
-    description: 'Tracking where health tech is heading in emerging markets',
-    tags: ['Investors', 'Philanthropy', 'Development Funds'],
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
@@ -94,6 +65,9 @@ const listenerPersonas = [
     motionClass: 'icon-float',
   },
 ]
+
+const { hero, about, showCards, promo, whoListens, testimonials, orgMarquee, latestEpisodes: latestCopy, featuredVideos, finalCta } = content
+const listenerPersonas = whoListens.personas.map((p, i) => ({ ...p, ...personaDesign[i] }))
 
 export default function HomePage() {
   const latestEpisodes = [...episodes]
@@ -141,7 +115,7 @@ export default function HomePage() {
                 animationDelay: '0ms',
               }}
             >
-              GLOBAL PERSPECTIVES ON DIGITAL HEALTH
+              {hero.eyebrow}
             </p>
             <h1
               className="animate-fade-up"
@@ -155,7 +129,7 @@ export default function HomePage() {
                 animationDelay: '100ms',
               }}
             >
-              Break out of your bubble.
+              {hero.title}
             </h1>
             <p
               className="animate-fade-up"
@@ -170,14 +144,14 @@ export default function HomePage() {
                 animationDelay: '160ms',
               }}
             >
-              The podcast that shares stories from people doing AI and digital health in low-resourced settings, because health inequalities are everywhere and the lessons travel.
+              {hero.subtitle}
             </p>
             <div
               className="animate-fade-up"
               style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', animationDelay: '350ms' }}
             >
               <Link
-                href="/episodes"
+                href={hero.primaryCta.href}
                 style={{
                   display: 'inline-block',
                   padding: '0.875rem 1.75rem',
@@ -189,10 +163,10 @@ export default function HomePage() {
                   textDecoration: 'none',
                 }}
               >
-                Listen to episodes &#8594;
+                {hero.primaryCta.text}
               </Link>
               <a
-                href="#about-section"
+                href={hero.secondaryCta.href}
                 style={{
                   fontSize: '0.875rem',
                   color: 'var(--text-muted)',
@@ -203,7 +177,7 @@ export default function HomePage() {
                   transition: 'color var(--transition-fast)',
                 }}
               >
-                What is this podcast? &#8595;
+                {hero.secondaryCta.text}
               </a>
             </div>
           </div>
@@ -261,7 +235,7 @@ export default function HomePage() {
                     marginBottom: '1.25rem',
                   }}
                 >
-                  The Show
+                  {about.eyebrow}
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={80}>
@@ -275,18 +249,18 @@ export default function HomePage() {
                     marginBottom: '2rem',
                   }}
                 >
-                  The perspectives of those innovating in underserved settings are sorely missing from digital health.
+                  {about.heading}
                 </h2>
               </ScrollReveal>
               <ScrollReveal delay={130}>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                  The dominant narrative in digital health flows outward from the Global North. But the unmet need, and the extraordinary work being done to meet it, exists everywhere. GPODH exists to change that. The show brings together clinicians, founders, researchers, and policy makers who are doing real work in digital health in contexts that rarely make it onto the main stage.
-                </p>
+                <RichText style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
+                  {about.body1}
+                </RichText>
               </ScrollReveal>
               <ScrollReveal delay={160}>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                  Every episode asks a version of the same question: what does it actually take to make digital health work for the communities that need it most?
-                </p>
+                <RichText style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                  {about.body2}
+                </RichText>
               </ScrollReveal>
             </div>
 
@@ -302,7 +276,7 @@ export default function HomePage() {
                   marginBottom: '0.75rem',
                 }}
               >
-                Watch the trailer
+                {about.trailerLabel}
               </p>
               <TrailerModal />
             </ScrollReveal>
@@ -323,7 +297,7 @@ export default function HomePage() {
                     position: 'relative',
                     background: 'var(--bg-card)',
                     border: '1px solid var(--border)',
-                    borderTop: `4px solid ${card.accent}`,
+                    borderTop: `4px solid ${showCardAccents[i]}`,
                     borderRadius: 'var(--radius-lg)',
                     padding: '2.25rem',
                     height: '100%',
@@ -338,7 +312,7 @@ export default function HomePage() {
                     fontSize: '9rem',
                     fontFamily: 'var(--font-cormorant, serif)',
                     fontWeight: 700,
-                    color: card.accent,
+                    color: showCardAccents[i],
                     opacity: 0.07,
                     lineHeight: 1,
                     userSelect: 'none',
@@ -349,7 +323,7 @@ export default function HomePage() {
                       fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                       fontSize: '0.6875rem',
                       letterSpacing: '0.15em',
-                      color: card.accent,
+                      color: showCardAccents[i],
                       textTransform: 'uppercase',
                       marginBottom: '1rem',
                     }}
@@ -378,8 +352,8 @@ export default function HomePage() {
       {/* ——— Promo photo strip ——— */}
       <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(280px, 35vw, 440px)' }}>
         <Image
-          src="/shubs-interview.jpg"
-          alt="Shubs Upadhyay interviewing a guest at HLTH Conference"
+          src={promo.image}
+          alt={promo.alt}
           fill
           style={{ objectFit: 'cover', objectPosition: 'center 42%' }}
           sizes="100vw"
@@ -407,7 +381,7 @@ export default function HomePage() {
                 textTransform: 'uppercase',
                 marginBottom: '1rem',
               }}>
-                In the room
+                {promo.eyebrow}
               </p>
               <blockquote style={{
                 fontFamily: 'var(--font-cormorant, var(--font-display))',
@@ -418,7 +392,7 @@ export default function HomePage() {
                 lineHeight: 1.2,
                 margin: '0 0 1.25rem',
               }}>
-                &ldquo;Getting the conversations that never make it onto the main stage.&rdquo;
+                &ldquo;{promo.quote}&rdquo;
               </blockquote>
               <p style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
@@ -427,7 +401,7 @@ export default function HomePage() {
                 color: 'rgba(255,255,255,0.5)',
                 textTransform: 'uppercase',
               }}>
-                Dr Shubs Upadhyay &middot; HLTH Conference
+                {promo.attribution}
               </p>
             </div>
           </div>
@@ -499,7 +473,7 @@ export default function HomePage() {
                   marginBottom: '1rem',
                 }}
               >
-                Who listens
+                {whoListens.eyebrow}
               </p>
               <h2
                 style={{
@@ -511,7 +485,7 @@ export default function HomePage() {
                   maxWidth: '36rem',
                 }}
               >
-                Find your place in this conversation.
+                {whoListens.heading}
               </h2>
             </div>
           </ScrollReveal>
@@ -608,11 +582,11 @@ export default function HomePage() {
               marginBottom: '2.5rem',
               textAlign: 'center',
             }}>
-              What listeners say
+              {testimonials.eyebrow}
             </p>
           </ScrollReveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem' }}>
-            {testimonials.map((quote, i) => (
+            {testimonials.quotes.map((quote, i) => (
               <ScrollReveal key={i} delay={i * 100}>
                 <blockquote style={{ borderLeft: '3px solid rgba(255,255,255,0.4)', paddingLeft: '1.5rem' }}>
                   <p style={{
@@ -645,7 +619,7 @@ export default function HomePage() {
           textTransform: 'uppercase',
           padding: '2rem 0 0.75rem',
         }}>
-          Guests represent organisations including
+          {orgMarquee.label}
         </p>
         <OrgMarquee />
       </div>
@@ -675,7 +649,7 @@ export default function HomePage() {
                     marginBottom: '0.625rem',
                   }}
                 >
-                  LATEST EPISODES
+                  {latestCopy.eyebrow}
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={100}>
@@ -687,7 +661,7 @@ export default function HomePage() {
                     color: 'var(--text-primary)',
                   }}
                 >
-                  Recent conversations
+                  {latestCopy.heading}
                 </h2>
               </ScrollReveal>
             </div>
@@ -699,7 +673,7 @@ export default function HomePage() {
                 textDecoration: 'none',
               }}
             >
-              View all episodes &#8594;
+              {latestCopy.linkText}
             </Link>
           </div>
 
@@ -738,7 +712,7 @@ export default function HomePage() {
                       marginBottom: '0.625rem',
                     }}
                   >
-                    Watch
+                    {featuredVideos.eyebrow}
                   </p>
                 </ScrollReveal>
                 <ScrollReveal delay={100}>
@@ -750,7 +724,7 @@ export default function HomePage() {
                       color: 'var(--text-primary)',
                     }}
                   >
-                    From the GPODH archive
+                    {featuredVideos.heading}
                   </h2>
                 </ScrollReveal>
               </div>
@@ -762,7 +736,7 @@ export default function HomePage() {
                   textDecoration: 'none',
                 }}
               >
-                View all videos &#8594;
+                {featuredVideos.linkText}
               </Link>
             </div>
 
@@ -806,7 +780,7 @@ export default function HomePage() {
               lineHeight: 1.2,
             }}
           >
-            Ready to listen?
+            {finalCta.heading}
           </p>
           <p
             style={{
@@ -815,7 +789,7 @@ export default function HomePage() {
               marginBottom: '2rem',
             }}
           >
-            Browse all episodes and find where to start.
+            {finalCta.body}
           </p>
           <div
             style={{
@@ -826,7 +800,7 @@ export default function HomePage() {
             }}
           >
             <Link
-              href="/episodes"
+              href={finalCta.buttonHref}
               style={{
                 display: 'inline-block',
                 padding: '0.875rem 1.75rem',
@@ -838,7 +812,7 @@ export default function HomePage() {
                 textDecoration: 'none',
               }}
             >
-              Browse all episodes &#8594;
+              {finalCta.buttonText}
             </Link>
           </div>
         </ScrollReveal>
