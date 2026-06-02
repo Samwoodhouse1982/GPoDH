@@ -1,0 +1,369 @@
+# GPODH — Project Handoff & Operating Manual
+
+> **Audience:** Dr Shubs Upadhyay and any AI assistant (Claude / Claude Code) or
+> developer taking over the **Global Perspectives on Digital Health (GPODH)**
+> website. This document is intended to be exhaustive enough that someone with
+> zero prior context can run, edit, deploy, and extend the project safely.
+>
+> **Last updated:** 2026-06-01.
+> **Maintainer of record going forward:** Shubs Upadhyay (shwoodhouse@gmail.com).
+
+---
+
+## 0. ⚠️ Read this first (security & secrets policy)
+
+**No live secret values are stored in this repository, and none should ever be.**
+Committing a token, OAuth secret, or API key to git leaks it permanently (git
+history is forever, even after deletion). This file therefore contains a
+**registry of which secrets exist and where they live**, never the values
+themselves. See [§9 Secrets registry](#9-secrets-registry).
+
+**Action required:** During the build of this project, several GitHub Personal
+Access Tokens (PATs) were pasted into a chat transcript. **Treat all of them as
+compromised and revoke them** at GitHub → *Settings → Developer settings →
+Personal access tokens*. Generate fresh ones as needed (see §9).
+
+---
+
+## 1. What this project is
+
+GPODH is the website for the **Global Perspectives on Digital Health** podcast,
+hosted by Dr Shubs Upadhyay. It showcases podcast **episodes**, **videos**
+(talks/panels/clips from the YouTube channel), resources, a "work with us"
+page, and a contact page. It also funnels toward Shubs' consulting
+(`shubs.me`) and newsletter (Shubstack).
+
+- **Production site:** https://www.gpodh.org  (confirm whether the canonical is
+  `www.gpodh.org` or the apex `gpodh.org` — see [§11 Blockers](#11-known-blockers-gotchas--decisions)).
+- **Repository:** `samwoodhouse1982/gpodh` (GitHub), default branch **`master`**.
+- **Hosting/deploy:** **Vercel** (auto-deploys on push to `master`).
+- **YouTube channel:** https://www.youtube.com/@globalpdhpodcast
+- **Podcast hosting:** Transistor (episode embeds use `share.transistor.fm/e/...`).
+- **Listen links:** Apple `podcasts.apple.com/us/podcast/id1744026517`,
+  Spotify `open.spotify.com/show/15zbPaJeOknH1qZNL4Spau`, YouTube (above).
+- **Related properties:** `shubs.me` (consulting), `shubstack.substack.com` (newsletter).
+
+---
+
+## 2. Tech stack
+
+| Area | Choice | Notes |
+|---|---|---|
+| Framework | **Next.js 16.2.1** (App Router) | ⚠️ See AGENTS.md: this is a newer Next with breaking changes vs. older training data. **Read `node_modules/next/dist/docs/` before using unfamiliar Next APIs.** |
+| UI | **React 19**, **TypeScript** | Components are **inline-styled** (style objects), driven by **CSS custom properties** in `src/app/globals.css`. There is *not* a utility-class design system; Tailwind v4 is present but most styling is inline + CSS vars. |
+| Styling | Tailwind v4 (`@tailwindcss/postcss`) + CSS variables | Tokens live in `globals.css` (`@theme` block + `:root`). Both must be kept in sync. |
+| Fonts | `next/font/google` — Cormorant Garamond (display), DM Sans (body), DM Mono (eyebrows) | `display: swap`. Exposed as `--font-cormorant`, `--font-dm-sans`, `--font-dm-mono`. |
+| Search | **Fuse.js** (fuzzy) + a custom synonym **concept map** | See [§7 Search](#7-smart-search). |
+| Globe | **d3-geo** + **topojson-client**, canvas-rendered | `HeroGlobe`/`Globe`, dynamically imported `ssr: false`. |
+| CMS | **Decap CMS** (git-based, CDN-loaded) | See [§5 CMS](#5-content-management-decap-cms). |
+| Deps (runtime) | `d3-geo`, `fuse.js`, `next`, `react`, `react-dom`, `topojson-client` | Deliberately lean. No CSS-in-JS lib, no framer-motion, no three.js. |
+
+**Node:** use Node **20 or 22**. Some maintenance scripts use Node 22's
+`--experimental-strip-types` to import `.ts` data files directly.
+
+---
+
+## 3. Repository layout
+
+```
+src/
+  app/
+    layout.tsx              Root layout: fonts, <Nav>, <main id=main-content>, <Footer>, skip-link
+    globals.css             Design tokens, resets, animations, reduced-motion, skip-link
+    page.tsx                Home (hero + globe, featured episode banner, about, value props, latest)
+    episodes/page.tsx       Episodes hero + <EpisodeFilter> (search/filter grid)
+    episodes/[slug]/page.tsx  Episode detail (player, bio, timestamps, transcript, related)
+    videos/page.tsx         Server wrapper -> <VideoPageClient>
+    videos/VideoPageClient.tsx  Videos hero, featured, search, grid, "Surprise me"
+    videos/[slug]/page.tsx  Video detail page
+    work-with-us/page.tsx   Partnerships + consulting (ConsultingBridge)
+    resources/page.tsx      Resource links + Shubstack callout
+    contact/page.tsx        Contact form (⚠️ simulated, no backend) + platforms
+    api/auth/route.ts       Decap GitHub OAuth — step 1 (redirect to GitHub)
+    api/callback/route.ts   Decap GitHub OAuth — step 2 (token exchange -> postMessage)
+  components/
+    layout/      Nav.tsx, Footer.tsx
+    sections/    EpisodeFilter.tsx (episode search), EmailSignup.tsx, GlobeSection.tsx, LatestEpisodesCarousel.tsx
+    ui/          EpisodeCard, VideoCard, FeaturedEpisodeBanner, HeroGlobe/Globe, HostModal,
+                 SubscribeModal, TrailerModal, EmailSignupTile, OrgMarquee, SpeakerMarquee,
+                 TranscriptToggle, ShareButtons, RelatedEpisodes, PlatformBadge, etc.
+  lib/
+    episodes.ts             Typed loader over src/data/episodes.json + ALL_THEMES/ALL_COUNTRIES
+    videos.ts               Typed loader over src/data/videos.json + featuredVideo + CATEGORY_LABELS
+    video-transcripts.ts    Legacy video transcripts keyed by slug (fallback for search/display)
+    concept-map.ts          CONCEPT_MAP synonym dictionary + expandQuery() (shared by both searches)
+    constants.ts            PLATFORMS, SOCIAL, CONSULTING copy
+    utm.ts                  withUtm() helper for outbound campaign links
+  data/
+    episodes.json           { "episodes": [...] }  ← source of truth for episodes
+    videos.json             { "videos": [...] }    ← source of truth for videos
+public/
+  admin/index.html          Decap CMS app (CDN)
+  admin/config.yml          Decap collections, backend, editorial workflow
+  guests/                   Guest photos (referenced as /guests/<file>); CMS uploads land here
+  logo-gpodh*.png, shubs-*.jpg/webp, logos/
+scripts/
+  sync-videos.mjs           YouTube RSS -> append new videos to videos.json
+.github/workflows/
+  sync-videos.yml           Daily run of the sync script -> opens a PR
+```
+
+---
+
+## 4. Local development
+
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build (run this before every push to catch errors)
+npm run start    # serve the production build
+npm run lint     # eslint
+```
+
+**Always run `npm run build` before pushing.** The site is statically generated;
+a type error or bad data file fails the Vercel deploy.
+
+**The data files are the source of truth.** To edit episodes/videos without the
+CMS, edit `src/data/episodes.json` / `src/data/videos.json` directly. `episodes.ts`
+and `videos.ts` are thin typed loaders — do not put data back inline in the `.ts`
+files.
+
+---
+
+## 5. Content management (Decap CMS)
+
+A git-based CMS lives at **`/admin`** (e.g. https://www.gpodh.org/admin). It
+edits the JSON data files and commits back to the repo.
+
+### How it works
+- `public/admin/index.html` loads Decap CMS from a CDN (no build step / npm dep).
+- `public/admin/config.yml` defines:
+  - **backend:** GitHub, repo `samwoodhouse1982/gpodh`, branch `master`,
+    `base_url: https://www.gpodh.org`, `auth_endpoint: api/auth`.
+  - **publish_mode: `editorial_workflow`** — saving creates a **draft pull
+    request**; approve it in the CMS **Workflow** tab (or merge the PR) to publish.
+  - **media_folder:** `public/guests` (public path `/guests`) — image uploads.
+  - **Two collections** (each edits one JSON file as a list):
+    - **Episodes** → `src/data/episodes.json` (all episode fields + `featured` toggle).
+    - **Videos** → `src/data/videos.json` (category, tags, transcript, thumbnail, `featured`).
+- **Auth** is self-hosted via `src/app/api/auth` and `src/app/api/callback`
+  (a standard Decap GitHub OAuth handshake). No third-party CMS cloud is used.
+
+### ⚙️ One-time setup required to switch the CMS on
+1. **Create a GitHub OAuth App:** GitHub → *Settings → Developer settings →
+   OAuth Apps → New OAuth App*.
+   - Homepage URL: `https://www.gpodh.org`
+   - **Authorization callback URL:** `https://www.gpodh.org/api/callback`
+   - Copy the **Client ID**; generate and copy a **Client secret**.
+2. **Add env vars in Vercel** (Project → Settings → Environment Variables), then redeploy:
+   - `GITHUB_OAUTH_CLIENT_ID`
+   - `GITHUB_OAUTH_CLIENT_SECRET`
+3. Open `/admin`, "Login with GitHub" (use an account with **write access** to the repo), edit.
+
+### Editing rules / gotchas
+- Each collection is a **single file**, so draft/publish **one change at a time**
+  rather than keeping several open drafts of the same file (they would conflict).
+- **"Appears at the top":** new entries are appended; **drag them to the top** of
+  the list so they show first in list order. The homepage banner / featured video
+  use the **`featured`** boolean regardless of position.
+- If the canonical domain is the apex (`gpodh.org`, no `www`), change `base_url`
+  in `config.yml` **and** the OAuth callback URL to match, or login will fail.
+
+---
+
+## 6. Automated video sync (YouTube → PR)
+
+New uploads on the channel are pulled in automatically for review.
+
+- **`scripts/sync-videos.mjs`** resolves the `@globalpdhpodcast` channel, reads
+  its **public RSS feed** (no API key needed), and appends any uploads not
+  already in `videos.json` (newest first), with `tags: []` and **no category**
+  left for a human to fill in.
+- **`.github/workflows/sync-videos.yml`** runs it **daily at 07:00 UTC** (and on
+  demand via *Actions → Run workflow*), then uses `peter-evans/create-pull-request`
+  to open a PR titled "New YouTube video(s) to review."
+- **You review the PR:** set the `category` (`talk`/`panel`/`explainer`/`clip`)
+  and `tags`, tidy the description, optionally paste a `transcript`, then merge.
+
+### Required GitHub settings for the PR step
+Repo → *Settings → Actions → General → Workflow permissions*:
+- Select **Read and write permissions**.
+- Tick **Allow GitHub Actions to create and approve pull requests**.
+
+---
+
+## 7. Smart search
+
+Two searches: episodes (`src/components/sections/EpisodeFilter.tsx`) and videos
+(`src/app/videos/VideoPageClient.tsx`). Both use **Fuse.js** plus
+**`expandQuery()`** from `src/lib/concept-map.ts`, which expands a query through a
+**synonym dictionary** (`CONCEPT_MAP`) — e.g. searching "money" also matches
+"funding/investment".
+
+**Indexed fields:**
+- **Episodes:** `title`, `guest`, `description`, `themes`, `topics`, `tags`,
+  `guestRole`, `country`, `pullQuote`, `timestamps.label`, `bio`, `transcript`
+  (transcript at low weight so titles still win). → Any episode added via the CMS
+  is automatically fully searchable.
+- **Videos:** `title`, `tags`, `description`, `transcript`. The transcript is
+  taken from **`video.transcript`** (CMS field) and falls back to
+  `src/lib/video-transcripts.ts` (the legacy per-slug store). → Paste a transcript
+  in the CMS and it becomes searchable on next deploy.
+
+**How new content reaches search:** the Fuse index is built at runtime from the
+static `episodes.json`/`videos.json`. When a CMS draft is merged, Vercel rebuilds
+and the new content (and transcript) is indexed automatically — no extra step.
+
+**Adding synonyms:** `expandQuery` already applies to all content. Genuinely
+*new* concepts (a topic never covered before) can be added in one line to
+`CONCEPT_MAP` in `src/lib/concept-map.ts`.
+
+---
+
+## 8. Featured controls
+
+Both `Episode` and `Video` types have an optional **`featured: boolean`**.
+- Home page banner: `episodes.find(e => e.featured) ?? newest` (`src/app/page.tsx`).
+- `/videos` featured slot: `featuredVideo = videos.find(v => v.featured) ?? videos[0]`
+  (`src/lib/videos.ts`, used in `VideoPageClient.tsx`).
+Set the toggle in the CMS or `"featured": true` in the JSON.
+
+---
+
+## 9. Secrets registry
+
+**Values are intentionally NOT in this repo.** Store them in a password manager
+and in Vercel's encrypted env vars. Inventory:
+
+| Secret | Where it lives | Used for | Rotation |
+|---|---|---|---|
+| `GITHUB_OAUTH_CLIENT_ID` | Vercel env var + GitHub OAuth App | Decap CMS login | Regenerate the OAuth App / secret in GitHub Developer settings |
+| `GITHUB_OAUTH_CLIENT_SECRET` | Vercel env var (only) | Decap CMS token exchange | Same as above; never commit |
+| GitHub PAT (push/admin from CLI) | **Not stored in repo**; only needed in restricted remote envs | Pushing when a git proxy blocks normal auth | Fine-grained PAT with **Contents: write** (+ **Workflows: write** to edit `.github/workflows/**`). **The PATs used during the build were exposed in chat — revoke them.** |
+| `GITHUB_TOKEN` (Actions) | Auto-provided by GitHub Actions | The video-sync workflow opens PRs | Managed by GitHub; just enable the Actions PR permission (§6) |
+| Vercel account | Vercel dashboard | Hosting, deploys, env vars | Account owner (Shubs) |
+| Transistor account | Transistor dashboard | Podcast hosting / episode embeds | Account owner |
+| YouTube channel | Google account | Video source (RSS is public — **no API key needed**) | Account owner |
+
+**No secrets are required to build or run the site locally** — only the two
+`GITHUB_OAUTH_*` vars (for the CMS) and Actions permissions (for video PRs).
+
+---
+
+## 10. Deployment (Vercel)
+
+- Push to `master` → Vercel builds and deploys automatically.
+- Build command: `next build` (default). Output: static + a few dynamic routes
+  (`/api/auth`, `/api/callback`).
+- **Env vars in Vercel:** `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`
+  (for the CMS). Nothing else currently.
+- `next.config.ts` sets `images.formats` (AVIF/WebP) and `remotePatterns` for
+  YouTube thumbnails + org-logo CDNs (needed because some `next/image` sources
+  are remote).
+
+---
+
+## 11. Known blockers, gotchas & decisions
+
+1. **Forms have no backend (HIGH PRIORITY).** The contact form and all three
+   email-capture forms (`EmailSignup`, `EmailSignupTile`, `SubscribeModal`)
+   **simulate** submission with `setTimeout` and show a success message — **no
+   data is captured or sent.** Wire these to a real service (e.g. a Next API
+   route + email provider, or Mailchimp/ConvertKit/Buttondown, or Formspree)
+   before relying on them.
+2. **Canonical domain ambiguity.** Episode `url` fields use `www.gpodh.org`, and
+   the CMS `base_url` is set to `www.gpodh.org`. Confirm whether production is
+   `www` or apex and make `base_url` + the OAuth callback URL match.
+3. **CMS not live until OAuth set up.** `/admin` exists but login fails until the
+   GitHub OAuth App + Vercel env vars are configured (§5). The OAuth popup flow
+   could not be tested during the build (needs the deployed app + the OAuth App);
+   verify after setup and report any error for adjustment.
+4. **Editorial workflow is per-file.** Because each CMS collection is a single
+   JSON file, avoid multiple simultaneous drafts of the same collection. If you
+   later want per-episode draft PRs and a cleaner review board, migrate to Decap
+   **folder collections** (one file per item) + a small build-time aggregation
+   step into the JSON the app imports.
+5. **Why Decap, not Tina.** The "git-based CMS" choice allowed either. Tina needs
+   a Tina Cloud account + env vars and an `npm install`/codegen that the build
+   environment (offline) could not perform/verify. Decap is fully self-hosted,
+   CDN-loaded, and was verifiable at build time. Switching to Tina later is
+   possible but is a larger change.
+6. **Images were recompressed destructively.** A one-off pass (sharp) recompressed
+   21 images **in place** (~13.9 MB saved; the hero `shubs-interview.jpg` went
+   9.9 MB → 179 KB). Originals are only in git history. Spot-check the hero and
+   guest photos look acceptable; recover from history if any are over-compressed.
+7. **Remaining raw `<img>` tags.** `OrgMarquee` (many remote logos), and the
+   single-instance featured thumbnails on the video/episode detail pages, still
+   use raw `<img>` rather than `next/image`. Lower priority; convert for further
+   optimization (remote hosts are already allow-listed in `next.config.ts`).
+8. **Remote-env push quirk (only relevant in Claude-Code-on-web).** In the remote
+   build environment the local git proxy returned 403 on push, so pushes were
+   done directly via `https://<PAT>@github.com/...`. On a normal machine, plain
+   `git push` works and no PAT-in-URL is needed.
+9. **Workflow files need `Workflows: write`.** A fine-grained PAT without that
+   scope cannot push files under `.github/workflows/**` (GitHub rejects the push).
+10. **`d3-geo`/`topojson` + canvas globe and the marquees** are the main client-JS
+    cost. `prefers-reduced-motion` now disables animations; the globe RAF loop
+    could additionally be gated on reduced-motion if INP becomes a concern.
+
+---
+
+## 12. Outstanding TODO / suggested next steps
+
+- [ ] **Wire up forms to a real backend** (contact + email capture) — highest value.
+- [ ] Configure the **GitHub OAuth App + Vercel env vars** to enable the CMS.
+- [ ] Enable **Actions PR permissions** so the video-sync workflow can open PRs.
+- [ ] **Confirm canonical domain** and align `base_url` + OAuth callback.
+- [ ] **Revoke the exposed PATs**; create fresh fine-grained tokens as needed.
+- [ ] (Optional) Display CMS video transcripts on the **video detail pages** (they
+      currently only feed search).
+- [ ] (Optional) Convert `OrgMarquee` + remaining raw `<img>` to `next/image`.
+- [ ] (Optional) Pre-seed `concept-map.ts` synonyms for upcoming topics.
+- [ ] (Optional) Consider Decap **folder collections** for nicer per-item review.
+
+---
+
+## 13. Working conventions
+
+- **British English** spelling (organisation, rigour, programme).
+- **Run `npm run build` before every push.** Keep `master` deployable.
+- **Commit messages:** clear, imperative subject + a short body explaining *why*.
+  (During the assisted build, commits ended with a Claude session footer link;
+  that is optional and can be dropped.)
+- **Do not push to repositories other than `samwoodhouse1982/gpodh`.**
+- **Heed `AGENTS.md`:** this Next.js version differs from older training data —
+  consult `node_modules/next/dist/docs/` before using unfamiliar Next APIs.
+- **Never commit secrets.** Use Vercel env vars + a password manager.
+
+---
+
+## 14. Change log (assisted build, Apr–Jun 2026)
+
+Grouped highlights (see `git log` for the full list):
+
+- **Content & UI overhaul** (Apr): episodes/videos/home/nav/globe, speaker
+  marquee, host/trailer modals, work-with-us photo strip, colour refresh.
+- **Marketing & copy** (late May): featured-episode banner; inline mailing-list
+  tiles; merged Work-With-Us sections; consolidated consulting copy; impactful
+  footer; `shubs.me` CTAs; SandiQ → ConsultingBridge.
+- **Search** (late May): transcript-aware episode search; 31 video transcripts;
+  shared synonym concept map (`expandQuery`).
+- **Design consistency** (late May): standardized page heroes (spacing, borders,
+  left gutter, animated entrance); lightened the videos page's dark sections;
+  matched episode/video/contact headers to the homepage.
+- **Performance & accessibility** (May 31): recompressed images (−13.9 MB);
+  `next.config.ts` AVIF/WebP + remotePatterns; `next/image` for nav logo +
+  cards; `prefers-reduced-motion`; skip-link + labelled landmarks; darker muted
+  text; form `aria-live`/labels/`aria-busy`. Fixed hidden **Home** link in mobile
+  nav.
+- **Content infrastructure** (Jun 1): moved episodes & videos into editable JSON;
+  added explicit `featured` controls; **automated video sync → PR**; **Decap CMS**
+  for episodes & videos with **editorial workflow**; wired CMS/video transcripts
+  into search.
+
+---
+
+*End of handoff. If you are an AI assistant picking this up: start by reading
+this file, then `AGENTS.md`, then `src/lib/episodes.ts` + `src/lib/videos.ts` and
+`src/app/globals.css`. Run `npm run build` to confirm a clean baseline before
+making changes.*
