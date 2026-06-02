@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>GPODH · Undo recent changes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-primary: #f5f0e8;
+        --bg-card: #fdfcfa;
+        --bg-surface: #ede6d6;
+        --accent-coral: #d4614a;
+        --accent-coral-dim: #b84d38;
+        --accent-teal: #1a8070;
+        --text-primary: #0d1e1c;
+        --text-secondary: #254e48;
+        --text-muted: #3d5b56;
+        --border: rgba(13, 30, 28, 0.15);
+        --font-display: 'Cormorant Garamond', Georgia, serif;
+        --font-body: 'DM Sans', sans-serif;
+        --radius-md: 8px;
+        --radius-lg: 16px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+      header.page { margin-bottom: 1.75rem; }
+      .eyebrow {
+        font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--accent-coral-dim); font-weight: 500; margin: 0 0 0.4rem;
+      }
+      h1 {
+        font-family: var(--font-display); font-weight: 700;
+        font-size: 2.25rem; line-height: 1.1; margin: 0 0 0.6rem;
+      }
+      .lede { color: var(--text-muted); margin: 0; max-width: 56ch; }
+      .toolbar {
+        display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
+        margin: 1.5rem 0 1rem;
+      }
+      button, .btn {
+        font-family: inherit; font-size: 0.875rem; font-weight: 500;
+        border-radius: var(--radius-md); border: 1px solid var(--border);
+        padding: 0.55rem 1rem; cursor: pointer; background: var(--bg-card);
+        color: var(--text-primary); transition: all 0.15s ease;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem;
+      }
+      button:hover, .btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+      button:disabled { opacity: 0.5; cursor: default; }
+      .btn-primary {
+        background: var(--accent-coral); border-color: var(--accent-coral); color: #fff;
+      }
+      .btn-primary:hover { background: var(--accent-coral-dim); border-color: var(--accent-coral-dim); color: #fff; }
+      .btn-undo { border-color: var(--border); color: var(--text-secondary); }
+      .btn-undo:hover { border-color: var(--accent-coral); color: var(--accent-coral); background: #fff; }
+      .spacer { flex: 1; }
+      a.muted { color: var(--text-muted); font-size: 0.875rem; text-decoration: none; }
+      a.muted:hover { color: var(--accent-teal); text-decoration: underline; }
+      ul.changes { list-style: none; margin: 0; padding: 0; }
+      li.change {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: var(--radius-md); padding: 1rem 1.15rem; margin-bottom: 0.7rem;
+        display: flex; gap: 1rem; align-items: flex-start;
+      }
+      .change .body { flex: 1; min-width: 0; }
+      .change .what { font-weight: 500; font-size: 1.0625rem; margin: 0 0 0.15rem; }
+      .change .meta { color: var(--text-muted); font-size: 0.8125rem; }
+      .change .subject {
+        color: var(--text-secondary); font-size: 0.8125rem; margin-top: 0.3rem;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .change .confirm { display: flex; gap: 0.5rem; align-items: center; }
+      .change .confirm span { font-size: 0.8125rem; color: var(--accent-coral-dim); }
+      .avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; background: var(--bg-surface); }
+      .banner {
+        border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem;
+        font-size: 0.9rem; border: 1px solid var(--border);
+      }
+      .banner.ok { background: #e7f1ee; border-color: rgba(26, 128, 112, 0.4); color: var(--accent-teal); }
+      .banner.err { background: #fbeae6; border-color: rgba(184, 77, 56, 0.4); color: var(--accent-coral-dim); }
+      .banner.info { background: var(--bg-surface); color: var(--text-secondary); }
+      .center { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+      .signin { text-align: center; padding: 3.5rem 1rem; }
+      .signin h1 { margin-bottom: 0.75rem; }
+      .signin p { color: var(--text-muted); margin: 0 auto 1.75rem; max-width: 44ch; }
+      .footnote { color: var(--text-muted); font-size: 0.8125rem; margin-top: 1.5rem; }
+      .spinner {
+        width: 22px; height: 22px; border: 2.5px solid var(--border);
+        border-top-color: var(--accent-teal); border-radius: 50%;
+        animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page">
+        <p class="eyebrow">Content manager</p>
+        <h1>Undo recent changes</h1>
+        <p class="lede">
+          Every change you publish is listed here. Press <strong>Undo</strong> on any
+          one to put it back the way it was — the site updates within about a minute.
+        </p>
+      </header>
+
+      <div id="app"></div>
+    </div>
+
+    <script>
+      // -- Config -------------------------------------------------------------
+      var REPO = 'samwoodhouse1982/gpodh';
+      var BRANCH = 'master';
+      var API = 'https://api.github.com';
+      var SCAN = 25; // how many recent commits to scan for content changes
+
+      // Friendly names for the files the CMS edits.
+      var PATH_LABELS = {
+        'src/data/episodes.json': 'Episodes',
+        'src/data/videos.json': 'Videos',
+        'src/data/site/settings.json': 'Site settings',
+        'src/data/site/global.json': 'Header & footer',
+        'src/data/site/contact.json': 'Contact page',
+        'src/data/site/work-with-us.json': 'Work With Us page',
+        'src/data/site/resources.json': 'Resources page',
+        'src/data/site/home.json': 'Home page',
+        'src/data/site/reusable.json': 'Reusable copy',
+      };
+      function isContentPath(p) {
+        return p.indexOf('src/data/') === 0 || p.indexOf('public/guests/') === 0;
+      }
+      function labelForPath(p) {
+        if (PATH_LABELS[p]) return PATH_LABELS[p];
+        if (p.indexOf('public/guests/') === 0) return 'Guest photo';
+        if (p.indexOf('src/data/') === 0) return p.split('/').pop();
+        return p;
+      }
+      function labelsForFiles(files) {
+        var seen = {}, out = [];
+        files.forEach(function (f) {
+          if (!isContentPath(f.filename)) return;
+          var l = labelForPath(f.filename);
+          if (!seen[l]) { seen[l] = 1; out.push(l); }
+        });
+        return out;
+      }
+
+      // -- Auth (reuses the Decap GitHub OAuth popup at /api/auth) -------------
+      var token = sessionStorage.getItem('gpodh_undo_token') || null;
+      var app = document.getElementById('app');
+
+      function login() {
+        var popup = window.open('/api/auth', 'gpodh-oauth', 'width=640,height=720');
+        if (!popup) {
+          renderSignin('Your browser blocked the pop-up. Allow pop-ups for this site and try again.');
+          return;
+        }
+        function onMessage(e) {
+          if (e.origin !== window.location.origin) return;
+          var data = e.data;
+          if (typeof data !== 'string') return;
+          if (data === 'authorizing:github') {
+            // Handshake: reply so the callback window sends us the token.
+            popup.postMessage('authorizing:github', window.location.origin);
+            return;
+          }
+          var m = data.match(/^authorization:github:(success|error):(.+)$/);
+          if (!m) return;
+          window.removeEventListener('message', onMessage);
+          try { popup.close(); } catch (err) {}
+          if (m[1] === 'success') {
+            var payload = JSON.parse(m[2]);
+            token = payload.token;
+            sessionStorage.setItem('gpodh_undo_token', token);
+            loadChanges();
+          } else {
+            renderSignin('Sign-in failed. Please try again.');
+          }
+        }
+        window.addEventListener('message', onMessage);
+      }
+
+      function signOut() {
+        token = null;
+        sessionStorage.removeItem('gpodh_undo_token');
+        renderSignin();
+      }
+
+      // -- GitHub API helper --------------------------------------------------
+      function gh(path, opts) {
+        opts = opts || {};
+        var headers = {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        };
+        if (opts.body) headers['Content-Type'] = 'application/json';
+        return fetch(API + path, { method: opts.method || 'GET', headers: headers, body: opts.body }).then(
+          function (res) {
+            if (res.status === 401) { signOut(); throw new Error('Your sign-in expired — please sign in again.'); }
+            if (!res.ok) {
+              return res.text().then(function (t) {
+                throw new Error('GitHub error ' + res.status + (t ? ': ' + t.slice(0, 200) : ''));
+              });
+            }
+            return res.status === 204 ? null : res.json();
+          }
+        );
+      }
+
+      // -- Time formatting ----------------------------------------------------
+      function relTime(iso) {
+        var d = new Date(iso), s = (Date.now() - d.getTime()) / 1000;
+        if (s < 60) return 'just now';
+        var m = Math.floor(s / 60); if (m < 60) return m + (m === 1 ? ' minute' : ' minutes') + ' ago';
+        var h = Math.floor(m / 60); if (h < 24) return h + (h === 1 ? ' hour' : ' hours') + ' ago';
+        var days = Math.floor(h / 24); if (days < 7) return days + (days === 1 ? ' day' : ' days') + ' ago';
+        return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      // -- Load + render the list of content changes --------------------------
+      function loadChanges() {
+        app.innerHTML = '<div class="center"><span class="spinner"></span><p>Loading recent changes…</p></div>';
+        var list;
+        gh('/repos/' + REPO + '/commits?sha=' + BRANCH + '&per_page=' + SCAN)
+          .then(function (commits) {
+            list = commits;
+            // Fetch each commit's file list so we can keep only content changes.
+            return Promise.all(
+              commits.map(function (c) {
+                return gh('/repos/' + REPO + '/commits/' + c.sha).catch(function () { return null; });
+              })
+            );
+          })
+          .then(function (details) {
+            var rows = [];
+            for (var i = 0; i < list.length; i++) {
+              var detail = details[i];
+              if (!detail || !detail.files) continue;
+              var labels = labelsForFiles(detail.files);
+              if (!labels.length) continue; // skip code / system commits
+              rows.push({
+                sha: list[i].sha,
+                labels: labels,
+                subject: (list[i].commit.message || '').split('\n')[0],
+                author: (list[i].commit.author && list[i].commit.author.name) || 'Unknown',
+                avatar: list[i].author && list[i].author.avatar_url,
+                date: list[i].commit.author && list[i].commit.author.date,
+                hasParent: detail.parents && detail.parents.length > 0,
+              });
+            }
+            renderList(rows);
+          })
+          .catch(function (err) { renderError(err.message); });
+      }
+
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+
+      function renderList(rows) {
+        app.innerHTML = '';
+
+        var toolbar = el('div', 'toolbar');
+        var refresh = el('button', null, '↻ Refresh');
+        refresh.onclick = loadChanges;
+        toolbar.appendChild(refresh);
+        var spacer = el('div', 'spacer');
+        toolbar.appendChild(spacer);
+        var toCms = el('a', 'muted', '← Back to content manager');
+        toCms.href = '/admin/';
+        toolbar.appendChild(toCms);
+        var out = el('a', 'muted', 'Sign out');
+        out.href = '#'; out.style.marginLeft = '1rem';
+        out.onclick = function (e) { e.preventDefault(); signOut(); };
+        toolbar.appendChild(out);
+        app.appendChild(toolbar);
+
+        if (!rows.length) {
+          app.appendChild(banner('info', 'No content changes found in the last ' + SCAN + ' updates.'));
+          return;
+        }
+
+        var ul = el('ul', 'changes');
+        rows.forEach(function (row) { ul.appendChild(renderRow(row)); });
+        app.appendChild(ul);
+
+        app.appendChild(
+          foot(
+            'Undo restores the files that change touched to how they were just before it. ' +
+              'Only content changes are listed here — site/code updates are hidden. ' +
+              'After an undo, the live site refreshes in about a minute.'
+          )
+        );
+      }
+
+      function renderRow(row) {
+        var li = el('li', 'change');
+        li.dataset.sha = row.sha;
+
+        if (row.avatar) {
+          var img = el('img', 'avatar');
+          img.src = row.avatar; img.alt = '';
+          li.appendChild(img);
+        } else {
+          li.appendChild(el('div', 'avatar'));
+        }
+
+        var body = el('div', 'body');
+        body.appendChild(el('p', 'what', row.labels.join(' · ')));
+        var meta = el('p', 'meta');
+        meta.textContent = relTime(row.date) + ' · ' + row.author;
+        meta.title = row.date ? new Date(row.date).toLocaleString() : '';
+        body.appendChild(meta);
+        if (row.subject) {
+          var subj = el('p', 'subject', row.subject);
+          subj.title = row.subject;
+          body.appendChild(subj);
+        }
+        li.appendChild(body);
+
+        var action = el('div', 'action');
+        if (!row.hasParent) {
+          action.appendChild(el('span', 'meta', 'Oldest change'));
+        } else {
+          var undo = el('button', 'btn-undo', 'Undo');
+          undo.onclick = function () { confirmRow(li, row); };
+          action.appendChild(undo);
+        }
+        li.appendChild(action);
+        return li;
+      }
+
+      function confirmRow(li, row) {
+        var action = li.querySelector('.action');
+        action.innerHTML = '';
+        var c = el('div', 'confirm');
+        c.appendChild(el('span', null, 'Undo this?'));
+        var yes = el('button', 'btn-primary', 'Yes, undo');
+        var no = el('button', null, 'Cancel');
+        no.onclick = function () { action.innerHTML = ''; var b = el('button', 'btn-undo', 'Undo'); b.onclick = function () { confirmRow(li, row); }; action.appendChild(b); };
+        yes.onclick = function () { doUndo(li, row); };
+        c.appendChild(yes); c.appendChild(no);
+        action.appendChild(c);
+      }
+
+      function doUndo(li, row) {
+        var action = li.querySelector('.action');
+        action.innerHTML = '<span class="spinner"></span>';
+        revertCommit(row.sha)
+          .then(function () {
+            showBanner('ok', '“' + row.labels.join(' · ') + '” has been put back. The live site will refresh in about a minute.');
+            loadChanges();
+          })
+          .catch(function (err) {
+            showBanner('err', 'Could not undo that change. ' + err.message);
+            action.innerHTML = '';
+            var b = el('button', 'btn-undo', 'Try again');
+            b.onclick = function () { confirmRow(li, row); };
+            action.appendChild(b);
+          });
+      }
+
+      // -- The revert itself: restore each touched file to its parent state ---
+      function encPath(p) { return p.split('/').map(encodeURIComponent).join('/'); }
+
+      function parentBlobSha(path, parent) {
+        return gh('/repos/' + REPO + '/contents/' + encPath(path) + '?ref=' + parent)
+          .then(function (r) { return r && r.type === 'file' ? r.sha : null; })
+          .catch(function () { return null; }); // 404 → didn't exist at parent
+      }
+
+      function revertCommit(sha) {
+        var parent, files, headSha, baseTree;
+        return gh('/repos/' + REPO + '/commits/' + sha)
+          .then(function (detail) {
+            if (!detail.parents || !detail.parents.length) throw new Error('It has no earlier version to restore.');
+            parent = detail.parents[0].sha;
+            files = (detail.files || []).filter(function (f) { return isContentPath(f.filename) || (f.previous_filename && isContentPath(f.previous_filename)); });
+            if (!files.length) throw new Error('Nothing to restore.');
+            return gh('/repos/' + REPO + '/git/ref/heads/' + BRANCH);
+          })
+          .then(function (ref) {
+            headSha = ref.object.sha;
+            return gh('/repos/' + REPO + '/git/commits/' + headSha);
+          })
+          .then(function (headCommit) {
+            baseTree = headCommit.tree.sha;
+            // Resolve the "before" blob for each touched file in parallel.
+            var jobs = files.map(function (f) {
+              if (f.status === 'added') {
+                return Promise.resolve([{ path: f.filename, mode: '100644', type: 'blob', sha: null }]);
+              }
+              if (f.status === 'renamed' && f.previous_filename) {
+                return Promise.all([
+                  parentBlobSha(f.previous_filename, parent),
+                  Promise.resolve(null),
+                ]).then(function (r) {
+                  var entries = [{ path: f.filename, mode: '100644', type: 'blob', sha: null }]; // remove new name
+                  entries.push({ path: f.previous_filename, mode: '100644', type: 'blob', sha: r[0] }); // restore old (sha null = stays absent)
+                  return entries;
+                });
+              }
+              // modified / removed / changed → restore from parent
+              return parentBlobSha(f.filename, parent).then(function (sha) {
+                return [{ path: f.filename, mode: '100644', type: 'blob', sha: sha }];
+              });
+            });
+            return Promise.all(jobs);
+          })
+          .then(function (entryGroups) {
+            var tree = [];
+            entryGroups.forEach(function (g) { g.forEach(function (e) { tree.push(e); }); });
+            return gh('/repos/' + REPO + '/git/trees', {
+              method: 'POST',
+              body: JSON.stringify({ base_tree: baseTree, tree: tree }),
+            });
+          })
+          .then(function (newTree) {
+            return gh('/repos/' + REPO + '/git/commits', {
+              method: 'POST',
+              body: JSON.stringify({
+                message: 'Undo content change (revert ' + sha.slice(0, 7) + ')',
+                tree: newTree.sha,
+                parents: [headSha],
+              }),
+            });
+          })
+          .then(function (newCommit) {
+            return gh('/repos/' + REPO + '/git/refs/heads/' + BRANCH, {
+              method: 'PATCH',
+              body: JSON.stringify({ sha: newCommit.sha, force: false }),
+            });
+          });
+      }
+
+      // -- Small render helpers ----------------------------------------------
+      function banner(kind, msg) { return el('div', 'banner ' + kind, msg); }
+      function foot(msg) { return el('p', 'footnote', msg); }
+      function showBanner(kind, msg) {
+        var existing = app.querySelector('.banner.flash');
+        if (existing) existing.remove();
+        var b = banner(kind + ' flash', msg);
+        app.insertBefore(b, app.firstChild);
+        if (kind === 'ok') setTimeout(function () { b.remove(); }, 9000);
+      }
+      function renderError(msg) {
+        app.innerHTML = '';
+        app.appendChild(banner('err', msg));
+        var retry = el('button', null, 'Try again');
+        retry.onclick = loadChanges;
+        app.appendChild(retry);
+      }
+      function renderSignin(msg) {
+        app.innerHTML = '';
+        var box = el('div', 'signin');
+        if (msg) box.appendChild(banner('err', msg));
+        box.appendChild(el('p', null, 'Sign in with the same GitHub account you use for the content manager to see and undo recent changes.'));
+        var btn = el('button', 'btn-primary', 'Sign in with GitHub');
+        btn.onclick = login;
+        box.appendChild(btn);
+        var toCms = el('p', null, '');
+        var link = el('a', 'muted', '← Back to content manager');
+        link.href = '/admin/';
+        toCms.appendChild(link);
+        box.appendChild(toCms);
+        app.appendChild(box);
+      }
+
+      // -- Boot ---------------------------------------------------------------
+      if (token) loadChanges();
+      else renderSignin();
+    </script>
+  </body>
+</html>

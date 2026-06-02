@@ -101,7 +101,8 @@ src/
     videos.json             { "videos": [...] }    ← source of truth for videos
 public/
   admin/index.html          Decap CMS app (CDN)
-  admin/config.yml          Decap collections, backend, editorial workflow
+  admin/config.yml          Decap collections + backend (direct publish, no PR)
+  admin/undo/index.html     "Undo recent changes" tool (see §5) — self-contained, served at /admin/undo
   guests/                   Guest photos (referenced as /guests/<file>); CMS uploads land here
   logo-gpodh*.png, shubs-*.jpg/webp, logos/
 scripts/
@@ -173,6 +174,30 @@ It edits the JSON data files and commits back to the repo.
   you actually open `/admin` on.** It is currently `https://g-po-dh.vercel.app`.
   If you attach a custom domain (e.g. `www.gpodh.org`) and use it for `/admin`,
   update both to that domain or login will fail.
+
+### ↩️ Undo recent changes — `/admin/undo`
+Because publishing now goes straight to production with no PR review, there is a
+self-serve safety net at **`/admin/undo`** (file: `public/admin/undo/index.html`).
+
+- **What it is:** a single self-contained static page (inline HTML/CSS/JS, no
+  build step, no npm dep) — the same pattern as `/admin`. Bookmark-able.
+- **Sign-in:** reuses the *exact same* Decap GitHub OAuth popup (`/api/auth` →
+  `/api/callback`, same `postMessage` handshake). No new secret or password.
+- **What it shows:** the most recent **content** changes (anything touching
+  `src/data/**` or `public/guests/**`) in plain English — *"Home page · 2 hours
+  ago · Sam"*. Pure code/system commits are filtered out so they can't be
+  reverted by accident.
+- **What "Undo" does:** restores the file(s) that change touched to their state
+  **immediately before** that change, as a new commit on `master` (which Vercel
+  redeploys). It is itself just another commit, so an undo can be undone.
+  - *Caveat:* it restores to the pre-change version, so if a **later** edit
+    touched the **same file**, undoing the earlier one also rolls back that
+    later edit **to that file**. Undoing the most recent change is always clean.
+- **Security:** all GitHub calls run client-side with the signed-in user's
+  token; writing requires **write access to the repo**, so a random GitHub user
+  who logs in can read history but cannot change anything.
+- **No native Decap feature backs this** — Decap has no version history/revert
+  UI; this tool is bespoke and talks to the GitHub Git Data API directly.
 
 ---
 
