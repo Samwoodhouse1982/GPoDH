@@ -148,6 +148,48 @@ export const CONCEPT_MAP: [string[], string[]][] = [
     ['sustainability', 'business model', 'sustainable', 'revenue model'],
     ['sustainability', 'business model', 'sustainable', 'revenue model', 'financial viability', 'self-sustaining', 'market', 'willingness to pay', 'resilient'],
   ],
+  // ── Pre-seeded for upcoming topics (vocabulary may not all appear in the
+  //    current corpus yet; safe to keep — they only activate on a match).
+  [
+    ['ncd', 'ncds', 'non-communicable', 'noncommunicable', 'chronic disease', 'diabetes', 'hypertension', 'cardiovascular'],
+    ['non-communicable disease', 'ncd', 'chronic disease', 'diabetes', 'hypertension', 'blood pressure', 'cardiovascular', 'heart disease', 'stroke', 'cancer', 'oncology', 'obesity', 'risk factor', 'self-management'],
+  ],
+  [
+    ['infectious disease', 'epidemic', 'pandemic', 'outbreak', 'hiv', 'tb', 'tuberculosis', 'malaria', 'pandemic preparedness', 'one health'],
+    ['infectious disease', 'epidemic', 'pandemic', 'outbreak', 'hiv', 'aids', 'tuberculosis', 'tb', 'malaria', 'pepfar', 'surveillance', 'contact tracing', 'pandemic preparedness', 'one health', 'zoonotic', 'mpox', 'cholera', 'ebola', 'early warning'],
+  ],
+  [
+    ['universal health coverage', 'uhc', 'primary health care', 'phc', 'health insurance', 'health financing'],
+    ['universal health coverage', 'uhc', 'primary health care', 'phc', 'health insurance', 'health financing', 'out of pocket', 'coverage', 'catastrophic spending', 'national health insurance', 'community based health insurance', 'leave no one behind', 'alma ata', 'astana'],
+  ],
+  [
+    ['climate', 'climate change', 'planetary health', 'environmental health'],
+    ['climate', 'climate change', 'planetary health', 'environmental', 'heat', 'extreme weather', 'flooding', 'air pollution', 'carbon', 'resilience', 'adaptation', 'vector borne'],
+  ],
+  [
+    ['nutrition', 'malnutrition', 'food security', 'stunting', 'wasting'],
+    ['nutrition', 'malnutrition', 'food security', 'stunting', 'wasting', 'micronutrient', 'undernutrition', 'breastfeeding', 'food systems', 'anaemia', 'growth monitoring', 'severe acute malnutrition'],
+  ],
+  [
+    ['workforce', 'training', 'capacity building', 'medical education', 'upskilling'],
+    ['workforce', 'training', 'capacity building', 'medical education', 'upskilling', 'curriculum', 'mentorship', 'task shifting', 'continuing education', 'simulation', 'e-learning', 'brain drain', 'retention', 'human resources for health'],
+  ],
+  [
+    ['language', 'languages', 'translation', 'localization', 'localisation', 'speech recognition', 'low-resource language', 'voice ai'],
+    ['language', 'translation', 'localization', 'localisation', 'multilingual', 'voice', 'speech recognition', 'natural language', 'low-resource language', 'swahili', 'hausa', 'dialect', 'transcription', 'text to speech', 'accent'],
+  ],
+  [
+    ['open source', 'digital public goods', 'dpg', 'digital public infrastructure', 'dpi', 'global goods'],
+    ['open source', 'digital public goods', 'dpg', 'digital public infrastructure', 'dpi', 'global goods', 'open standards', 'reusable', 'commons', 'oss', 'digital square', 'openmrs', 'openhie', 'sandbox'],
+  ],
+  [
+    ['wearables', 'wearable', 'remote monitoring', 'remote patient monitoring', 'sensors', 'iot'],
+    ['wearable', 'remote monitoring', 'sensor', 'iot', 'internet of things', 'continuous monitoring', 'vital signs', 'pulse oximeter', 'point of care device', 'home monitoring', 'biomarker', 'connected device'],
+  ],
+  [
+    ['disability', 'accessibility', 'inclusive design', 'assistive technology'],
+    ['disability', 'accessibility', 'inclusive design', 'assistive technology', 'inclusion', 'universal design', 'visual impairment', 'hearing', 'screen reader', 'wheelchair', 'rehabilitation', 'neurodiversity'],
+  ],
 ]
 
 export interface ConceptExpansion {
