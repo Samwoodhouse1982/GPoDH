@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import { PLATFORMS, SOCIAL } from '@/lib/constants'
+import content from '@/data/site/contact.json'
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -65,7 +66,7 @@ export default function ContactPage() {
                 animationDelay: '0ms',
               }}
             >
-              CONTACT
+              {content.eyebrow}
             </p>
             <h1
               className="animate-fade-up"
@@ -79,7 +80,7 @@ export default function ContactPage() {
                 animationDelay: '100ms',
               }}
             >
-              Get in touch.
+              {content.title}
             </h1>
           </div>
 
@@ -114,16 +115,16 @@ export default function ContactPage() {
                       marginBottom: '0.75rem',
                     }}
                   >
-                    Message received.
+                    {content.success.heading}
                   </p>
                   <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                    Shubs will get back to you directly. Usually within a few days.
+                    {content.success.body}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   <div>
-                    <label htmlFor="name" style={labelStyle}>Name</label>
+                    <label htmlFor="name" style={labelStyle}>{content.form.nameLabel}</label>
                     <input
                       id="name"
                       name="name"
@@ -135,7 +136,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" style={labelStyle}>Email</label>
+                    <label htmlFor="email" style={labelStyle}>{content.form.emailLabel}</label>
                     <input
                       id="email"
                       name="email"
@@ -147,7 +148,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="organisation" style={labelStyle}>Organisation / Role (helps us respond better)</label>
+                    <label htmlFor="organisation" style={labelStyle}>{content.form.organisationLabel}</label>
                     <input
                       id="organisation"
                       name="organisation"
@@ -158,7 +159,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" style={labelStyle}>Message</label>
+                    <label htmlFor="message" style={labelStyle}>{content.form.messageLabel}</label>
                     <textarea
                       id="message"
                       name="message"
@@ -166,7 +167,7 @@ export default function ContactPage() {
                       rows={6}
                       value={form.message}
                       onChange={handleChange}
-                      placeholder="Tell us who you are and what's on your mind"
+                      placeholder={content.form.messagePlaceholder}
                       style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
                     />
                   </div>
@@ -188,7 +189,7 @@ export default function ContactPage() {
                       alignSelf: 'flex-start',
                     }}
                   >
-                    {loading ? 'Sending...' : 'Send message'}
+                    {loading ? content.form.submittingLabel : content.form.submitLabel}
                   </button>
                 </form>
               )}
@@ -208,13 +209,13 @@ export default function ContactPage() {
                     marginBottom: '0.75rem',
                   }}
                 >
-                  Response time
+                  {content.responseTime.heading}
                 </p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                  Whether you want to pitch a guest, discuss a partnership, or just say hello, we'd love to hear from you.
+                  {content.responseTime.body}
                 </p>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6 }}>
-                  We aim to respond within a few days.
+                  {content.responseTime.note}
                 </p>
               </div>
 
@@ -230,7 +231,7 @@ export default function ContactPage() {
                     marginBottom: '0.75rem',
                   }}
                 >
-                  Listen on
+                  {content.listenHeading}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <PlatformBadge platform="apple" href={PLATFORMS.apple} />
@@ -251,7 +252,7 @@ export default function ContactPage() {
                     marginBottom: '0.75rem',
                   }}
                 >
-                  Follow
+                  {content.followHeading}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <a
@@ -261,7 +262,7 @@ export default function ContactPage() {
                     style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}
                     className="contact-link"
                   >
-                    LinkedIn (Shubs) &#8599;
+                    {content.followLinks.linkedinPersonal} &#8599;
                   </a>
                   <a
                     href={SOCIAL.linkedinCompany}
@@ -270,7 +271,7 @@ export default function ContactPage() {
                     style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}
                     className="contact-link"
                   >
-                    LinkedIn (GPODH) &#8599;
+                    {content.followLinks.linkedinCompany} &#8599;
                   </a>
                   <a
                     href={SOCIAL.substack}
@@ -279,7 +280,7 @@ export default function ContactPage() {
                     style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}
                     className="contact-link"
                   >
-                    Substack &#8599;
+                    {content.followLinks.substack} &#8599;
                   </a>
                 </div>
               </div>
@@ -303,13 +304,13 @@ export default function ContactPage() {
                     marginBottom: '0.625rem',
                   }}
                 >
-                  Consulting
+                  {content.consulting.eyebrow}
                 </p>
                 <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 1rem' }}>
-                  Shubs takes on consulting work around clinical strategy, evidence, and market access in digital health. For enquiries, use the form to get in touch.
+                  {content.consulting.body}
                 </p>
                 <a
-                  href="https://www.shubs.me"
+                  href={content.consulting.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -322,7 +323,7 @@ export default function ContactPage() {
                     textDecoration: 'none',
                   }}
                 >
-                  Visit shubs.me &#8599;
+                  {content.consulting.linkText} &#8599;
                 </a>
               </div>
             </div>

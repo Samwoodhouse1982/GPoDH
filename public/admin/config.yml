@@ -162,3 +162,53 @@ collections:
               - { name: transcript, label: 'Transcript (included in search)', widget: text, required: false }
               - { name: thumbnailUrl, label: 'Thumbnail override (optional)', widget: image, required: false, choose_url: true }
               - { name: thumbnailPosition, label: 'Thumbnail position (e.g. center 20%)', widget: string, required: false }
+
+      - name: contact
+        label: Contact page
+        file: src/data/site/contact.json
+        format: json
+        description: All text on the Contact page.
+        fields:
+          - { name: eyebrow, label: Eyebrow, widget: string }
+          - { name: title, label: Title, widget: string }
+          - name: success
+            label: Success message (after sending)
+            widget: object
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Body, widget: text }
+          - name: form
+            label: Form labels
+            widget: object
+            fields:
+              - { name: nameLabel, label: Name label, widget: string }
+              - { name: emailLabel, label: Email label, widget: string }
+              - { name: organisationLabel, label: Organisation label, widget: string }
+              - { name: messageLabel, label: Message label, widget: string }
+              - { name: messagePlaceholder, label: Message placeholder, widget: string }
+              - { name: submitLabel, label: Submit button, widget: string }
+              - { name: submittingLabel, label: Submitting button, widget: string }
+          - name: responseTime
+            label: Response-time block
+            widget: object
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: note, label: Note, widget: string }
+          - { name: listenHeading, label: '"Listen on" heading', widget: string }
+          - { name: followHeading, label: '"Follow" heading', widget: string }
+          - name: followLinks
+            label: Follow link labels
+            widget: object
+            fields:
+              - { name: linkedinPersonal, label: LinkedIn (personal) label, widget: string }
+              - { name: linkedinCompany, label: LinkedIn (company) label, widget: string }
+              - { name: substack, label: Substack label, widget: string }
+          - name: consulting
+            label: Consulting block
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: body, label: Body, widget: text }
+              - { name: linkText, label: Link text, widget: string }
+              - { name: linkUrl, label: Link URL, widget: string }

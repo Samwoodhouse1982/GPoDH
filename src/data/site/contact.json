@@ -1,0 +1,35 @@
+{
+  "eyebrow": "CONTACT",
+  "title": "Get in touch.",
+  "success": {
+    "heading": "Message received.",
+    "body": "Shubs will get back to you directly. Usually within a few days."
+  },
+  "form": {
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "organisationLabel": "Organisation / Role (helps us respond better)",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us who you are and what's on your mind",
+    "submitLabel": "Send message",
+    "submittingLabel": "Sending..."
+  },
+  "responseTime": {
+    "heading": "Response time",
+    "body": "Whether you want to pitch a guest, discuss a partnership, or just say hello, we'd love to hear from you.",
+    "note": "We aim to respond within a few days."
+  },
+  "listenHeading": "Listen on",
+  "followHeading": "Follow",
+  "followLinks": {
+    "linkedinPersonal": "LinkedIn (Shubs)",
+    "linkedinCompany": "LinkedIn (GPODH)",
+    "substack": "Substack"
+  },
+  "consulting": {
+    "eyebrow": "Consulting",
+    "body": "Shubs takes on consulting work around clinical strategy, evidence, and market access in digital health. For enquiries, use the form to get in touch.",
+    "linkText": "Visit shubs.me",
+    "linkUrl": "https://www.shubs.me"
+  }
+}
