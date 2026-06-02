@@ -19,9 +19,10 @@ backend:
 media_folder: public/guests
 public_folder: /guests
 
-# Review before publishing: saving creates a draft pull request you approve
-# (Workflow tab) before it goes live.
-publish_mode: editorial_workflow
+# Publish directly: hitting "Publish" in the CMS commits straight to the
+# `branch` above (master), which Vercel auto-deploys to production. There is no
+# pull-request review step. To re-enable a review queue (the "Workflow" tab),
+# add back:  publish_mode: editorial_workflow
 
 collections:
   - name: content
