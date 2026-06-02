@@ -1,8 +1,8 @@
 name: Sync YouTube videos
 
 # Checks the GPODH YouTube channel for new uploads and, when it finds videos
-# not yet listed in src/data/videos.json, opens a pull request adding them so
-# you can set the category/tags and merge to publish.
+# not yet listed in src/data/videos.json, commits them straight to master so
+# they go live automatically. Set the category/tags afterwards in the CMS.
 
 on:
   schedule:
@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   sync:
@@ -27,24 +26,11 @@ jobs:
         id: sync
         run: node scripts/sync-videos.mjs
 
-      - name: Open pull request
+      - name: Commit new videos to master
         if: steps.sync.outputs.added && steps.sync.outputs.added != '0'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: bot/new-videos
-          base: master
-          commit-message: 'Add new YouTube video(s) to the library'
-          title: 'New YouTube video(s) to review'
-          body: |
-            The channel published video(s) not yet on the site. This PR adds them
-            to `src/data/videos.json` with the title, description and date pulled
-            from YouTube.
-
-            Before merging, please set the **category** (`talk` / `panel` /
-            `explainer` / `clip`) and **tags** for each new entry, and tidy the
-            description if needed.
-
-            New in this PR:
-            ${{ steps.sync.outputs.summary }}
-          labels: content, automated
-          delete-branch: true
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add src/data/videos.json
+          git commit -m 'Add new YouTube video(s) to the library'
+          git push origin HEAD:master

@@ -190,10 +190,10 @@ collections:
         file: src/data/videos.json
         format: json
         description: >-
-          The video library. New uploads are added automatically by the daily
-          sync as a pull request — use this to add the category and tags, paste
-          a transcript (which feeds search), or add a video by hand. Drag an
-          entry to the top to feature it, or tick "Featured".
+          The video library. New uploads go live automatically via the daily
+          sync (uncategorised) — use this to add the category and tags, paste a
+          transcript (which feeds search), or add a video by hand. Drag an entry
+          to the top to feature it, or tick "Featured".
         fields:
           - name: videos
             label: Videos

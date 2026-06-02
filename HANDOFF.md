@@ -107,7 +107,7 @@ public/
 scripts/
   sync-videos.mjs           YouTube RSS -> append new videos to videos.json
 .github/workflows/
-  sync-videos.yml           Daily run of the sync script -> opens a PR
+  sync-videos.yml           Daily run of the sync script -> commits new videos straight to master
 ```
 
 ---
@@ -142,8 +142,9 @@ It edits the JSON data files and commits back to the repo.
 - `public/admin/config.yml` defines:
   - **backend:** GitHub, repo `samwoodhouse1982/gpodh`, branch `master`,
     `base_url: https://g-po-dh.vercel.app`, `auth_endpoint: api/auth`.
-  - **publish_mode: `editorial_workflow`** — saving creates a **draft pull
-    request**; approve it in the CMS **Workflow** tab (or merge the PR) to publish.
+  - **No `publish_mode`** — Decap is in *simple* mode, so hitting **Publish**
+    commits straight to `master` and Vercel auto-deploys it to production (no PR
+    / Workflow tab). Re-add `publish_mode: editorial_workflow` to restore review.
   - **media_folder:** `public/guests` (public path `/guests`) — image uploads.
   - **Two collections** (each edits one JSON file as a list):
     - **Episodes** → `src/data/episodes.json` (all episode fields + `featured` toggle).
@@ -240,15 +241,15 @@ New uploads on the channel are pulled in automatically for review.
   already in `videos.json` (newest first), with `tags: []` and **no category**
   left for a human to fill in.
 - **`.github/workflows/sync-videos.yml`** runs it **daily at 07:00 UTC** (and on
-  demand via *Actions → Run workflow*), then uses `peter-evans/create-pull-request`
-  to open a PR titled "New YouTube video(s) to review."
-- **You review the PR:** set the `category` (`talk`/`panel`/`explainer`/`clip`)
-  and `tags`, tidy the description, optionally paste a `transcript`, then merge.
+  demand via *Actions → Run workflow*), then **commits any new videos straight to
+  `master`**, so they go live automatically the day they're published.
+- **You tidy up afterwards in the CMS (still live):** set the `category`
+  (`talk`/`panel`/`explainer`/`clip`) and `tags`, tidy the description, and
+  optionally paste a `transcript`. New entries appear uncategorised until then.
 
-### Required GitHub settings for the PR step
+### Required GitHub settings for the commit step
 Repo → *Settings → Actions → General → Workflow permissions*:
-- Select **Read and write permissions**.
-- Tick **Allow GitHub Actions to create and approve pull requests**.
+- Select **Read and write permissions** (lets the workflow push to `master`).
 
 ---
 
@@ -300,7 +301,7 @@ and in Vercel's encrypted env vars. Inventory:
 | `GITHUB_OAUTH_CLIENT_ID` | Vercel env var + GitHub OAuth App | Decap CMS login | Regenerate the OAuth App / secret in GitHub Developer settings |
 | `GITHUB_OAUTH_CLIENT_SECRET` | Vercel env var (only) | Decap CMS token exchange | Same as above; never commit |
 | GitHub PAT (push/admin from CLI) | **Not stored in repo**; only needed in restricted remote envs | Pushing when a git proxy blocks normal auth | Fine-grained PAT with **Contents: write** (+ **Workflows: write** to edit `.github/workflows/**`). **The PATs used during the build were exposed in chat — revoke them.** |
-| `GITHUB_TOKEN` (Actions) | Auto-provided by GitHub Actions | The video-sync workflow opens PRs | Managed by GitHub; just enable the Actions PR permission (§6) |
+| `GITHUB_TOKEN` (Actions) | Auto-provided by GitHub Actions | The video-sync workflow pushes new videos to `master` | Managed by GitHub; just enable **Read and write** workflow permissions (§6) |
 | Vercel account | Vercel dashboard | Hosting, deploys, env vars | Account owner (Shubs) |
 | Transistor account | Transistor dashboard | Podcast hosting / episode embeds | Account owner |
 | YouTube channel | Google account | Video source (RSS is public — **no API key needed**) | Account owner |
@@ -373,8 +374,8 @@ and in Vercel's encrypted env vars. Inventory:
 ## 12. Outstanding TODO / suggested next steps
 
 - [ ] **Wire up forms to a real backend** (contact + email capture) — highest value. *(On hold — owner will revisit.)*
-- [ ] Configure the **GitHub OAuth App + Vercel env vars** to enable the CMS. *(Believed done — confirm by logging in at `/admin`.)*
-- [ ] Enable **Actions PR permissions** so the video-sync workflow can open PRs. *(Repo → Settings → Actions → General → Workflow permissions.)*
+- [x] Configure the **GitHub OAuth App + Vercel env vars** to enable the CMS. *(Done.)*
+- [x] Enable **Actions write permissions** so the video-sync workflow can push to `master`. *(Done — Repo → Settings → Actions → General → Workflow permissions → Read and write.)*
 - [ ] **Confirm canonical domain** and align `base_url` + OAuth callback.
 - [ ] **Revoke the exposed PATs**; create fresh fine-grained tokens as needed.
 - [x] Display CMS video transcripts on the **video detail pages** (now prefers the
