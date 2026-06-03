@@ -1,6 +1,33 @@
 {
   "videos": [
     {
+      "id": "34",
+      "slug": "ai-in-low-resource-settings-what-developers-should-know-podcast-ai-healthcareinn",
+      "title": "AI in low resource settings. What developers should know #podcast #ai #healthcareinnovation",
+      "description": "Whilst it is true that in low resource settings, access is a challenge and therefore more likely that the benefits outweight risks compared to the baseline, developers still need to to take a responsible approach on building the right way. Joe Alderman shares his insights ont he gpodh.org podcast. Get the full insights here on what it takes to create AI for underserved communities.…",
+      "youtubeVideoId": "kCn4rThjr90",
+      "date": "Apr 2026",
+      "tags": []
+    },
+    {
+      "id": "33",
+      "slug": "saving-lives-with-drones-digitalhealth-podcast",
+      "title": "saving lives with drones #digitalhealth #podcast",
+      "description": "Echo Vanderwal of The Luke Commission in Eswatini talks about how they built a locally maintained drone system to help deliver vital medicines like snake antivenom and other critical medicines to people when they needed them. The impact was incredible. That year, they reduced snakebite deaths (previously a near certainty) to ZERO in the country.…",
+      "youtubeVideoId": "L5zR6Zx2UgA",
+      "date": "Oct 2025",
+      "tags": []
+    },
+    {
+      "id": "32",
+      "slug": "founder-challenges-in-refugee-digital-health-podcast-funding-digitalhealth-refug",
+      "title": "Founder challenges in refugee digital health #podcast #funding #digitalhealth #refugees",
+      "description": "Founder, Aral Surmeli talks about the challenges building HERA digital health, a digital tool for Syrian refugees in Turkey. Aral talks about how HERA were affected by the USAID funding cuts and stop work order in Feb 2025. Check out the full episode, full of real talk and insight : https://www.youtube.com/watch?v=l_p3zJGFKf0",
+      "youtubeVideoId": "uP-YgITNdQ4",
+      "date": "Sep 2025",
+      "tags": []
+    },
+    {
       "id": "1",
       "slug": "digital-health-ai-hot-takes-3",
       "title": "Digital health and AI in healthcare hot takes #3",
