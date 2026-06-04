@@ -358,12 +358,14 @@ export default function HomePage() {
       <HostIntroStrip />
 
       {/* ——— Promo photo strip ——— */}
-      <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(280px, 35vw, 440px)' }}>
+      <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(340px, 42vw, 540px)' }}>
         <Image
           src={promo.image}
           alt={promo.alt}
           fill
-          style={{ objectFit: 'cover', objectPosition: 'center 26%' }}
+          // Faces sit ~45-50% down the frame (lots of wall above them), so centre
+          // the crop there and use a taller strip to show more of both people.
+          style={{ objectFit: 'cover', objectPosition: 'center 50%' }}
           sizes="100vw"
         />
         {/* Right-side gradient — Shubs is on the left, text sits on the darkened right */}
