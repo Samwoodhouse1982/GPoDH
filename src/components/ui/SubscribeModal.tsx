@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { subscribeEmail } from '@/lib/web3forms'
 import reusable from '@/data/site/reusable.json'
 
 const copy = reusable.subscribeModal
@@ -14,6 +15,8 @@ export default function SubscribeModal({ open, onClose }: Props) {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [botField, setBotField] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -36,10 +39,17 @@ export default function SubscribeModal({ open, onClose }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
+    if (botField) { setSubmitted(true); return }
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 800))
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      await subscribeEmail(email)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (!open) return null
@@ -144,6 +154,16 @@ export default function SubscribeModal({ open, onClose }: Props) {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <input
+                type="text"
+                name="botcheck"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={botField}
+                onChange={(e) => setBotField(e.target.value)}
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+              />
+              <input
                 ref={inputRef}
                 type="email"
                 aria-label="Email address"
@@ -183,6 +203,12 @@ export default function SubscribeModal({ open, onClose }: Props) {
                 {loading ? copy.submittingLabel : copy.submitLabel}
               </button>
             </form>
+
+            {error && (
+              <p role="alert" style={{ fontSize: '0.8125rem', color: 'var(--accent-coral)', marginTop: '0.75rem' }}>
+                {error}
+              </p>
+            )}
 
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.875rem' }}>
               {copy.note}

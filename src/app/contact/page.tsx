@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import PlatformBadge from '@/components/ui/PlatformBadge'
 import { PLATFORMS, SOCIAL } from '@/lib/constants'
+import { submitToWeb3Forms } from '@/lib/web3forms'
 import content from '@/data/site/contact.json'
 
 export default function ContactPage() {
@@ -14,6 +15,9 @@ export default function ContactPage() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  // Honeypot: real people leave this blank; bots tend to fill every field.
+  const [botField, setBotField] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -21,10 +25,23 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (botField) { setSubmitted(true); return } // silently drop bot submissions
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 900))
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      await submitToWeb3Forms({
+        subject: 'New GPoDH contact message',
+        name: form.name,
+        email: form.email,
+        organisation: form.organisation,
+        message: form.message,
+      })
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inputStyle: React.CSSProperties = {
@@ -123,6 +140,17 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  {/* Honeypot — visually hidden, off-screen, skipped by tab/AT. */}
+                  <input
+                    type="text"
+                    name="botcheck"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    value={botField}
+                    onChange={(e) => setBotField(e.target.value)}
+                    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                  />
                   <div>
                     <label htmlFor="name" style={labelStyle}>{content.form.nameLabel}</label>
                     <input
@@ -171,6 +199,11 @@ export default function ContactPage() {
                       style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
                     />
                   </div>
+                  {error && (
+                    <p role="alert" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem', margin: 0 }}>
+                      {error}
+                    </p>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}

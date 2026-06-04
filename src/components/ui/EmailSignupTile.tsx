@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { subscribeEmail } from '@/lib/web3forms'
 
 interface EmailSignupTileProps {
   /** Heading shown on the tile. */
@@ -16,15 +17,23 @@ export default function EmailSignupTile({
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [botField, setBotField] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
+    if (botField) { setSubmitted(true); return }
     setLoading(true)
-    // Simulate submission
-    await new Promise((r) => setTimeout(r, 800))
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      await subscribeEmail(email)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -89,6 +98,16 @@ export default function EmailSignupTile({
         <>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <input
+              type="text"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={botField}
+              onChange={(e) => setBotField(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+            <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -130,6 +149,11 @@ export default function EmailSignupTile({
               {loading ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
+          {error && (
+            <p role="alert" style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 500, margin: 0 }}>
+              {error}
+            </p>
+          )}
           <p style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
             No spam. Unsubscribe any time.
           </p>

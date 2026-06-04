@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { subscribeEmail } from '@/lib/web3forms'
 import reusable from '@/data/site/reusable.json'
 
 const copy = reusable.emailSignup
@@ -9,15 +10,23 @@ export default function EmailSignup() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [botField, setBotField] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
+    if (botField) { setSubmitted(true); return }
     setLoading(true)
-    // Simulate submission
-    await new Promise((r) => setTimeout(r, 800))
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      await subscribeEmail(email)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -91,6 +100,16 @@ export default function EmailSignup() {
             }}
           >
             <input
+              type="text"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={botField}
+              onChange={(e) => setBotField(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+            <input
               type="email"
               aria-label="Email address"
               value={email}
@@ -129,6 +148,12 @@ export default function EmailSignup() {
               {loading ? copy.submittingLabel : copy.submitLabel}
             </button>
           </form>
+        )}
+
+        {error && (
+          <p role="alert" style={{ fontSize: '0.8125rem', color: '#fff', fontWeight: 500, marginBottom: '0.5rem' }}>
+            {error}
+          </p>
         )}
 
         {!submitted && (

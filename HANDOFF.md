@@ -84,7 +84,7 @@ src/
     videos/[slug]/page.tsx  Video detail page
     work-with-us/page.tsx   Partnerships + consulting (ConsultingBridge)
     resources/page.tsx      Resource links + Shubstack callout
-    contact/page.tsx        Contact form (⚠️ simulated, no backend) + platforms
+    contact/page.tsx        Contact form (Web3Forms) + platforms
     api/auth/route.ts       Decap GitHub OAuth — step 1 (redirect to GitHub)
     api/callback/route.ts   Decap GitHub OAuth — step 2 (token exchange -> postMessage)
   components/
@@ -394,12 +394,22 @@ each month's numbers into the repo so the history is permanent.
 
 ## 11. Known blockers, gotchas & decisions
 
-1. **Forms have no backend (HIGH PRIORITY).** The contact form and all three
-   email-capture forms (`EmailSignup`, `EmailSignupTile`, `SubscribeModal`)
-   **simulate** submission with `setTimeout` and show a success message — **no
-   data is captured or sent.** Wire these to a real service (e.g. a Next API
-   route + email provider, or Mailchimp/ConvertKit/Buttondown, or Formspree)
-   before relying on them.
+1. **Forms — wired to Web3Forms.** The contact form and all three email-capture
+   forms (`EmailSignup`, `EmailSignupTile`, `SubscribeModal`) submit through
+   **Web3Forms** via `src/lib/web3forms.ts`. They share **one access key**, set
+   as **`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`** (Web3Forms keys are public by
+   design). Submissions are told apart in the inbox by their `subject`
+   (`New GPoDH contact message` vs `New GPoDH subscriber`), and each form has a
+   hidden honeypot for basic spam protection.
+   - **Setup:** create a key at <https://web3forms.com> (enter the destination
+     email), then set `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in Vercel (Project →
+     Settings → Environment Variables) **and** redeploy. For local dev, copy
+     `.env.example` → `.env.local` and fill it in. **Until the key is set, the
+     forms show an error on submit** rather than silently faking success.
+   - ⚠️ **Subscribe = email-to-inbox, not a mailing list.** Web3Forms just emails
+     you each new subscriber; it does **not** add them to Shubstack or send the
+     newsletter. Add subscribers to Substack manually, or repoint the subscribe
+     forms at Substack's native signup if you'd rather automate that.
 2. **Domain.** The live deployment is **`https://g-po-dh.vercel.app`** and the CMS
    `base_url` + OAuth callback are set to it. Episode `url` fields still point at
    `www.gpodh.org` (the intended custom domain). If/when a custom domain is
