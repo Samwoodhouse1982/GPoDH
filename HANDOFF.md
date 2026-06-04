@@ -351,6 +351,17 @@ and in Vercel's encrypted env vars. Inventory:
   YouTube thumbnails + org-logo CDNs (needed because some `next/image` sources
   are remote).
 
+### Web Analytics (Vercel)
+- **Vercel Web Analytics** is wired in via `@vercel/analytics` — the `<Analytics />`
+  component sits in `src/app/layout.tsx` so it covers every page. It's
+  cookieless / privacy-friendly (no consent banner needed for it).
+- ⚠️ **It only collects data once enabled in the dashboard:** Vercel project →
+  **Analytics → Enable**. Until then the script is inert (no data, no cost).
+- **Who sees the data:** whoever owns the Vercel project. On an ownership
+  handover (`HANDOVER.md`) the analytics move with the project automatically.
+- To switch to a different tool (GA4, Plausible) instead, remove the import +
+  `<Analytics />` from the layout and add the alternative's snippet there.
+
 ---
 
 ## 11. Known blockers, gotchas & decisions

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Nav from '@/components/layout/Nav'
 import Footer from '@/components/layout/Footer'
@@ -52,6 +53,10 @@ export default function RootLayout({
         <Nav />
         <main id="main-content" className="flex-1">{children}</main>
         <Footer />
+        {/* Vercel Web Analytics — privacy-friendly, cookieless page-view stats.
+            Renders nothing; data only flows once Analytics is enabled in the
+            Vercel dashboard (Project → Analytics → Enable). */}
+        <Analytics />
       </body>
     </html>
   )
