@@ -7,6 +7,10 @@
 >
 > **Last updated:** 2026-06-01.
 > **Maintainer of record going forward:** Shubs Upadhyay (shwoodhouse@gmail.com).
+>
+> **Related docs:** `EDITING-GUIDE.md` (non-technical content editing) ·
+> `HANDOVER.md` (non-technical guide to transferring ownership of the site to a
+> new owner — GitHub repo, Vercel, OAuth App, domain).
 
 ---
 
