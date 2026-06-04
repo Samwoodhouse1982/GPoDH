@@ -89,10 +89,12 @@ export default function HomePage() {
       {/* ——— Hero ——— */}
       <section
         style={{
-          minHeight: '100svh',
+          // Cap the hero height so content doesn't float in a huge empty band on
+          // tall monitors — full-screen on short viewports, capped on big ones.
+          minHeight: 'min(100svh, 720px)',
           display: 'flex',
           alignItems: 'center',
-          padding: '8rem var(--gutter) 4rem',
+          padding: '7rem var(--gutter) 3rem',
           background: 'radial-gradient(ellipse at 90% 10%, rgba(212,97,74,0.07) 0%, transparent 55%), radial-gradient(ellipse at 5% 85%, rgba(224,156,42,0.05) 0%, transparent 50%), var(--bg-primary)',
         }}
       >

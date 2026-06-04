@@ -77,7 +77,7 @@ export default function GlobeSection() {
   const showHint = scrollProgress < 0.04
 
   return (
-    <div ref={containerRef} style={{ height: '420vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ height: '300vh', position: 'relative' }}>
       <div
         style={{
           position: 'sticky',
