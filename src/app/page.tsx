@@ -361,7 +361,7 @@ export default function HomePage() {
           src={promo.image}
           alt={promo.alt}
           fill
-          style={{ objectFit: 'cover', objectPosition: 'center 42%' }}
+          style={{ objectFit: 'cover', objectPosition: 'center 26%' }}
           sizes="100vw"
         />
         {/* Right-side gradient — Shubs is on the left, text sits on the darkened right */}
