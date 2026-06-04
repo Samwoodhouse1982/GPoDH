@@ -111,8 +111,11 @@ public/
   logo-gpodh*.png, shubs-*.jpg/webp, logos/
 scripts/
   sync-videos.mjs           YouTube RSS -> append new videos to videos.json
+  export-analytics.mjs      Pulls last month's Vercel analytics -> analytics-archive/
+analytics-archive/          Permanent monthly copies of Vercel Web Analytics (see §10)
 .github/workflows/
   sync-videos.yml           Daily run of the sync script -> commits new videos straight to master
+  archive-analytics.yml     Monthly: saves last month's analytics into analytics-archive/
 ```
 
 ---
@@ -330,7 +333,9 @@ and in Vercel's encrypted env vars. Inventory:
 | `GITHUB_OAUTH_CLIENT_ID` | Vercel env var + GitHub OAuth App | Decap CMS login | Regenerate the OAuth App / secret in GitHub Developer settings |
 | `GITHUB_OAUTH_CLIENT_SECRET` | Vercel env var (only) | Decap CMS token exchange | Same as above; never commit |
 | GitHub PAT (push/admin from CLI) | **Not stored in repo**; only needed in restricted remote envs | Pushing when a git proxy blocks normal auth | Fine-grained PAT with **Contents: write** (+ **Workflows: write** to edit `.github/workflows/**`). **The PATs used during the build were exposed in chat — revoke them.** |
-| `GITHUB_TOKEN` (Actions) | Auto-provided by GitHub Actions | The video-sync workflow pushes new videos to `master` | Managed by GitHub; just enable **Read and write** workflow permissions (§6) |
+| `GITHUB_TOKEN` (Actions) | Auto-provided by GitHub Actions | The video-sync & analytics-archive workflows push to `master` | Managed by GitHub; just enable **Read and write** workflow permissions (§6) |
+| `VERCEL_TOKEN` | GitHub Actions **secret** | Monthly analytics archive (`archive-analytics.yml`, §10) | Regenerate at <https://vercel.com/account/tokens> |
+| `VERCEL_PROJECT_ID` / `VERCEL_TEAM_ID` | GitHub Actions **variables** (not secret) | Identify the project for the analytics archive | From the Vercel project settings |
 | Vercel account | Vercel dashboard | Hosting, deploys, env vars | Account owner (Shubs) |
 | Transistor account | Transistor dashboard | Podcast hosting / episode embeds | Account owner |
 | YouTube channel | Google account | Video source (RSS is public — **no API key needed**) | Account owner |
@@ -361,6 +366,29 @@ and in Vercel's encrypted env vars. Inventory:
   handover (`HANDOVER.md`) the analytics move with the project automatically.
 - To switch to a different tool (GA4, Plausible) instead, remove the import +
   `<Analytics />` from the layout and add the alternative's snippet there.
+
+### Archiving analytics monthly (free-tier retention workaround)
+Vercel's free tier only keeps **~30 days** of analytics. A scheduled job copies
+each month's numbers into the repo so the history is permanent.
+
+- **Workflow:** `.github/workflows/archive-analytics.yml` — runs 06:00 UTC on the
+  **1st of each month**; also runnable by hand via *Actions → Archive monthly
+  analytics → Run workflow* (optional `month` input `YYYY-MM` for back-fill).
+- **Script:** `scripts/export-analytics.mjs` → writes `analytics-archive/<month>/`
+  (`raw.json` is the source of truth; `*.csv` are tidy summaries) and appends a
+  row to `analytics-archive/index.csv`.
+- **One-time setup** (repo → *Settings → Secrets and variables → Actions*):
+  - Secret **`VERCEL_TOKEN`** — from <https://vercel.com/account/tokens>.
+  - Variable **`VERCEL_PROJECT_ID`** — Vercel project → *Settings → Project ID*.
+  - Variable **`VERCEL_TEAM_ID`** — only if the project lives under a Vercel Team.
+- ⚠️ **It uses Vercel's _internal/undocumented_ web-analytics endpoint**, not a
+  stable public API — it can change without notice. The script is defensive
+  (saves raw responses, exits non-zero on total failure). If the export fails,
+  the workflow **opens a reminder issue** to save that month by hand, so a broken
+  endpoint never means silent data loss. Fixing it = updating the endpoint
+  constants / extract helpers in `scripts/export-analytics.mjs`.
+- After enabling, **test it** with a manual run (set `month` to a month that has
+  data) and confirm a folder appears under `analytics-archive/`.
 
 ---
 

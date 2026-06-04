@@ -1,0 +1,93 @@
+name: Archive monthly analytics
+
+# Saves the previous month's Vercel Web Analytics into analytics-archive/ so the
+# history outlives Vercel's ~30-day free-tier retention. Runs on the 1st of each
+# month; can also be run by hand (optionally for a specific past month).
+#
+# If the export fails (e.g. Vercel changed its internal endpoint), the job opens
+# a reminder issue so you can save that month by hand instead of losing it.
+#
+# Setup (one-time) — repo Settings → Secrets and variables → Actions:
+#   Secret  VERCEL_TOKEN       (vercel.com/account/tokens)
+#   Variable VERCEL_PROJECT_ID (Vercel project → Settings → Project ID)
+#   Variable VERCEL_TEAM_ID    (only if the project is under a Team)
+
+on:
+  schedule:
+    - cron: '0 6 1 * *' # 06:00 UTC on the 1st of every month
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'Month to export as YYYY-MM (blank = last month)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Export analytics
+        id: export
+        continue-on-error: true
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ vars.VERCEL_TEAM_ID }}
+          VERCEL_ENV: production
+        run: node scripts/export-analytics.mjs "${{ github.event.inputs.month }}"
+
+      - name: Commit the archive
+        if: steps.export.outcome == 'success'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add analytics-archive
+          if git diff --staged --quiet; then
+            echo 'Nothing new to commit.'
+          else
+            git commit -m "Archive analytics for ${{ steps.export.outputs.month }}"
+            git push origin HEAD:master
+          fi
+
+      - name: Open a reminder issue if the export failed
+        if: steps.export.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '📊 Save last month’s analytics by hand',
+              labels: ['analytics'],
+              body: [
+                'The automatic monthly analytics export did not run successfully, so',
+                'last month’s numbers were **not** archived automatically.',
+                '',
+                '**Please save them manually before they age out of Vercel (30 days):**',
+                '1. Open the Vercel project → **Analytics**.',
+                '2. Set the date range to the **previous month**.',
+                '3. Screenshot the overview (and any tables you care about) and drop',
+                '   it in your analytics folder / Google Drive.',
+                '',
+                `_Why it failed (for a developer): see the run logs → ${runUrl}_`,
+                '_The exporter uses an unofficial Vercel endpoint; if it broke,',
+                '`scripts/export-analytics.mjs` likely needs a small update._',
+              ].join('\n'),
+            });
+
+      - name: Mark the job failed if the export failed
+        if: steps.export.outcome == 'failure'
+        run: |
+          echo 'Export failed — a reminder issue was opened. See the Export step logs above.'
+          exit 1
