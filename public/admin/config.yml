@@ -538,17 +538,18 @@ collections:
               - { name: buttonHref, label: Button link, widget: string }
 
       - name: globe
-        label: Homepage globe pins
+        label: Homepage globe
         file: src/data/site/globe.json
         format: json
         description: >-
-          The location pins on the rotating globe in the homepage header. Add a
-          pin for each new region the podcast covers. (The separate scrolling
-          "Insights in Motion" globe lower down the page is a fixed animation and
-          is not edited here.)
+          The homepage globes. "Globe pins" are the location pins on the rotating
+          header globe — add one for each new region the podcast covers. "Insights
+          in Motion captions" are the scrolling text on the second globe lower down
+          the page; you can edit that wording, but its route and animation are
+          fixed in the design.
         fields:
           - name: pins
-            label: Globe pins
+            label: Globe pins (header globe)
             label_singular: Globe pin
             widget: list
             summary: '{{fields.name}} — {{fields.label}}'
@@ -562,6 +563,28 @@ collections:
               - { name: lat, label: Latitude, widget: number, value_type: float, step: 0.01, hint: 'Decimal degrees. North is positive, south is negative.' }
               - { name: lon, label: Longitude, widget: number, value_type: float, step: 0.01, hint: 'Decimal degrees. East is positive, west is negative.' }
               - { name: note, label: Source episode (internal note), widget: string, required: false, hint: 'Not shown on the site — records which episode/video this pin represents.' }
+          - name: journey
+            label: Insights in Motion captions (scrolling globe)
+            widget: object
+            description: >-
+              The scrolling text on the second globe. You can edit the wording.
+              The order and the places the globe flies between are fixed in the
+              design, so keep each route heading matching its leg.
+            fields:
+              - { name: intro, label: Intro line (before scrolling), widget: text }
+              - name: legs
+                label: Journey legs
+                label_singular: Journey leg
+                widget: list
+                min: 6
+                max: 6
+                summary: '{{fields.route}}'
+                hint: >-
+                  Six fixed legs, in order. Edit the heading and caption text only —
+                  do not add or remove legs (the globe animation has exactly six).
+                fields:
+                  - { name: route, label: Route heading, widget: string, hint: 'e.g. "London to Nairobi" — shown as the large heading.' }
+                  - { name: caption, label: Caption, widget: text }
 
       - name: reusable
         label: Reusable copy

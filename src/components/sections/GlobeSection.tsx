@@ -2,54 +2,26 @@
 
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+import globeData from '@/data/site/globe.json'
 
 const Globe = dynamic(() => import('@/components/ui/Globe'), { ssr: false })
 
-// Each stage caption changes as the user scrolls. The route traces real stories
-// from the podcast/videos — insights moving between the places they came from,
-// not just "global reach". Every leg below maps to specific episodes.
-const STAGES = [
-  {
-    threshold: 0.00,
-    caption: 'Some of the most important ideas in digital health exist in places the industry rarely looks.',
-    route: null,
-  },
-  {
-    // Ep20 (TechChange) & Ep23 (health.enabled), both around the Nairobi GDHF
-    threshold: 0.10,
-    caption: 'At the Global Digital Health Forum in Nairobi, the talk is community, scarcity, and what USAID cuts mean for global health.',
-    route: 'London to Nairobi',
-  },
-  {
-    // Remidio — AI eye diagnostics scaling out of India (HLTH Europe video)
-    threshold: 0.28,
-    caption: 'In India, AI diagnostics built under real-world constraints are now scaling from Bengaluru to Europe and the US.',
-    route: 'Nairobi to Bengaluru',
-  },
-  {
-    // Ep16 (WHO) — Indonesia as a digital public infrastructure first-mover
-    threshold: 0.44,
-    caption: 'Indonesia is among the first movers building national digital health infrastructure at scale.',
-    route: 'Bengaluru to Jakarta',
-  },
-  {
-    threshold: 0.54,
-    caption: 'Insights travel east across the Pacific, from Southeast Asia toward Latin America.',
-    route: 'Jakarta to Sao Paulo',
-  },
-  {
-    // Ep2 (health data poverty, Brazil) → Ep24 (ICRC humanitarian AI, Nigeria)
-    threshold: 0.72,
-    caption: 'From confronting health data poverty in Brazil to building AI for conflict zones in Nigeria, the frontier keeps moving.',
-    route: 'Sao Paulo to Lagos',
-  },
-  {
-    // Ep16 — the WHO in Geneva, where local insight meets global policy
-    threshold: 0.85,
-    caption: 'When local insights reach Geneva, they shape global policy at the World Health Organization.',
-    route: 'Lagos to Geneva',
-  },
-]
+// Scroll thresholds + the city the globe is flying toward are choreographed in
+// code (and must stay in sync with ROUTES/ROTATION_KEYFRAMES in Globe.tsx). Only
+// the caption + route-heading TEXT is editable in the CMS, via globe.json's
+// `journey`. Legs map to: London→Nairobi (Ep20/Ep23, Nairobi GDHF),
+// Nairobi→Bengaluru (Remidio AI diagnostics), Bengaluru→Jakarta (Ep16 WHO
+// first-mover), Jakarta→São Paulo (transition), São Paulo→Lagos (Ep2 + Ep24),
+// Lagos→Geneva (Ep16 WHO policy).
+const THRESHOLDS = [0.0, 0.1, 0.28, 0.44, 0.54, 0.72, 0.85]
+
+const STAGES = THRESHOLDS.map((threshold, i) => {
+  if (i === 0) {
+    return { threshold, caption: globeData.journey.intro, route: null as string | null }
+  }
+  const leg = globeData.journey.legs[i - 1]
+  return { threshold, caption: leg?.caption ?? '', route: (leg?.route ?? null) as string | null }
+})
 
 
 export default function GlobeSection() {

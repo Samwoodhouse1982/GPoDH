@@ -18,5 +18,16 @@
     { "name": "Indonesia", "lon": 113.92, "lat": -0.79, "label": "Digital public infrastructure", "note": "Ep16 — WHO first-mover country" },
     { "name": "Brazil", "lon": -51.93, "lat": -14.24, "label": "Health data poverty", "note": "Ep2 — Alexandre Filho, USP" },
     { "name": "USA", "lon": -77.04, "lat": 38.91, "label": "USAID & global health", "note": "Recurring — aid-cuts thread" }
-  ]
+  ],
+  "journey": {
+    "intro": "Some of the most important ideas in digital health exist in places the industry rarely looks.",
+    "legs": [
+      { "route": "London to Nairobi", "caption": "At the Global Digital Health Forum in Nairobi, the talk is community, scarcity, and what USAID cuts mean for global health." },
+      { "route": "Nairobi to Bengaluru", "caption": "In India, AI diagnostics built under real-world constraints are now scaling from Bengaluru to Europe and the US." },
+      { "route": "Bengaluru to Jakarta", "caption": "Indonesia is among the first movers building national digital health infrastructure at scale." },
+      { "route": "Jakarta to Sao Paulo", "caption": "Insights travel east across the Pacific, from Southeast Asia toward Latin America." },
+      { "route": "Sao Paulo to Lagos", "caption": "From confronting health data poverty in Brazil to building AI for conflict zones in Nigeria, the frontier keeps moving." },
+      { "route": "Lagos to Geneva", "caption": "When local insights reach Geneva, they shape global policy at the World Health Organization." }
+    ]
+  }
 }

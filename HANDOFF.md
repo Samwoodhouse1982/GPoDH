@@ -265,15 +265,19 @@ section (`src/data/site/globe.json`). It's a list of `{ name, label, lat, lon,
 note }` consumed by `HeroGlobe.tsx` (which maps them to `coords: [lon, lat]`).
 The label-placement engine handles any number of pins, so adding/removing one is
 a pure data edit — no code change. Keep each pin tied to a real episode/video and
-record which in `note`. The scrolling **"Insights in Motion"** globe
-(`GlobeSection.tsx` + `Globe.tsx`) is **not** CMS-driven: its 7-stop journey is a
-hand-tuned scroll animation (rotation keyframes, arc timing), so changing its
-stops needs a dev to re-tune the choreography.
+record which in `note`. The same section also holds the scrolling **"Insights in
+Motion"** captions (`globe.json` → `journey`: an `intro` line + 6 `legs`, each a
+`route` heading + `caption`), read by `GlobeSection.tsx`. Only that **text** is
+editable — the scroll thresholds (`THRESHOLDS` in `GlobeSection.tsx`) and the
+cities/arc choreography (`ROUTES`/`ROTATION_KEYFRAMES` in `Globe.tsx`) are
+hand-tuned and stay in code, so adding/moving a *stop* still needs a dev. The CMS
+legs list is locked to exactly 6 to keep it in sync with the thresholds.
 
 **What stays fixed in code (by design):** layout/spacing, colours, the "Insights
-in Motion" globe choreography, persona SVG icons and card-accent colours, and
-section animations. These live in the components, not the JSON, so editors can't
-break the design.
+in Motion" globe choreography (route, coordinates, scroll timing — only its
+captions are editable), persona SVG icons and card-accent colours, and section
+animations. These live in the components, not the JSON, so editors can't break
+the design.
 
 ## 6. Automated video sync (YouTube → PR)
 
