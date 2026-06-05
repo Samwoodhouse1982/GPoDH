@@ -260,9 +260,20 @@ In the CMS these fields use the `markdown` widget. If you ever need richer
 formatting (tables, images-in-prose), swap `RichText` for `react-markdown`;
 the field data is already plain Markdown so no content migration is needed.
 
-**What stays fixed in code (by design):** layout/spacing, colours, the animated
-hero globe, persona SVG icons and card-accent colours, and section animations.
-These live in the components, not the JSON, so editors can't break the design.
+**Homepage globe pins are editable** via the **"Homepage globe pins"** CMS
+section (`src/data/site/globe.json`). It's a list of `{ name, label, lat, lon,
+note }` consumed by `HeroGlobe.tsx` (which maps them to `coords: [lon, lat]`).
+The label-placement engine handles any number of pins, so adding/removing one is
+a pure data edit — no code change. Keep each pin tied to a real episode/video and
+record which in `note`. The scrolling **"Insights in Motion"** globe
+(`GlobeSection.tsx` + `Globe.tsx`) is **not** CMS-driven: its 7-stop journey is a
+hand-tuned scroll animation (rotation keyframes, arc timing), so changing its
+stops needs a dev to re-tune the choreography.
+
+**What stays fixed in code (by design):** layout/spacing, colours, the "Insights
+in Motion" globe choreography, persona SVG icons and card-accent colours, and
+section animations. These live in the components, not the JSON, so editors can't
+break the design.
 
 ## 6. Automated video sync (YouTube → PR)
 

@@ -1,0 +1,22 @@
+{
+  "pins": [
+    { "name": "UK", "lon": -1.77, "lat": 51.23, "label": "AI & health equity", "note": "Ep25 — Joe Alderman, NHS / AI inequities" },
+    { "name": "Germany", "lon": 13.74, "lat": 51.05, "label": "Reimbursement & regulation", "note": "Ep5 — Stephen Gilbert, Dresden / DiGA" },
+    { "name": "Geneva", "lon": 6.15, "lat": 46.20, "label": "WHO digital health policy", "note": "Ep16 — Alain Labrique, WHO" },
+    { "name": "Turkey", "lon": 28.98, "lat": 41.01, "label": "Refugee digital health", "note": "Ep19 — HERA, Syrian refugees" },
+    { "name": "Nigeria", "lon": 8.68, "lat": 9.08, "label": "Humanitarian AI tools", "note": "Ep24 — ICRC, Almanac" },
+    { "name": "DR Congo", "lon": 15.33, "lat": -4.33, "label": "Newborn care, last mile", "note": "Ep26 — NoviGuide, Goma" },
+    { "name": "Uganda", "lon": 32.58, "lat": 0.32, "label": "Community health at scale", "note": "Ep21 — inSCALE / upSCALE" },
+    { "name": "Kenya", "lon": 36.82, "lat": -1.29, "label": "Global Digital Health Forum", "note": "Ep20 & Ep23 — Nairobi GDHF" },
+    { "name": "Rwanda", "lon": 29.87, "lat": -1.94, "label": "Youth mental health & policy", "note": "Ep8 — YLabs; Ep9 — MoH + FIND" },
+    { "name": "Malawi", "lon": 34.30, "lat": -13.25, "label": "Local ownership", "note": "HLTH Europe Malawi video" },
+    { "name": "Mozambique", "lon": 32.57, "lat": -25.97, "label": "Impact evaluation", "note": "Ep21 — LSHTM, inSCALE" },
+    { "name": "Eswatini", "lon": 31.47, "lat": -26.52, "label": "Digital health scale-up", "note": "Ep6 — The Luke Commission" },
+    { "name": "South Africa", "lon": 18.42, "lat": -33.93, "label": "Maternal mHealth at scale", "note": "Ep23 — MomConnect; Ep13 — regulation" },
+    { "name": "India", "lon": 78.96, "lat": 20.59, "label": "Rural health & AI", "note": "Ep7 — Khushi Baby; Remidio video" },
+    { "name": "Bangladesh", "lon": 90.39, "lat": 23.68, "label": "Funding what matters", "note": "Ep18 — Rubayat Khan" },
+    { "name": "Indonesia", "lon": 113.92, "lat": -0.79, "label": "Digital public infrastructure", "note": "Ep16 — WHO first-mover country" },
+    { "name": "Brazil", "lon": -51.93, "lat": -14.24, "label": "Health data poverty", "note": "Ep2 — Alexandre Filho, USP" },
+    { "name": "USA", "lon": -77.04, "lat": 38.91, "label": "USAID & global health", "note": "Recurring — aid-cuts thread" }
+  ]
+}

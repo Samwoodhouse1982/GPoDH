@@ -427,8 +427,9 @@ collections:
         file: src/data/site/home.json
         format: json
         description: >-
-          The home page. Text, images and links are editable here; the animated
-          globe, card colours and persona icons are fixed in the design.
+          The home page. Text, images and links are editable here; card colours
+          and persona icons are fixed in the design. The header globe's location
+          pins are edited under "Homepage globe pins".
         fields:
           - name: meta
             label: SEO / browser tab
@@ -535,6 +536,32 @@ collections:
               - { name: body, label: Body, widget: string }
               - { name: buttonText, label: Button text, widget: string }
               - { name: buttonHref, label: Button link, widget: string }
+
+      - name: globe
+        label: Homepage globe pins
+        file: src/data/site/globe.json
+        format: json
+        description: >-
+          The location pins on the rotating globe in the homepage header. Add a
+          pin for each new region the podcast covers. (The separate scrolling
+          "Insights in Motion" globe lower down the page is a fixed animation and
+          is not edited here.)
+        fields:
+          - name: pins
+            label: Globe pins
+            label_singular: Globe pin
+            widget: list
+            summary: '{{fields.name}} — {{fields.label}}'
+            hint: >-
+              Each pin should point to a real episode or video. To find a place's
+              coordinates: search it on Google Maps, right-click the spot, and the
+              first number is the latitude, the second is the longitude.
+            fields:
+              - { name: name, label: Place name, widget: string, hint: 'Shown on the pin card, e.g. "Kenya"' }
+              - { name: label, label: Topic / story, widget: string, hint: 'Short caption under the name, e.g. "Community health at scale"' }
+              - { name: lat, label: Latitude, widget: number, value_type: float, step: 0.01, hint: 'Decimal degrees. North is positive, south is negative.' }
+              - { name: lon, label: Longitude, widget: number, value_type: float, step: 0.01, hint: 'Decimal degrees. East is positive, west is negative.' }
+              - { name: note, label: Source episode (internal note), widget: string, required: false, hint: 'Not shown on the site — records which episode/video this pin represents.' }
 
       - name: reusable
         label: Reusable copy
