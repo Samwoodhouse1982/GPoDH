@@ -32,7 +32,7 @@ export async function submitToWeb3Forms(fields: Web3FormsFields): Promise<void> 
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
       access_key: WEB3FORMS_KEY,
-      from_name: 'GPoDH website',
+      from_name: 'GPODH website',
       ...fields,
     }),
   })
@@ -46,7 +46,7 @@ export async function submitToWeb3Forms(fields: Web3FormsFields): Promise<void> 
 /** Convenience wrapper for the email-capture forms. */
 export function subscribeEmail(email: string): Promise<void> {
   return submitToWeb3Forms({
-    subject: 'New GPoDH subscriber',
+    subject: 'New GPODH subscriber',
     email,
     message: `New newsletter subscriber: ${email}`,
   })

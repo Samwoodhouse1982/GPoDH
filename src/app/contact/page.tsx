@@ -30,7 +30,7 @@ export default function ContactPage() {
     setError('')
     try {
       await submitToWeb3Forms({
-        subject: 'New GPoDH contact message',
+        subject: 'New GPODH contact message',
         name: form.name,
         email: form.email,
         organisation: form.organisation,

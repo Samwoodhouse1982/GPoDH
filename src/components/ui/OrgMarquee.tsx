@@ -1,108 +1,20 @@
 'use client'
 
+import orgLogos from '@/data/org-logos.json'
+
 interface Org {
   name: string
-  src: string
-  h: number   // display height in px — tune per logo for visual balance
+  file: string       // local filename under /public/logos (preferred source)
+  remote: string     // external URL — fallback until logos are self-hosted
+  h: number          // display height in px — tune per logo for visual balance
   invert?: boolean   // true for white-on-transparent logos (flips to dark)
   multiply?: boolean // true for logos with white backgrounds (blends them away)
 }
 
-const ORGS: Org[] = [
-  {
-    name: 'World Health Organization',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/2/26/World_Health_Organization_Logo.svg',
-    h: 36,
-  },
-  {
-    name: 'Johns Hopkins University',
-    src: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Johns_Hopkins_University_logo.svg',
-    h: 32,
-  },
-  {
-    name: 'Yale University',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Yale_University_logo.svg',
-    h: 28,
-  },
-  {
-    name: 'LSHTM',
-    src: '/logos/lshtm.png',
-    h: 34,
-    multiply: true,
-  },
-  {
-    name: 'ICRC',
-    src: 'https://www.icrc.org/themes/custom/icrc_theme/html/images/logo/logo.svg',
-    h: 32,
-  },
-  {
-    name: 'PATH',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Path_logo.svg',
-    h: 30,
-  },
-  {
-    name: 'Geneva Digital Health Hub',
-    src: 'https://gdhub.org/wp-content/uploads/2025/07/Black-on-Transparent-scaled.png',
-    h: 30,
-  },
-  {
-    name: 'Digital Medicine Society',
-    src: 'https://fpdtac9mhctc-u4418.pressidiumcdn.com/wp-content/uploads/logo-copy-2.svg',
-    h: 28,
-  },
-  {
-    name: 'FIND',
-    src: 'https://www.finddx.org/wp-content/uploads/2022/12/20221217_FIND_logo_color_web_no_bcknd_EN.png',
-    h: 30,
-  },
-  {
-    name: 'Khushi Baby',
-    src: 'https://cdn.prod.website-files.com/665fe4f280c6b2f1935e282a/66684116cd3010f1b0c7074c_logo-colored.png',
-    h: 28,
-  },
-  {
-    name: 'YLabs',
-    src: 'https://images.squarespace-cdn.com/content/v1/5ea7b2cd859d291f18d9dfb9/1588090988388-1FP270TKWHMVLO6HJVOQ/YLabs_Primary+Logo_PURPLE.png',
-    h: 28,
-  },
-  {
-    name: 'Audere',
-    src: 'https://images.squarespace-cdn.com/content/v1/64ff6a6dd00b77132a60f99b/f58dcd28-541e-43ed-9d9a-3594795ae8e3/Audere_Logo_HP.png',
-    h: 26,
-  },
-  {
-    name: 'Hardian Health',
-    src: 'https://images.squarespace-cdn.com/content/v1/62f5262a0b58c94a255a69ba/86689200-19ae-4ecf-b0cc-817df78e9503/HHcropped.png',
-    h: 28,
-    invert: true,
-  },
-  {
-    name: 'TechChange',
-    src: 'https://www.techchange.org/wp-content/uploads/2022/07/logo-header-new.png',
-    h: 28,
-  },
-  {
-    name: 'Global Strategies',
-    src: 'https://cdn.prod.website-files.com/59b6c0517bd7ea0001f0f2b8/59b6cc08eee7c800016d15be_logo-h85.png',
-    h: 30,
-  },
-  {
-    name: 'University of São Paulo',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Webysther_20160310_-_Logo_USP.svg',
-    h: 36,
-  },
-  {
-    name: 'TU Dresden',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Logo_TU_Dresden_en_2025.svg',
-    h: 28,
-  },
-  {
-    name: 'The Luke Commission',
-    src: 'https://images.squarespace-cdn.com/content/v1/651dd3a3ce05533bbddc9323/0a0768a5-3ba5-49c5-8718-278b6a7b9dfc/TLC+Web+Logo.png',
-    h: 32,
-    invert: true,
-  },
-]
+// Logos are served from /public/logos when present (run scripts/fetch-org-logos.mjs
+// to download them), and fall back to the remote URL on error so the marquee keeps
+// working before the files are self-hosted. See src/data/org-logos.json.
+const ORGS = orgLogos as Org[]
 
 export default function OrgMarquee() {
   const items = [...ORGS, ...ORGS]
@@ -134,14 +46,21 @@ export default function OrgMarquee() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={org.src}
+              src={`/logos/${org.file}`}
               alt={org.name}
               height={org.h}
               loading="lazy"
-              // Several logos are hotlinked from external hosts; if one fails to
-              // load, hide its tile so a broken image can't sit in the marquee.
+              // Prefer the self-hosted file; if it's missing, fall back to the
+              // remote URL once; if that also fails, hide the tile so a broken
+              // image can't sit in the marquee.
               onError={(e) => {
-                const item = e.currentTarget.closest('.org-marquee-item')
+                const img = e.currentTarget
+                if (org.remote && img.src !== org.remote && !img.dataset.fallback) {
+                  img.dataset.fallback = '1'
+                  img.src = org.remote
+                  return
+                }
+                const item = img.closest('.org-marquee-item')
                 if (item instanceof HTMLElement) item.style.display = 'none'
               }}
               style={{
