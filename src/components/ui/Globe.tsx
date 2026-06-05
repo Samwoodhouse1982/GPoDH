@@ -13,13 +13,18 @@ interface GlobeProps {
   scrollProgress: number
 }
 
+// Each city anchors a real episode/video story; the route below traces how
+// insights travel between them. London (UK eps) → Nairobi (Global Digital
+// Health Forum) → Bengaluru (Remidio AI diagnostics) → Jakarta (Indonesia,
+// WHO first-mover) → São Paulo (health data poverty, Ep2) → Lagos (ICRC
+// humanitarian AI, Ep24) → Geneva (WHO policy, Ep16).
 const CITIES = [
   { name: 'London',    coords: [-0.13,  51.51] as [number, number], link: '/episodes' },
   { name: 'Nairobi',   coords: [36.82,  -1.29] as [number, number], link: '/episodes' },
-  { name: 'Mumbai',    coords: [72.88,  19.08] as [number, number], link: '/episodes' },
+  { name: 'Bengaluru', coords: [77.59,  12.97] as [number, number], link: '/episodes' },
   { name: 'Jakarta',   coords: [106.87, -6.21] as [number, number], link: '/episodes' },
   { name: 'Sao Paulo', coords: [-46.63,-23.55] as [number, number], link: '/episodes' },
-  { name: 'Accra',     coords: [-0.21,   5.60] as [number, number], link: '/episodes' },
+  { name: 'Lagos',     coords: [3.41,    6.52] as [number, number], link: '/episodes' },
   { name: 'Geneva',    coords: [6.15,   46.20] as [number, number], link: '/episodes' },
 ]
 

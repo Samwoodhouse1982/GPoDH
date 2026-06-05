@@ -5,8 +5,9 @@ import dynamic from 'next/dynamic'
 
 const Globe = dynamic(() => import('@/components/ui/Globe'), { ssr: false })
 
-// Each stage caption changes as the user scrolls — focused on
-// cross-pollination of insights, not just "global reach"
+// Each stage caption changes as the user scrolls. The route traces real stories
+// from the podcast/videos — insights moving between the places they came from,
+// not just "global reach". Every leg below maps to specific episodes.
 const STAGES = [
   {
     threshold: 0.00,
@@ -14,34 +15,39 @@ const STAGES = [
     route: null,
   },
   {
+    // Ep20 (TechChange) & Ep23 (health.enabled), both around the Nairobi GDHF
     threshold: 0.10,
-    caption: 'What community health workers in Kenya have learned could transform primary care everywhere.',
+    caption: 'At the Global Digital Health Forum in Nairobi, the talk is community, scarcity, and what USAID cuts mean for global health.',
     route: 'London to Nairobi',
   },
   {
+    // Remidio — AI eye diagnostics scaling out of India (HLTH Europe video)
     threshold: 0.28,
-    caption: 'AI diagnostics developed under resource constraints produce insights no well-funded lab has matched.',
-    route: 'Nairobi to Mumbai',
+    caption: 'In India, AI diagnostics built under real-world constraints are now scaling from Bengaluru to Europe and the US.',
+    route: 'Nairobi to Bengaluru',
   },
   {
+    // Ep16 (WHO) — Indonesia as a digital public infrastructure first-mover
     threshold: 0.44,
-    caption: 'Digital health at scale in Southeast Asia is rewriting what implementation actually means.',
-    route: 'Mumbai to Jakarta',
+    caption: 'Indonesia is among the first movers building national digital health infrastructure at scale.',
+    route: 'Bengaluru to Jakarta',
   },
   {
     threshold: 0.54,
-    caption: 'Insights travel east across the Pacific, connecting innovation in Southeast Asia with Latin America.',
+    caption: 'Insights travel east across the Pacific, from Southeast Asia toward Latin America.',
     route: 'Jakarta to Sao Paulo',
   },
   {
+    // Ep2 (health data poverty, Brazil) → Ep24 (ICRC humanitarian AI, Nigeria)
     threshold: 0.72,
-    caption: 'Maternal health innovation in Latin America is reaching communities traditional healthcare never could.',
-    route: 'Sao Paulo to Accra',
+    caption: 'From confronting health data poverty in Brazil to building AI for conflict zones in Nigeria, the frontier keeps moving.',
+    route: 'Sao Paulo to Lagos',
   },
   {
+    // Ep16 — the WHO in Geneva, where local insight meets global policy
     threshold: 0.85,
-    caption: 'When local insights travel globally, health systems everywhere improve.',
-    route: 'Accra to Geneva',
+    caption: 'When local insights reach Geneva, they shape global policy at the World Health Organization.',
+    route: 'Lagos to Geneva',
   },
 ]
 

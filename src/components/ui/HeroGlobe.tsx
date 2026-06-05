@@ -10,25 +10,27 @@ interface Pin {
   label: string
 }
 
+// Every pin maps to a real episode or video story (location + topic).
+// Keep labels short — they render inside a two-line card on the globe.
 const PINS: Pin[] = [
-  { name: 'UK',           coords: [ -1.77,  51.23], label: 'AI equity in health'          },
-  { name: 'Geneva',       coords: [  6.15,  46.20], label: 'WHO digital health policy'    },
-  { name: 'Turkey',       coords: [ 28.98,  41.01], label: 'Refugee digital health'       },
-  { name: 'Nigeria',      coords: [  8.68,   9.08], label: 'West Africa healthtech'       },
-  { name: 'DR Congo',     coords: [ 15.33,  -4.33], label: 'Newborn care, last mile'      },
-  { name: 'Kenya',        coords: [ 36.82,  -1.29], label: 'Community health workers'     },
-  { name: 'Rwanda',       coords: [ 29.87,  -1.94], label: 'Mental health & policy'       },
-  { name: 'Eswatini',     coords: [ 31.47, -26.52], label: 'Digital health scale-up'      },
-  { name: 'Mozambique',   coords: [ 32.57, -25.97], label: 'Impact evaluation'            },
-  { name: 'South Africa', coords: [ 18.42, -33.93], label: 'Digital health equity'        },
-  { name: 'Pakistan',     coords: [ 69.35,  30.38], label: 'mHealth at scale'             },
-  { name: 'India',        coords: [ 78.96,  20.59], label: 'Rural health & AI'            },
-  { name: 'Bangladesh',   coords: [ 90.39,  23.68], label: 'Healthtech investment'        },
-  { name: 'Philippines',  coords: [121.77,  12.88], label: 'Implementation science'       },
-  { name: 'Indonesia',    coords: [113.92,  -0.79], label: 'Last mile delivery'           },
-  { name: 'Colombia',     coords: [-74.08,   4.71], label: 'Maternal digital health'      },
-  { name: 'Brazil',       coords: [-51.93, -14.24], label: 'Health data poverty'          },
-  { name: 'USA',          coords: [-77.04,  38.91], label: 'USAID & global health'        },
+  { name: 'UK',           coords: [ -1.77,  51.23], label: 'AI & health equity'          }, // Ep25 Joe Alderman, NHS
+  { name: 'Germany',      coords: [ 13.74,  51.05], label: 'Reimbursement & regulation'   }, // Ep5 Stephen Gilbert, Dresden / DiGA
+  { name: 'Geneva',       coords: [  6.15,  46.20], label: 'WHO digital health policy'     }, // Ep16 Alain Labrique, WHO
+  { name: 'Turkey',       coords: [ 28.98,  41.01], label: 'Refugee digital health'        }, // Ep19 HERA, Syrian refugees
+  { name: 'Nigeria',      coords: [  8.68,   9.08], label: 'Humanitarian AI tools'         }, // Ep24 ICRC, Almanac
+  { name: 'DR Congo',     coords: [ 15.33,  -4.33], label: 'Newborn care, last mile'       }, // Ep26 NoviGuide, Goma
+  { name: 'Uganda',       coords: [ 32.58,   0.32], label: 'Community health at scale'     }, // Ep21 inSCALE / upSCALE
+  { name: 'Kenya',        coords: [ 36.82,  -1.29], label: 'Global Digital Health Forum'   }, // Ep20 & Ep23, Nairobi GDHF
+  { name: 'Rwanda',       coords: [ 29.87,  -1.94], label: 'Youth mental health & policy'  }, // Ep8 YLabs, Ep9 MoH + FIND
+  { name: 'Malawi',       coords: [ 34.30, -13.25], label: 'Local ownership'               }, // HLTH Europe Malawi video
+  { name: 'Mozambique',   coords: [ 32.57, -25.97], label: 'Impact evaluation'             }, // Ep21 LSHTM, inSCALE
+  { name: 'Eswatini',     coords: [ 31.47, -26.52], label: 'Digital health scale-up'       }, // Ep6 The Luke Commission
+  { name: 'South Africa', coords: [ 18.42, -33.93], label: 'Maternal mHealth at scale'     }, // Ep23 MomConnect, Ep13 regulation
+  { name: 'India',        coords: [ 78.96,  20.59], label: 'Rural health & AI'             }, // Ep7 Khushi Baby, Remidio video
+  { name: 'Bangladesh',   coords: [ 90.39,  23.68], label: 'Funding what matters'          }, // Ep18 Rubayat Khan
+  { name: 'Indonesia',    coords: [113.92,  -0.79], label: 'Digital public infrastructure' }, // Ep16 WHO first-mover country
+  { name: 'Brazil',       coords: [-51.93, -14.24], label: 'Health data poverty'           }, // Ep2 Alexandre Filho, USP
+  { name: 'USA',          coords: [-77.04,  38.91], label: 'USAID & global health'         }, // Recurring: aid-cuts thread
 ]
 
 // Label layout
