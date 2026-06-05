@@ -1,3 +1,5 @@
+'use client'
+
 interface Org {
   name: string
   src: string
@@ -135,6 +137,13 @@ export default function OrgMarquee() {
               src={org.src}
               alt={org.name}
               height={org.h}
+              loading="lazy"
+              // Several logos are hotlinked from external hosts; if one fails to
+              // load, hide its tile so a broken image can't sit in the marquee.
+              onError={(e) => {
+                const item = e.currentTarget.closest('.org-marquee-item')
+                if (item instanceof HTMLElement) item.style.display = 'none'
+              }}
               style={{
                 height: `${org.h}px`,
                 width: 'auto',

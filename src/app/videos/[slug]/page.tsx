@@ -20,9 +20,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const video = videos.find((v) => v.slug === slug)
   if (!video) return {}
+  const thumb = `https://i.ytimg.com/vi/${video.youtubeVideoId}/hqdefault.jpg`
   return {
-    title: `${video.title} | GPODH`,
+    title: video.title, // root template appends "| Global Perspectives on Digital Health"
     description: video.description,
+    openGraph: {
+      type: 'video.other',
+      title: video.title,
+      description: video.description,
+      images: [thumb],
+    },
   }
 }
 

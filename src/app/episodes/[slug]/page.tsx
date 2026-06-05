@@ -10,7 +10,7 @@ import RelatedEpisodes from '@/components/ui/RelatedEpisodes'
 import ShareButtons from '@/components/ui/ShareButtons'
 import EpisodePlayer from '@/components/ui/EpisodePlayer'
 import { episodes } from '@/lib/episodes'
-import { PLATFORMS } from '@/lib/constants'
+import { PLATFORMS, SITE, SITE_URL } from '@/lib/constants'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -25,8 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const episode = episodes.find((e) => e.slug === slug)
   if (!episode) return {}
   return {
-    title: `${episode.title} | GPODH`,
+    title: episode.title, // root template appends "| Global Perspectives on Digital Health"
     description: episode.description,
+    openGraph: {
+      type: 'article',
+      title: episode.title,
+      description: episode.description,
+      url: `${SITE_URL}/episodes/${episode.slug}`,
+      ...(episode.artworkUrl && { images: [episode.artworkUrl] }),
+    },
     ...(episode.audioUrl && { other: { 'og:audio': episode.audioUrl } }),
   }
 }
@@ -48,8 +55,26 @@ export default async function EpisodePage({ params }: Props) {
   const prevEpisode = currentIndex > 0 ? sorted[currentIndex - 1] : null
   const nextEpisode = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null
 
+  const episodeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'PodcastEpisode',
+    name: episode.title,
+    description: episode.description,
+    url: `${SITE_URL}/episodes/${episode.slug}`,
+    ...(episode.episodeNumber && { episodeNumber: episode.episodeNumber }),
+    ...(episode.artworkUrl && { image: episode.artworkUrl }),
+    partOfSeries: { '@type': 'PodcastSeries', name: SITE.name, url: SITE_URL },
+    ...(episode.audioUrl && {
+      associatedMedia: { '@type': 'MediaObject', contentUrl: episode.audioUrl },
+    }),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(episodeJsonLd) }}
+      />
       {/* ——— Hero ——— */}
       <section
         style={{

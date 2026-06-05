@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Nav from '@/components/layout/Nav'
 import Footer from '@/components/layout/Footer'
-import { SEO } from '@/lib/constants'
+import { SEO, SITE, SITE_URL, PLATFORMS, SOCIAL } from '@/lib/constants'
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -29,11 +29,59 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: SEO.titleTemplate,
     default: SEO.defaultTitle,
   },
   description: SEO.description,
+  applicationName: SITE.name,
+  icons: {
+    icon: '/logo-gpodh-icon.png',
+    apple: '/logo-gpodh-icon.png',
+  },
+  openGraph: {
+    type: 'website',
+    siteName: SITE.name,
+    title: SEO.defaultTitle,
+    description: SEO.description,
+    url: SITE_URL,
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: SITE.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SEO.defaultTitle,
+    description: SEO.description,
+    images: ['/og-image.jpg'],
+  },
+}
+
+// Site-wide structured data: the podcast series + the organisation behind it.
+// Helps Google show rich podcast results and links the social/listening profiles.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'PodcastSeries',
+      '@id': `${SITE_URL}/#podcast`,
+      name: SITE.name,
+      alternateName: SITE.shortName,
+      description: SEO.description,
+      url: SITE_URL,
+      image: `${SITE_URL}/og-image.jpg`,
+      webFeed: PLATFORMS.apple,
+      author: { '@type': 'Person', name: 'Dr Shubs Upadhyay' },
+      sameAs: [PLATFORMS.apple, PLATFORMS.spotify, PLATFORMS.youtube, SOCIAL.linkedinCompany].filter(Boolean),
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#org`,
+      name: SITE.name,
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo-gpodh.png`,
+      sameAs: [SOCIAL.linkedinCompany, SOCIAL.substack, PLATFORMS.youtube].filter(Boolean),
+    },
+  ],
 }
 
 export default function RootLayout({
@@ -47,6 +95,10 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
