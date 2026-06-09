@@ -163,8 +163,8 @@ It edits the JSON data files and commits back to the repo.
 ### ⚙️ One-time setup required to switch the CMS on
 1. **Create a GitHub OAuth App:** GitHub → *Settings → Developer settings →
    OAuth Apps → New OAuth App*.
-   - Homepage URL: `https://g-po-dh.vercel.app`
-   - **Authorization callback URL:** `https://g-po-dh.vercel.app/api/callback`
+   - Homepage URL: `https://gpodh.org`
+   - **Authorization callback URL:** `https://gpodh.org/api/callback`
    - Copy the **Client ID**; generate and copy a **Client secret**.
 2. **Add env vars in Vercel** (Project → Settings → Environment Variables), then redeploy:
    - `GITHUB_OAUTH_CLIENT_ID`
@@ -178,9 +178,10 @@ It edits the JSON data files and commits back to the repo.
   the list so they show first in list order. The homepage banner / featured video
   use the **`featured`** boolean regardless of position.
 - `base_url` in `config.yml` and the OAuth callback URL **must match the domain
-  you actually open `/admin` on.** It is currently `https://g-po-dh.vercel.app`.
-  If you attach a custom domain (e.g. `www.gpodh.org`) and use it for `/admin`,
-  update both to that domain or login will fail.
+  you actually open `/admin` on.** Both are now set to the canonical
+  `https://gpodh.org`, so once DNS points at Vercel and the OAuth App callback is
+  `https://gpodh.org/api/callback`, open `/admin` **on `gpodh.org`** (not the
+  `*.vercel.app` URL, or login will fail).
 
 ### ↩️ Undo recent changes — `/admin/undo`
 Because publishing now goes straight to production with no PR review, there is a

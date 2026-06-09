@@ -10,11 +10,12 @@ export const SEO = settings.seo
 
 // Absolute base URL for metadata, sitemap, robots and JSON-LD. Resolves to the
 // live production domain automatically (Vercel sets VERCEL_PROJECT_PRODUCTION_URL
-// to the custom domain once attached, otherwise the *.vercel.app URL). Override
-// with NEXT_PUBLIC_SITE_URL when the custom domain is live.
+// to the custom domain once it's the primary domain, otherwise the *.vercel.app
+// URL). To force it, set NEXT_PUBLIC_SITE_URL in Vercel — that wins over both.
+// Canonical domain is gpodh.org (the bare apex; www redirects to it).
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://g-po-dh.vercel.app')
+    : 'https://gpodh.org')
 
