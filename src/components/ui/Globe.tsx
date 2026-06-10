@@ -54,6 +54,22 @@ const ROUTES = (() => {
   })
 })()
 
+// Unwrapped centre-longitude at each journey node (one per leg boundary), used
+// to drive a SMOOTH rotation. Sampling arc-point longitudes directly made the
+// spin jitter (they step unevenly and some great-circle arcs backtrack in
+// longitude); interpolating these fixed node values is smooth. The Pacific leg
+// is forced east (+360); the final node = node[0] + 360 so the wrap is seamless.
+const NODE_LON = [
+  CITIES[0].coords[0],        // London  (~-0.1)
+  CITIES[1].coords[0],        // Nairobi (36.8)
+  CITIES[2].coords[0],        // Bengaluru (77.6)
+  CITIES[3].coords[0],        // Jakarta (106.9)
+  CITIES[4].coords[0] + 360,  // São Paulo (313.4) — east across the Pacific
+  CITIES[5].coords[0] + 360,  // Lagos (363.4)
+  CITIES[6].coords[0] + 360,  // Geneva (366.2)
+  CITIES[0].coords[0] + 360,  // London again (359.9) — closes the ring
+]
+
 const JOURNEY_MS = 34000        // one full lap of the journey; loops continuously
 // Each drawn line (and city) fades out over ~this fraction of a lap after it's
 // completed, so by the time the lap comes back around to it, it's almost gone —
@@ -245,14 +261,13 @@ export default function Globe({ onStage }: GlobeProps) {
     const arcPoints = getArcs()
 
     // Centre the globe on the comet's current longitude so the active leg is
-    // always front-and-visible. Longitude advances eastward along the journey
-    // (wrapping seamlessly at the dateline), easing as it nears each city — a
-    // fluid one-way spin that slows in places rather than running off the back.
+    // always front-and-visible. Driven by a smooth interpolation of the fixed
+    // node longitudes (NOT sampled arc points), so the spin is fluid: it eases
+    // into each city, sweeps east, and wraps seamlessly back to London.
     let cur = 0
     for (let i = 0; i < ROUTES.length; i++) if (progress >= ROUTES[i].startAt) cur = i
     const legFrac = easeInOut((progress - ROUTES[cur].startAt) / (ROUTES[cur].endAt - ROUTES[cur].startAt))
-    const cpts = arcPoints[cur]
-    const journeyLon = cpts[Math.max(0, Math.min(cpts.length - 1, Math.round(legFrac * (cpts.length - 1))))][0]
+    const journeyLon = NODE_LON[cur] + (NODE_LON[cur + 1] - NODE_LON[cur]) * legFrac
 
     const baseLon = reducedMotionRef.current ? 20 : journeyLon
     const lon = baseLon + userOffsetRef.current[0]
