@@ -93,6 +93,10 @@ function limbFade(coord: [number, number], centerLon: number, centerLat: number)
   return easeInOut(Math.min(1, f / LIMB_FADE))
 }
 
+// Progress span over which a city's dot + name eases in once the journey
+// reaches it (~0.03 of the journey ≈ a second), so names never pop.
+const LIT_FADE_IN = 0.03
+
 function getRotation(progress: number): [number, number] {
   const kf = ROTATION_KEYFRAMES
   let prev = kf[0]
@@ -111,17 +115,6 @@ function getRotation(progress: number): [number, number] {
 function getArcPoints(from: [number, number], to: [number, number], n = 120): [number, number][] {
   const interp = geoInterpolate(from, to)
   return Array.from({ length: n }, (_, i) => interp(i / (n - 1)) as [number, number])
-}
-
-function getArcPointsViaMid(
-  from: [number, number], mid: [number, number], to: [number, number], n = 120
-): [number, number][] {
-  const half = Math.floor(n / 2)
-  const seg1 = Array.from({ length: half }, (_, i) =>
-    geoInterpolate(from, mid)(i / (half - 1)) as [number, number])
-  const seg2 = Array.from({ length: n - half }, (_, i) =>
-    geoInterpolate(mid, to)((i + 1) / (n - half)) as [number, number])
-  return [...seg1, ...seg2]
 }
 
 export default function Globe({ onStage }: GlobeProps) {
@@ -158,9 +151,8 @@ export default function Globe({ onStage }: GlobeProps) {
     return ROUTES.map((route) => {
       const key = `${route.from}-${route.to}`
       if (!arcCacheRef.current.has(key)) {
-        const pts = (route.from === 3 && route.to === 4)
-          ? getArcPointsViaMid(CITIES[3].coords, [178, -15], CITIES[4].coords)
-          : getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
+        // A single great-circle arc per leg — smooth, no mid-point kinks.
+        const pts = getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
         arcCacheRef.current.set(key, pts)
       }
       return arcCacheRef.current.get(key)!
@@ -357,21 +349,24 @@ export default function Globe({ onStage }: GlobeProps) {
       }
       ctx.restore()
 
-      // Lit cities + names (every city the journey has reached so far)
-      const lit = new Set<number>()
+      // Lit cities + names (every city the journey has reached so far). Track
+      // the progress at which each was first reached, so it can ease in.
+      const litAt = new Map<number, number>()
       ROUTES.forEach((route) => {
-        if (p >= route.startAt) lit.add(route.from)
-        if (p >= route.endAt) lit.add(route.to)
+        if (p >= route.startAt) litAt.set(route.from, Math.min(litAt.get(route.from) ?? Infinity, route.startAt))
+        if (p >= route.endAt) litAt.set(route.to, Math.min(litAt.get(route.to) ?? Infinity, route.endAt))
       })
       const pulsing = new Set<number>(active ? [ROUTES[cur].from, ROUTES[cur].to] : [])
-      lit.forEach((idx) => {
+      litAt.forEach((firstLit, idx) => {
+        const appear = easeInOut(Math.min(1, (p - firstLit) / LIT_FADE_IN))
         const city = CITIES[idx]
         const fade = limbFade(city.coords, lon, lat)
-        if (fade <= 0) return
+        const a = alpha * fade * appear
+        if (a <= 0) return
         const pt = projection(city.coords)
         if (!pt) return
         ctx.save()
-        ctx.globalAlpha = alpha * fade
+        ctx.globalAlpha = a
         if (withComet && pulsing.has(idx)) {
           const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
           ctx.beginPath(); ctx.arc(pt[0], pt[1], 11 + pulse * 5, 0, Math.PI * 2)
