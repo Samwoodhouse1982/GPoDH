@@ -1,6 +1,15 @@
 {
   "videos": [
     {
+      "id": "35",
+      "slug": "himss-hot-takes-doing-better-with-ai-in-healthcare",
+      "title": "HIMSS hot takes: doing better with AI in healthcare",
+      "description": "At HIMSS Europe, I got together with some fantastic podcasters who care about what matters in healthcare. What are some things we need to do better on implementing tech and AI in healthcare? With Valentine Kamau of @AIHealthBeatPodcast , Tjasa Zjac of@facesofdigitalhealth and Claire Murigande from @NarrativesofPurpose",
+      "youtubeVideoId": "B5cfqh6bOWg",
+      "date": "Jun 2026",
+      "tags": []
+    },
+    {
       "id": "34",
       "slug": "ai-in-low-resource-settings-what-developers-should-know-podcast-ai-healthcareinn",
       "title": "AI in low resource settings. What developers should know #podcast #ai #healthcareinnovation",
