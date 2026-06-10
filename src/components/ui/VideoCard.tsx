@@ -22,6 +22,8 @@ export default function VideoCard({ video, index = 0 }: { video: Video; index?: 
       style={{
         display: 'flex',
         flexDirection: 'column',
+        width: '100%',
+        height: '100%',
         textDecoration: 'none',
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--border)',

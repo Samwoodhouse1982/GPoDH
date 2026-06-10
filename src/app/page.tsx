@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import VideoCard from '@/components/ui/VideoCard'
 import LatestEpisodesCarousel from '@/components/sections/LatestEpisodesCarousel'
+import LatestVideosCarousel from '@/components/sections/LatestVideosCarousel'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 import RichText from '@/components/ui/RichText'
 import EmailSignup from '@/components/sections/EmailSignup'
@@ -750,19 +750,9 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-                gap: '1.5rem',
-              }}
-            >
-              {videos.slice(0, 3).map((video, i) => (
-                <ScrollReveal key={video.id} delay={i * 80}>
-                  <VideoCard video={video} index={i} />
-                </ScrollReveal>
-              ))}
-            </div>
+            <ScrollReveal>
+              <LatestVideosCarousel videos={videos.slice(0, 10)} />
+            </ScrollReveal>
           </div>
         </section>
       )}
