@@ -375,6 +375,8 @@ export default function WorkWithUsPage() {
 
                 <a
                   href={consulting.cta.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     display: 'inline-block',
                     padding: '0.7rem 1.5rem',

@@ -153,7 +153,7 @@ export default function TrailerModal() {
         <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
           {open && (
             <iframe
-              src={`https://www.youtube.com/embed/${copy.youtubeId}?autoplay=1`}
+              src={`https://www.youtube-nocookie.com/embed/${copy.youtubeId}?autoplay=1`}
               title="GPODH Trailer"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
               allowFullScreen

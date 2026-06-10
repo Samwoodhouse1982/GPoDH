@@ -184,7 +184,7 @@ export default function EpisodePlayer({
           }}
         >
           <iframe
-            src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+            src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}`}
             title={`Watch ${title} on YouTube`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

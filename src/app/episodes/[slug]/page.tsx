@@ -809,7 +809,7 @@ export default async function EpisodePage({ params }: Props) {
                   }}
                 >
                   <iframe
-                    src={`https://www.youtube.com/embed/${episode.youtubeVideoId}`}
+                    src={`https://www.youtube-nocookie.com/embed/${episode.youtubeVideoId}`}
                     title={`Watch ${episode.title} on YouTube`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

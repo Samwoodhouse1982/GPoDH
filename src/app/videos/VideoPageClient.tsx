@@ -229,7 +229,7 @@ export default function VideoPageClient() {
             {/* YouTube embed */}
             <div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}>
               <iframe
-                src={`https://www.youtube.com/embed/${surpriseVideo.youtubeVideoId}?autoplay=1&rel=0`}
+                src={`https://www.youtube-nocookie.com/embed/${surpriseVideo.youtubeVideoId}?autoplay=1&rel=0`}
                 title={surpriseVideo.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

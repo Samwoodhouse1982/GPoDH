@@ -127,7 +127,7 @@ export default async function VideoPage({ params }: Props) {
             }}
           >
             <iframe
-              src={`https://www.youtube.com/embed/${video.youtubeVideoId}?rel=0`}
+              src={`https://www.youtube-nocookie.com/embed/${video.youtubeVideoId}?rel=0`}
               title={video.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen

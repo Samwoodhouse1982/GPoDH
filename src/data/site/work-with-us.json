@@ -8,11 +8,22 @@
     "title": "Work with an audience that actually cares.",
     "intro": "GPODH reaches a specialist global audience of clinicians, digital health founders, global health professionals, and investors. They are not passive listeners. They are practitioners who are actively building and funding the future of digital health in underserved settings.",
     "stats": [
-      { "value": "60+", "label": "Countries reached" },
-      { "value": "Thousands", "label": "of specialist listeners" }
+      {
+        "value": "60+",
+        "label": "Countries reached"
+      },
+      {
+        "value": "Thousands",
+        "label": "of specialist listeners"
+      }
     ],
     "audienceLabel": "Core audience",
-    "audienceTypes": ["Clinicians", "Founders", "NGOs & Policy", "Investors"],
+    "audienceTypes": [
+      "Clinicians",
+      "Founders",
+      "NGOs & Policy",
+      "Investors"
+    ],
     "primaryCta": {
       "text": "Get in touch ›",
       "url": "/contact",
@@ -56,11 +67,22 @@
       }
     ],
     "closingBody": "To discuss a partnership, use the contact form and tell us what you have in mind.",
-    "closingCta": { "text": "Get in touch ›", "url": "/contact" }
+    "closingCta": {
+      "text": "Get in touch ›",
+      "url": "/contact"
+    }
   },
   "photos": [
-    { "src": "/shubs-presenting.jpg", "alt": "Shubs presenting to an audience", "position": "center 25%" },
-    { "src": "/shubs-hosting.jpg", "alt": "Shubs hosting a panel at IBIS Capital", "position": "center 15%" }
+    {
+      "src": "/shubs-presenting.jpg",
+      "alt": "Shubs presenting to an audience",
+      "position": "center 25%"
+    },
+    {
+      "src": "/shubs-hosting.jpg",
+      "alt": "Shubs hosting a panel at IBIS Capital",
+      "position": "center 15%"
+    }
   ],
   "consultingLabel": "CONSULTING",
   "consulting": {
@@ -72,6 +94,9 @@
       "Philanthropy, foundations, and impact investors"
     ],
     "trustNote": "Trusted by clinical, tech, and product leaders.",
-    "cta": { "text": "Reach out to Shubs ›", "url": "/contact" }
+    "cta": {
+      "text": "Reach out to Shubs ›",
+      "url": "https://www.shubs.me"
+    }
   }
 }
