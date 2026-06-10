@@ -78,7 +78,7 @@ const listenerPersonas = whoListens.personas.map((p, i) => ({ ...p, ...personaDe
 export default function HomePage() {
   const latestEpisodes = [...episodes]
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
-    .slice(0, 6)
+    .slice(0, 10)
 
   // Featured banner: an explicitly flagged episode, otherwise the newest.
   const featuredEpisode = episodes.find((e) => e.featured) ?? latestEpisodes[0]

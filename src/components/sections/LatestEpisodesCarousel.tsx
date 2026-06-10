@@ -208,6 +208,62 @@ export default function LatestEpisodesCarousel({ episodes }: LatestEpisodesCarou
                 </span>
               </Link>
             ))}
+
+            {/* Browse-more tile — always the last card in the rail */}
+            <Link
+              href="/episodes"
+              className="carousel-card carousel-browse"
+              aria-label="Browse all episodes"
+              style={{
+                flexShrink: 0,
+                width: `${CARD_WIDTH}px`,
+                height: '220px',
+                background: 'var(--bg-card)',
+                border: '1px dashed var(--border-accent)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '16px',
+                textDecoration: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'var(--accent-coral)',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span
+                style={{
+                  fontFamily: 'Cormorant, serif',
+                  fontSize: '1.125rem',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  textAlign: 'center',
+                  lineHeight: 1.3,
+                }}
+              >
+                Browse all episodes
+              </span>
+              <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+                See the full series
+              </span>
+            </Link>
           </div>
 
           {/* Right-edge gradient fade */}

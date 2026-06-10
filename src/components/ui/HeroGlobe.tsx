@@ -32,14 +32,24 @@ const OUTSET_STEP = 10
 const ANG_STEPS   = [0, 7, -7, 14, -14, 21, -21, 28, -28]
 const BOX_MARGIN  = 8
 
-// Label lifecycle
+// Label lifecycle. Tuned for calm, unhurried motion — slow fades, eased
+// opacity (see easeAlpha below) and generous hold times so labels never flick.
 const MAX_LABELS     = 3
-const FADE_IN_SPEED  = 0.022   // per frame ≈ 0.75s to fully appear at 60fps
-const FADE_OUT_SPEED = 0.018   // per frame ≈ 0.9s to fully disappear
-const HOLD_MIN_MS    = 4500
-const HOLD_RANGE_MS  = 3000    // hold for 4.5 – 7.5 s before swapping out
-const ADD_COOLDOWN   = 600     // ms between adding new labels (staggers the intro)
-const MIN_FACING     = 0.25    // pin must be this well-facing to be a candidate
+const FADE_IN_SPEED  = 0.010   // per frame ≈ 1.7s to fully appear at 60fps
+const FADE_OUT_SPEED = 0.008   // per frame ≈ 2.1s to fully disappear
+const HOLD_MIN_MS    = 5500
+const HOLD_RANGE_MS  = 3500    // hold for 5.5 – 9 s before swapping out
+const ADD_COOLDOWN   = 1100    // ms between adding new labels (staggers the intro)
+const MIN_FACING     = 0.38    // pin must be this well-facing to become a candidate,
+                               // so labels appear nearer the centre and have room to
+                               // glide before the globe rotates them off the edge
+
+// Smoothstep so the fade eases in and out at both ends instead of ramping
+// linearly (the linear ramp is what read as "glitchy" at the start/finish).
+function easeAlpha(a: number): number {
+  const c = a <= 0 ? 0 : a >= 1 ? 1 : a
+  return c * c * (3 - 2 * c)
+}
 
 type LabelSlot = {
   idx:          number
@@ -307,19 +317,21 @@ export default function HeroGlobe() {
       activeLabels.push({ slot, pin, px: p[0], py: p[1], bx, by })
     }
 
-    // ── Step 2: dynamic overlap guard — fade out newer label if they collide ──
+    // ── Step 2: dynamic overlap guard — retire a label only once it has fully
+    // arrived. Never yank a label that is still fading in (that in→out flicker
+    // was the main source of glitchiness); let it finish and rely on placement.
     for (let i = 0; i < activeLabels.length; i++) {
       for (let j = i + 1; j < activeLabels.length; j++) {
         const a = activeLabels[i], b = activeLabels[j]
         if (rectsOverlap(a.bx, a.by, a.slot.boxW, BOX_H, b.bx, b.by, b.slot.boxW, BOX_H)) {
-          if (b.slot.phase !== 'out') b.slot.phase = 'out'
+          if (b.slot.phase === 'hold') b.slot.phase = 'out'
         }
       }
     }
 
     // ── Draw connector lines — pin dot moves live, box follows via angOffset ──
     for (const { slot, px, py, bx, by } of activeLabels) {
-      const a = slot.alpha
+      const a = easeAlpha(slot.alpha)
       const boxCx = bx + slot.boxW / 2, boxCy = by + BOX_H / 2
       const angle = Math.atan2(boxCy - py, boxCx - px)
       ctx.save()
@@ -338,7 +350,7 @@ export default function HeroGlobe() {
 
     // ── Draw label cards ───────────────────────────────────────────────────
     for (const { slot, pin, bx, by } of activeLabels) {
-      const a = slot.alpha
+      const a = easeAlpha(slot.alpha)
       const boxW = slot.boxW
       ctx.save()
       ctx.globalAlpha = a * 0.92
