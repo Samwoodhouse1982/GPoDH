@@ -99,7 +99,8 @@ export default function Nav() {
               width={147}
               height={48}
               priority
-              style={{ height: '48px', width: 'auto', display: 'block' }}
+              className="site-logo"
+              style={{ width: 'auto', display: 'block' }}
             />
           </Link>
 
@@ -234,6 +235,11 @@ export default function Nav() {
       <SubscribeModal open={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
 
       <style>{`
+        /* Logo: 48px on mobile, a touch larger on wider screens */
+        .site-logo { height: 48px; }
+        @media (min-width: 768px) {
+          .site-logo { height: 60px; }
+        }
         .nav-link:hover {
           color: var(--text-primary) !important;
         }
