@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { geoOrthographic, geoPath, geoGraticule } from 'd3-geo'
+import { geoOrthographic, geoPath } from 'd3-geo'
 import { feature } from 'topojson-client'
 
 /**
@@ -52,10 +52,6 @@ export default function FaintGlobe({ size = 400 }: { size?: number }) {
     // Sphere fill — barely-there
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2)
     ctx.fillStyle = 'rgba(58,104,96,0.045)'; ctx.fill()
-
-    // Graticule
-    ctx.beginPath(); pathGen(geoGraticule()())
-    ctx.strokeStyle = 'rgba(58,104,96,0.10)'; ctx.lineWidth = 0.5; ctx.stroke()
 
     // Country outlines
     if (worldRef.current) {
