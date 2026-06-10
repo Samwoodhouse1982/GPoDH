@@ -54,11 +54,11 @@ const ROUTES = (() => {
   })
 })()
 
-// Unwrapped centre-longitude at each journey node (one per leg boundary), used
-// to drive a SMOOTH rotation. Sampling arc-point longitudes directly made the
-// spin jitter (they step unevenly and some great-circle arcs backtrack in
-// longitude); interpolating these fixed node values is smooth. The Pacific leg
-// is forced east (+360); the final node = node[0] + 360 so the wrap is seamless.
+// Unwrapped centre-longitude at each city, used to drive a SMOOTH rotation.
+// The Pacific cities are forced east (+360) so the spin always heads one way.
+// A cubic-Hermite curve through these (with continuous velocity at every knot)
+// gives a fluid rotation that accelerates/decelerates without ever stopping —
+// per-leg easing used to zero the velocity at each city, which read as staccato.
 const NODE_LON = [
   CITIES[0].coords[0],        // London  (~-0.1)
   CITIES[1].coords[0],        // Nairobi (36.8)
@@ -67,8 +67,49 @@ const NODE_LON = [
   CITIES[4].coords[0] + 360,  // São Paulo (313.4) — east across the Pacific
   CITIES[5].coords[0] + 360,  // Lagos (363.4)
   CITIES[6].coords[0] + 360,  // Geneva (366.2)
-  CITIES[0].coords[0] + 360,  // London again (359.9) — closes the ring
 ]
+
+// Looping knot accessors (period = 7 legs / +360° of longitude / +1 of progress)
+// so the Hermite curve is continuous across the wrap back to London.
+function knotProgAt(k: number): number {
+  const m = ((k % 7) + 7) % 7
+  return ROUTES[m].startAt + Math.floor(k / 7)
+}
+function knotLonAt(k: number): number {
+  const m = ((k % 7) + 7) % 7
+  return NODE_LON[m] + 360 * Math.floor(k / 7)
+}
+// Secant slope between knot k and k+1.
+function knotSecant(k: number): number {
+  return (knotLonAt(k + 1) - knotLonAt(k)) / (knotProgAt(k + 1) - knotProgAt(k))
+}
+// Monotone (Fritsch–Carlson) tangent at knot k: flat at local extrema and
+// limited elsewhere, so the Hermite curve never overshoots into a backward
+// lurch — the globe only ever eases its speed, it doesn't swing back.
+function knotTangent(k: number): number {
+  const dPrev = knotSecant(k - 1), dNext = knotSecant(k)
+  if (dPrev * dNext <= 0) return 0
+  const m = (dPrev + dNext) / 2
+  const lim = 3 * Math.min(Math.abs(dPrev), Math.abs(dNext))
+  return Math.sign(m) * Math.min(Math.abs(m), lim)
+}
+// Centre longitude at `progress`, via monotone cubic Hermite on segment
+// [cur, cur+1] — C1 continuous (smooth, no stalls) and overshoot-free.
+function centreLon(progress: number, cur: number): number {
+  const p1 = knotProgAt(cur), p2 = knotProgAt(cur + 1)
+  const v1 = knotLonAt(cur), v2 = knotLonAt(cur + 1)
+  const h = p2 - p1
+  const t = (progress - p1) / h
+  const m1 = knotTangent(cur)
+  const m2 = knotTangent(cur + 1)
+  const t2 = t * t, t3 = t2 * t
+  return (
+    (2 * t3 - 3 * t2 + 1) * v1 +
+    (t3 - 2 * t2 + t) * h * m1 +
+    (-2 * t3 + 3 * t2) * v2 +
+    (t3 - t2) * h * m2
+  )
+}
 
 const JOURNEY_MS = 34000        // one full lap of the journey; loops continuously
 // Each drawn line (and city) fades out over ~this fraction of a lap after it's
@@ -260,16 +301,13 @@ export default function Globe({ onStage }: GlobeProps) {
 
     const arcPoints = getArcs()
 
-    // Centre the globe on the comet's current longitude so the active leg is
-    // always front-and-visible. Driven by a smooth interpolation of the fixed
-    // node longitudes (NOT sampled arc points), so the spin is fluid: it eases
-    // into each city, sweeps east, and wraps seamlessly back to London.
+    // Centre the globe on the journey's current longitude so the active leg is
+    // always front-and-visible, via a C1 cubic-Hermite curve through the city
+    // longitudes — a fluid one-way spin that speeds up and slows down smoothly
+    // (never stalling) and wraps seamlessly back to London.
     let cur = 0
     for (let i = 0; i < ROUTES.length; i++) if (progress >= ROUTES[i].startAt) cur = i
-    const legFrac = easeInOut((progress - ROUTES[cur].startAt) / (ROUTES[cur].endAt - ROUTES[cur].startAt))
-    const journeyLon = NODE_LON[cur] + (NODE_LON[cur + 1] - NODE_LON[cur]) * legFrac
-
-    const baseLon = reducedMotionRef.current ? 20 : journeyLon
+    const baseLon = reducedMotionRef.current ? 20 : centreLon(progress, cur)
     const lon = baseLon + userOffsetRef.current[0]
     const lat = Math.max(-85, Math.min(85, BASE_LAT + userOffsetRef.current[1]))
     lastRotationRef.current = [lon, lat]
@@ -350,7 +388,9 @@ export default function Globe({ onStage }: GlobeProps) {
       let frac: number
       let legAlpha: number
       if (progress >= route.startAt && progress < route.endAt) {
-        frac = easeInOut((progress - route.startAt) / (route.endAt - route.startAt))
+        // Linear growth (no per-leg easing) so the comet keeps pace with the
+        // smooth spin instead of stalling at each city.
+        frac = (progress - route.startAt) / (route.endAt - route.startAt)
         legAlpha = 1
         activeIdx = i
       } else {
