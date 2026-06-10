@@ -14,7 +14,7 @@ export default function WorkWithUsPage() {
   return (
     <>
       {/* ——— Podcast Partnerships ——— */}
-      <section style={{ padding: '10rem var(--gutter) 4rem' }}>
+      <section style={{ padding: '10rem var(--gutter) 2rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ maxWidth: 'var(--content-width)', marginBottom: '3.5rem' }}>
             <ScrollReveal>
@@ -272,7 +272,7 @@ export default function WorkWithUsPage() {
           alignItems: 'center',
           gap: '1.5rem',
           padding: '0 var(--gutter)',
-          margin: '3rem 0 0',
+          margin: '1.25rem 0 0',
         }}
       >
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -294,7 +294,7 @@ export default function WorkWithUsPage() {
       </div>
 
       {/* ——— Consulting Section ——— */}
-      <section style={{ padding: '3.5rem var(--gutter) 5rem' }}>
+      <section style={{ padding: '2rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ maxWidth: 'var(--content-width)' }}>
             <ScrollReveal>
