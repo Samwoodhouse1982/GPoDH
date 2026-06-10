@@ -94,9 +94,9 @@ export default function Nav() {
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'block' }}>
             <Image
-              src="/logo-gpodh.png"
+              src="/LOGO-GPODH-transparent.png"
               alt="GPODH: Global Perspectives on Digital Health"
-              width={174}
+              width={147}
               height={48}
               priority
               style={{ height: '48px', width: 'auto', display: 'block' }}
