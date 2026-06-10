@@ -43,11 +43,18 @@ export async function submitToWeb3Forms(fields: Web3FormsFields): Promise<void> 
   }
 }
 
-/** Convenience wrapper for the email-capture forms. */
-export function subscribeEmail(email: string): Promise<void> {
+/**
+ * Convenience wrapper for the email-capture forms.
+ *
+ * `source` identifies which CTA the subscriber used (e.g. "Subscribe pop-up").
+ * It's surfaced in the email subject and body so you can see, in the inbox,
+ * which placement is converting.
+ */
+export function subscribeEmail(email: string, source = 'Website'): Promise<void> {
   return submitToWeb3Forms({
-    subject: 'New GPODH subscriber',
+    subject: `New GPODH subscriber · ${source}`,
     email,
-    message: `New newsletter subscriber: ${email}`,
+    source,
+    message: `New newsletter subscriber: ${email}\nSource: ${source}`,
   })
 }

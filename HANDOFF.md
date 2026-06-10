@@ -415,8 +415,12 @@ each month's numbers into the repo so the history is permanent.
    **Web3Forms** via `src/lib/web3forms.ts`. They share **one access key**, set
    as **`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`** (Web3Forms keys are public by
    design). Submissions are told apart in the inbox by their `subject`
-   (`New GPODH contact message` vs `New GPODH subscriber`), and each form has a
-   hidden honeypot for basic spam protection.
+   (`New GPODH contact message` vs `New GPODH subscriber · <source>`), and each
+   form has a hidden honeypot for basic spam protection. Subscriber emails tag
+   their CTA via a `source` (subject suffix + body line): `Page signup band`
+   (the full-width `EmailSignup`), `Inline grid tile` (`EmailSignupTile`), or
+   `Subscribe pop-up` (`SubscribeModal` from the nav). Pass a new label as the
+   2nd arg to `subscribeEmail(email, source)` to track another placement.
    - **Setup:** create a key at <https://web3forms.com> (enter the destination
      email), then set `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in Vercel (Project →
      Settings → Environment Variables) **and** redeploy. For local dev, copy

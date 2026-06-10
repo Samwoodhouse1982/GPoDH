@@ -20,7 +20,7 @@ export default function EmailSignup() {
     setLoading(true)
     setError('')
     try {
-      await subscribeEmail(email)
+      await subscribeEmail(email, 'Page signup band')
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')

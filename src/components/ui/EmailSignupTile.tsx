@@ -27,7 +27,7 @@ export default function EmailSignupTile({
     setLoading(true)
     setError('')
     try {
-      await subscribeEmail(email)
+      await subscribeEmail(email, 'Inline grid tile')
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
