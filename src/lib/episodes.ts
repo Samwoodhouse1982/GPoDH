@@ -15,7 +15,6 @@ export interface Episode {
   date: string
   duration?: string
   description: string
-  url: string
   artworkUrl?: string
   themes: string[]
   country: string

@@ -971,7 +971,7 @@ export default async function EpisodePage({ params }: Props) {
       </section>
 
       {/* ——— Share ——— */}
-      <ShareButtons slug={episode.slug} title={episode.title} guest={episode.guest} />
+      <ShareButtons path={`/episodes/${episode.slug}`} title={episode.title} guest={episode.guest} />
 
       {/* ——— Related episodes ——— */}
       <RelatedEpisodes episode={episode} />

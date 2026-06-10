@@ -18,13 +18,19 @@ export default function SubscribeModal({ open, onClose }: Props) {
   const [error, setError] = useState('')
   const [botField, setBotField] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  // The element that had focus before the modal opened, so we can return
+  // keyboard users to it on close.
+  const previousFocusRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (open) {
+      previousFocusRef.current = document.activeElement as HTMLElement | null
       document.body.style.overflow = 'hidden'
       setTimeout(() => inputRef.current?.focus(), 80)
     } else {
       document.body.style.overflow = ''
+      previousFocusRef.current?.focus()
+      previousFocusRef.current = null
     }
     return () => { document.body.style.overflow = '' }
   }, [open])
@@ -179,7 +185,6 @@ export default function SubscribeModal({ open, onClose }: Props) {
                   borderRadius: 'var(--radius-md)',
                   color: 'var(--text-primary)',
                   fontSize: '0.9375rem',
-                  outline: 'none',
                   fontFamily: 'inherit',
                   boxSizing: 'border-box',
                 }}

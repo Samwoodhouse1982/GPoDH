@@ -52,7 +52,6 @@ export default function ContactPage() {
     borderRadius: 'var(--radius-md)',
     color: 'var(--text-primary)',
     fontSize: '0.9375rem',
-    outline: 'none',
     fontFamily: 'inherit',
   }
 

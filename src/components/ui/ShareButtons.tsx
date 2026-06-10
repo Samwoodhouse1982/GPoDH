@@ -1,19 +1,17 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { SITE_URL } from '@/lib/constants'
 
 interface Props {
-  slug: string
+  /** Site-relative path of the page being shared, e.g. "/episodes/my-episode". */
+  path: string
   title: string
   guest: string
 }
 
-export default function ShareButtons({ slug, title, guest }: Props) {
+export default function ShareButtons({ path, title, guest }: Props) {
   const [copied, setCopied] = useState(false)
-  const [pageUrl, setPageUrl] = useState(`https://www.gpodh.org/episodes/${slug}`)
-
-  useEffect(() => {
-    setPageUrl(window.location.href)
-  }, [])
+  const pageUrl = `${SITE_URL}${path}`
 
   const shareText = `${title} with ${guest} | Global Perspectives on Digital Health`
 

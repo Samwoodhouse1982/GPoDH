@@ -431,11 +431,14 @@ each month's numbers into the repo so the history is permanent.
      you each new subscriber; it does **not** add them to Shubstack or send the
      newsletter. Add subscribers to Substack manually, or repoint the subscribe
      forms at Substack's native signup if you'd rather automate that.
-2. **Domain.** The live deployment is **`https://g-po-dh.vercel.app`** and the CMS
-   `base_url` + OAuth callback are set to it. Episode `url` fields still point at
-   `www.gpodh.org` (the intended custom domain). If/when a custom domain is
-   attached and used for `/admin`, update `base_url` in `config.yml` and the
-   OAuth App callback URL to match.
+2. **Domain.** The live deployment is currently served from
+   `https://g-po-dh.vercel.app`, but the code is primed for the canonical domain:
+   the CMS `base_url` and the `SITE_URL` fallback are both set to
+   **`https://gpodh.org`**. Complete the cutover in the dashboards (Vercel
+   domains + DNS + `NEXT_PUBLIC_SITE_URL` + the OAuth App callback — see §5).
+   The episodes' legacy `url` field (old Podpage page URLs) has been removed
+   from the data, the Episode type and the CMS; episode pages live at
+   `/episodes/<slug>`.
 3. **CMS not live until OAuth set up.** `/admin` exists but login fails until the
    GitHub OAuth App + Vercel env vars are configured (§5). The OAuth popup flow
    could not be tested during the build (needs the deployed app + the OAuth App);

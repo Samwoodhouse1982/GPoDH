@@ -99,10 +99,15 @@ function getArcPointsViaMid(
 
 export default function Globe({ scrollProgress }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const worldRef = useRef<any>(null)
+  const worldRef = useRef<unknown>(null)
   const arcCacheRef = useRef<Map<string, [number, number][]>>(new Map())
-  const rafRef = useRef<number>(0)
   const scrollRef = useRef(scrollProgress)
+  // Honour prefers-reduced-motion: rotation here is user-scroll-driven (fine),
+  // but the pulsing city dots are autonomous animation, so freeze them.
+  const reducedMotionRef = useRef(false)
+  useEffect(() => {
+    reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }, [])
 
   // Interaction state
   const isDraggingRef = useRef(false)
@@ -116,7 +121,11 @@ export default function Globe({ scrollProgress }: GlobeProps) {
   useEffect(() => {
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then(r => r.json())
-      .then((topo: any) => { worldRef.current = feature(topo, topo.objects.countries) })
+      .then((topo: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = topo as any
+        worldRef.current = feature(t, t.objects.countries)
+      })
       .catch(() => {})
   }, [])
 
@@ -210,7 +219,7 @@ export default function Globe({ scrollProgress }: GlobeProps) {
 
     const projection = geoOrthographic()
       .scale(radius).translate([cx, cy]).rotate([-lon, -lat]).clipAngle(90)
-    const pathGen = geoPath(projection, ctx as any)
+    const pathGen = geoPath(projection, ctx as Parameters<typeof geoPath>[1])
 
     // Atmosphere glow
     const atmoGrad = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.1)
@@ -232,7 +241,7 @@ export default function Globe({ scrollProgress }: GlobeProps) {
 
     // Country borders
     if (worldRef.current) {
-      ctx.beginPath(); pathGen(worldRef.current)
+      ctx.beginPath(); pathGen(worldRef.current as Parameters<typeof pathGen>[0])
       ctx.strokeStyle = 'rgba(58, 104, 96, 0.5)'; ctx.lineWidth = 0.8; ctx.stroke()
     }
 
@@ -288,7 +297,7 @@ export default function Globe({ scrollProgress }: GlobeProps) {
       const city = CITIES[idx]
       const p = projection(city.coords)
       if (!p) return
-      const pulse = 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
+      const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
 
       ctx.beginPath(); ctx.arc(p[0], p[1], 11 + pulse * 5, 0, Math.PI * 2)
       ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
@@ -307,14 +316,17 @@ export default function Globe({ scrollProgress }: GlobeProps) {
       const labelX = p[0] + 9 + textW > W - 4 ? p[0] - 9 - textW : p[0] + 9
       ctx.fillText(city.name, labelX, p[1] + 4)
     })
-
-    rafRef.current = requestAnimationFrame(draw)
   }, [getArcs])
 
+  // The effect owns the render loop (draw stays a pure per-frame function).
   useEffect(() => {
-    cancelAnimationFrame(rafRef.current)
-    rafRef.current = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(rafRef.current)
+    let raf = 0
+    const loop = (timestamp: number) => {
+      draw(timestamp)
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
   }, [draw])
 
   useEffect(() => {

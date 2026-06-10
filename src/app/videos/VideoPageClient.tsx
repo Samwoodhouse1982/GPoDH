@@ -521,7 +521,6 @@ export default function VideoPageClient() {
                   borderRadius: 'var(--radius-md)',
                   fontSize: '0.9375rem',
                   color: 'var(--text-primary)',
-                  outline: 'none',
                   boxSizing: 'border-box',
                   fontFamily: 'var(--font-dm-sans, sans-serif)',
                   transition: 'border-color var(--transition-fast)',

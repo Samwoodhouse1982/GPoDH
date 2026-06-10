@@ -152,7 +152,6 @@ collections:
               - { name: date, label: 'Date (e.g. Apr 2026)', widget: string }
               - { name: duration, label: 'Duration (e.g. 1hr 8min)', widget: string, required: false }
               - { name: description, label: Description, widget: text }
-              - { name: url, label: 'Canonical URL', widget: string }
               - { name: artworkUrl, label: Guest photo, widget: image, required: false, choose_url: true }
               - { name: country, label: Country, widget: string }
               - name: themes

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import EpisodeFilter from '@/components/sections/EpisodeFilter'
 import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
 import OrgMarquee from '@/components/ui/OrgMarquee'
@@ -116,12 +117,12 @@ export default function EpisodesPage() {
             </p>
             <p className="animate-fade-up" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6, animationDelay: '340ms' }}>
               New to the show?{' '}
-              <a
+              <Link
                 href="/episodes/health-data-poverty-part-1-with-xiao-liu"
                 style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
               >
                 Start with Episode 1 &#8594;
-              </a>
+              </Link>
             </p>
           </div>
 

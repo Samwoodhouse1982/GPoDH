@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import { SOCIAL } from '@/lib/constants'
 import RichText from '@/components/ui/RichText'
@@ -20,7 +20,16 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
   const isControlled = controlledOpen !== undefined
   const [internalOpen, setInternalOpen] = useState(false)
   const open = isControlled ? controlledOpen : internalOpen
-  const setOpen = isControlled ? (v: boolean) => { if (!v) onClose?.() } : setInternalOpen
+  const setOpen = useCallback(
+    (v: boolean) => {
+      if (isControlled) {
+        if (!v) onClose?.()
+      } else {
+        setInternalOpen(v)
+      }
+    },
+    [isControlled, onClose],
+  )
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -43,7 +52,7 @@ export default function HostModal({ videoSrc, open: controlledOpen, onClose }: P
     const onCancel = () => setOpen(false)
     el.addEventListener('cancel', onCancel)
     return () => el.removeEventListener('cancel', onCancel)
-  }, [])
+  }, [setOpen])
 
   // Close on backdrop click
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {

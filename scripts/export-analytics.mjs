@@ -161,7 +161,6 @@ async function main() {
   }
 
   // A one-line human summary for the month.
-  const topPages = toRows(raw.breakdowns.path).slice(0, 10)
   await writeFile(
     path.join(dir, 'summary.csv'),
     toCsv(['metric', 'value'], [

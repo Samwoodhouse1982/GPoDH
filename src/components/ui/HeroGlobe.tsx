@@ -81,9 +81,14 @@ export default function HeroGlobe() {
   const canvasRef     = useRef<HTMLCanvasElement>(null)
   const worldRef      = useRef<unknown>(null)
   const lonRef        = useRef(10)
-  const rafRef        = useRef<number>(0)
   const slotsRef      = useRef<LabelSlot[]>([])
   const lastAddRef    = useRef<number>(0)
+  // Honour prefers-reduced-motion: freeze the autonomous spin and pin pulsing
+  // (the label cards still fade in/out, which is gentle opacity-only motion).
+  const reducedMotionRef = useRef(false)
+  useEffect(() => {
+    reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }, [])
 
   useEffect(() => {
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
@@ -102,7 +107,7 @@ export default function HeroGlobe() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    lonRef.current += 0.04
+    if (!reducedMotionRef.current) lonRef.current += 0.04
     const lon = lonRef.current
     const lat = 18
 
@@ -209,7 +214,7 @@ export default function HeroGlobe() {
       if (facing <= 0) return
       const p = projection(pin.coords)
       if (!p) return
-      const pulse = 0.5 + 0.5 * Math.sin(timestamp * 0.0014 + idx * 0.85)
+      const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.0014 + idx * 0.85)
       const alpha = 0.45 + facing * 0.55
 
       ctx.beginPath(); ctx.arc(p[0], p[1], 10 + pulse * 7, 0, Math.PI * 2)
@@ -350,14 +355,17 @@ export default function HeroGlobe() {
       ctx.fillText(pin.label, bx + PAD_X, by + PAD_Y + LINE_H + 8)
       ctx.restore()
     }
-
-    rafRef.current = requestAnimationFrame(draw)
   }, [])
 
+  // The effect owns the render loop (draw stays a pure per-frame function).
   useEffect(() => {
-    cancelAnimationFrame(rafRef.current)
-    rafRef.current = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(rafRef.current)
+    let raf = 0
+    const loop = (timestamp: number) => {
+      draw(timestamp)
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
   }, [draw])
 
   useEffect(() => {

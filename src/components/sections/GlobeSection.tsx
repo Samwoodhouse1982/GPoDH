@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import globeData from '@/data/site/globe.json'
 
 const Globe = dynamic(() => import('@/components/ui/Globe'), { ssr: false })
@@ -158,7 +159,7 @@ export default function GlobeSection() {
             </div>
 
             {/* CTA */}
-            <a
+            <Link
               href="/episodes"
               style={{
                 display: 'inline-flex',
@@ -175,7 +176,7 @@ export default function GlobeSection() {
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
-            </a>
+            </Link>
           </div>
 
           {/* Right: globe */}

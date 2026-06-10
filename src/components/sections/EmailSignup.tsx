@@ -125,7 +125,6 @@ export default function EmailSignup() {
                 borderRadius: 'var(--radius-md)',
                 color: 'var(--text-primary)',
                 fontSize: '0.9375rem',
-                outline: 'none',
               }}
             />
             <button

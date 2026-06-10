@@ -238,7 +238,7 @@ export default async function VideoPage({ params }: Props) {
       )}
 
       {/* ——— Share ——— */}
-      <ShareButtons slug={`videos/${video.slug}`} title={video.title} guest="GPODH" />
+      <ShareButtons path={`/videos/${video.slug}`} title={video.title} guest="GPODH" />
 
       {/* ——— More videos ——— */}
       {related.length > 0 && (
