@@ -31,7 +31,7 @@ const CITIES = [
 ]
 
 // Progress windows (0..1) for each leg, matched to the caption thresholds in
-// GlobeSection. The whole sequence loops every LOOP_MS.
+// GlobeSection. The whole sequence runs, fades out, then rebuilds every cycle.
 const ROUTES = [
   { from: 0, to: 1, startAt: 0.10, endAt: 0.26 },
   { from: 1, to: 2, startAt: 0.28, endAt: 0.42 },
@@ -41,11 +41,14 @@ const ROUTES = [
   { from: 5, to: 6, startAt: 0.85, endAt: 0.97 },
 ]
 
-const LOOP_MS = 34000           // full journey duration before it loops
+const JOURNEY_MS = 30000        // time to trace the whole journey
+const FADE_MS = 1900            // completed lines fade out together at the end
+const GAP_MS = 700              // brief empty beat before the journey rebuilds
+const CYCLE_MS = JOURNEY_MS + FADE_MS + GAP_MS
 const REDUCED_PROGRESS = 0.6    // a representative frozen frame under reduced-motion
 
 const ROTATION_KEYFRAMES = [
-  { at: 0.00, lon:  10, lat:  20 },
+  { at: 0.00, lon:  15, lat:  20 },
   { at: 0.12, lon:  20, lat:   5 },
   { at: 0.28, lon:  55, lat:   3 },
   { at: 0.44, lon:  90, lat:   0 },
@@ -54,7 +57,7 @@ const ROTATION_KEYFRAMES = [
   { at: 0.72, lon: 313, lat: -10 },
   { at: 0.80, lon: 343, lat:  -3 },
   { at: 0.90, lon: 362, lat:   8 },
-  { at: 1.00, lon: 375, lat:  12 },
+  { at: 1.00, lon: 375, lat:  12 },  // 375 ≈ 15 (mod 360) → near-seamless wrap to start
 ]
 
 function easeInOut(t: number): number {
@@ -182,8 +185,10 @@ export default function Globe({ onStage }: GlobeProps) {
       const dx = e.clientX - lastPosRef.current[0]
       const dy = e.clientY - lastPosRef.current[1]
       lastPosRef.current = [e.clientX, e.clientY]
-      userOffsetRef.current[0] += dx * 0.45
-      userOffsetRef.current[1] = Math.max(-75, Math.min(75, userOffsetRef.current[1] - dy * 0.45))
+      // Grab-and-drag: the surface follows the cursor (drag right → spins right,
+      // drag down → tilts down), so subtract dx and add dy to the rotation.
+      userOffsetRef.current[0] -= dx * 0.45
+      userOffsetRef.current[1] = Math.max(-75, Math.min(75, userOffsetRef.current[1] + dy * 0.45))
     } else {
       const hit = hitTestCity(e.clientX, e.clientY)
       ;(e.target as HTMLCanvasElement).style.cursor = hit >= 0 ? 'pointer' : 'grab'
@@ -209,14 +214,27 @@ export default function Globe({ onStage }: GlobeProps) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Time-driven, looping progress (no scroll involved). Frozen under
-    // reduced-motion to a single representative frame.
-    let progress: number
+    // Time-driven cycle (no scroll involved): trace the journey, hold while the
+    // whole set of completed lines fades out, brief empty beat, then rebuild.
+    // Frozen under reduced-motion to a single representative frame.
+    let progress: number   // 0..1 position along the journey
+    let journeyAlpha: number // opacity of the traced (bright) lines + lit cities
     if (reducedMotionRef.current) {
       progress = REDUCED_PROGRESS
+      journeyAlpha = 1
     } else {
       if (startRef.current === null) startRef.current = timestamp
-      progress = ((timestamp - startRef.current) % LOOP_MS) / LOOP_MS
+      const elapsed = (timestamp - startRef.current) % CYCLE_MS
+      if (elapsed < JOURNEY_MS) {
+        progress = elapsed / JOURNEY_MS
+        journeyAlpha = 1
+      } else if (elapsed < JOURNEY_MS + FADE_MS) {
+        progress = 1 // journey complete — all lines fully drawn, now fading
+        journeyAlpha = 1 - easeInOut((elapsed - JOURNEY_MS) / FADE_MS)
+      } else {
+        progress = 1
+        journeyAlpha = 0 // empty beat before the cycle restarts
+      }
     }
 
     const rect = canvas.getBoundingClientRect()
@@ -264,99 +282,116 @@ export default function Globe({ onStage }: GlobeProps) {
 
     const arcPoints = getArcs()
 
-    // ── The whole network, always faintly present ──────────────────────────
-    // Drawing every route at low opacity means a quick glance (or a fast
-    // scroll-past) still reads as "lots of stories criss-crossing the globe",
-    // not a single line waiting to be triggered.
-    arcPoints.forEach((points) => {
-      ctx.save()
+    // Helper: stroke the visible part of an arc, up to `frac` (0..1) of its length.
+    const strokeArc = (points: [number, number][], frac: number) => {
+      const numPoints = Math.max(2, Math.floor(frac * points.length))
       ctx.beginPath()
       let penDown = false
-      for (let j = 0; j < points.length; j++) {
+      for (let j = 0; j < numPoints; j++) {
         if (!isVisible(points[j], lon, lat)) { penDown = false; continue }
         const p = projection(points[j])
         if (!p) { penDown = false; continue }
         if (!penDown) { ctx.moveTo(p[0], p[1]); penDown = true }
         else ctx.lineTo(p[0], p[1])
       }
-      ctx.strokeStyle = 'rgba(212, 97, 74, 0.16)'
-      ctx.lineWidth = 1
-      ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke()
+      ctx.stroke()
+      return numPoints
+    }
+
+    // ── Faint baseline of the full network — always present, never snaps ────
+    // A constant low-opacity web so the globe always reads as "many stories",
+    // even at the very start of the journey or during the reset beat.
+    arcPoints.forEach((points) => {
+      ctx.save()
+      ctx.strokeStyle = 'rgba(212, 97, 74, 0.14)'
+      ctx.lineWidth = 1; ctx.lineJoin = 'round'; ctx.lineCap = 'round'
+      strokeArc(points, 1)
       ctx.restore()
     })
 
-    // ── The current leg, drawn brightly with a travelling comet tip ─────────
+    // Which leg is currently being traced (or the last one, once complete).
     let curRoute = 0
     for (let i = 0; i < ROUTES.length; i++) {
       if (progress >= ROUTES[i].startAt) curRoute = i
     }
     const cr = ROUTES[curRoute]
-    const active = progress >= cr.startAt && progress < cr.endAt
-    const arcProg = active
-      ? easeInOut((progress - cr.startAt) / (cr.endAt - cr.startAt))
-      : 1
-    const points = arcPoints[curRoute]
-    const numPoints = Math.max(2, Math.floor(arcProg * points.length))
+    const activeLeg = progress >= cr.startAt && progress < cr.endAt
 
-    ctx.save()
-    ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
-    ctx.beginPath()
-    let penDown = false
-    for (let j = 0; j < numPoints; j++) {
-      if (!isVisible(points[j], lon, lat)) { penDown = false; continue }
-      const p = projection(points[j])
-      if (!p) { penDown = false; continue }
-      if (!penDown) { ctx.moveTo(p[0], p[1]); penDown = true }
-      else ctx.lineTo(p[0], p[1])
-    }
-    ctx.strokeStyle = 'rgba(212, 97, 74, 0.9)'
-    ctx.lineWidth = 2.2
-    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); ctx.restore()
+    // ── Traced lines: completed legs stay full and accumulate; the active leg
+    // grows; the whole set fades together (journeyAlpha) once the journey ends.
+    if (journeyAlpha > 0) {
+      ctx.save()
+      ctx.globalAlpha = journeyAlpha
+      ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
+      ctx.strokeStyle = 'rgba(212, 97, 74, 0.9)'
+      ctx.lineWidth = 2.2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'
 
-    if (active) {
-      const tipPt = points[numPoints - 1]
-      if (isVisible(tipPt, lon, lat)) {
-        const tip = projection(tipPt)
-        if (tip) {
-          ctx.save()
-          ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(212, 97, 74, 0.9)'
-          ctx.beginPath(); ctx.arc(tip[0], tip[1], 5.5, 0, Math.PI * 2)
-          ctx.fillStyle = '#D4614A'; ctx.fill(); ctx.restore()
+      let tipScreen: [number, number] | null = null
+      ROUTES.forEach((route, i) => {
+        let frac: number
+        if (progress >= route.endAt) frac = 1                                   // completed → stays
+        else if (progress >= route.startAt)                                     // active → growing
+          frac = easeInOut((progress - route.startAt) / (route.endAt - route.startAt))
+        else return                                                             // not started yet
+        const n = strokeArc(arcPoints[i], frac)
+        if (i === curRoute && activeLeg) {
+          const tipPt = arcPoints[i][n - 1]
+          if (isVisible(tipPt, lon, lat)) tipScreen = projection(tipPt) as [number, number] | null
         }
+      })
+
+      // Travelling comet on the active leg's leading edge
+      if (tipScreen) {
+        ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(212, 97, 74, 0.9)'
+        ctx.beginPath(); ctx.arc(tipScreen[0], tipScreen[1], 5.5, 0, Math.PI * 2)
+        ctx.fillStyle = '#D4614A'; ctx.fill()
       }
+      ctx.restore()
     }
 
-    // ── City dots: all cities always shown; the current leg's two glow ──────
-    const highlight = new Set<number>([cr.from, cr.to])
+    // ── City dots ───────────────────────────────────────────────────────────
+    // A city is "lit" once the journey has reached it; lit cities accumulate and
+    // fade with the lines. Labels show only for the leg currently in motion.
+    const labelled = new Set<number>(activeLeg ? [cr.from, cr.to] : [])
+    const lit = new Set<number>()
+    ROUTES.forEach((route) => {
+      if (progress >= route.startAt) lit.add(route.from)
+      if (progress >= route.endAt) lit.add(route.to)
+    })
+
     CITIES.forEach((city, idx) => {
       if (!isVisible(city.coords, lon, lat)) return
       const p = projection(city.coords)
       if (!p) return
-      const isHot = highlight.has(idx)
 
-      if (isHot) {
+      // Quiet baseline marker for every city (constant)
+      ctx.beginPath(); ctx.arc(p[0], p[1], 2.5, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(212, 97, 74, 0.4)'; ctx.fill()
+
+      if (!lit.has(idx) || journeyAlpha <= 0) return
+
+      ctx.save()
+      ctx.globalAlpha = journeyAlpha
+      if (labelled.has(idx)) {
         const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
         ctx.beginPath(); ctx.arc(p[0], p[1], 11 + pulse * 5, 0, Math.PI * 2)
         ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
-
         ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, Math.PI * 2)
         ctx.strokeStyle = 'rgba(212, 97, 74, 0.55)'; ctx.lineWidth = 1.2; ctx.stroke()
+      }
+      ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
+      ctx.beginPath(); ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2)
+      ctx.fillStyle = '#D4614A'; ctx.fill()
+      ctx.shadowBlur = 0
 
-        ctx.save()
-        ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
-        ctx.beginPath(); ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2)
-        ctx.fillStyle = '#D4614A'; ctx.fill(); ctx.restore()
-
+      if (labelled.has(idx)) {
         ctx.font = '500 11px "DM Sans", sans-serif'
         ctx.fillStyle = 'rgba(13, 30, 28, 0.8)'
         const textW = ctx.measureText(city.name).width
         const labelX = p[0] + 9 + textW > W - 4 ? p[0] - 9 - textW : p[0] + 9
         ctx.fillText(city.name, labelX, p[1] + 4)
-      } else {
-        // Quiet marker so the rest of the network still feels populated
-        ctx.beginPath(); ctx.arc(p[0], p[1], 2.5, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(212, 97, 74, 0.4)'; ctx.fill()
       }
+      ctx.restore()
     })
 
     // ── Report the active stage so the caption can follow ───────────────────
