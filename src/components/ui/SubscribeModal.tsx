@@ -43,7 +43,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
     setLoading(true)
     setError('')
     try {
-      await subscribeEmail(email, 'Subscribe pop-up')
+      await subscribeEmail(email, 'Subscribe pop-up (top nav)')
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
