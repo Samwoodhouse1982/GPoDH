@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import EpisodeFilter from '@/components/sections/EpisodeFilter'
 import SpeakerMarquee from '@/components/ui/SpeakerMarquee'
+import FaintGlobe from '@/components/ui/FaintGlobe'
 import OrgMarquee from '@/components/ui/OrgMarquee'
 import { episodes, ALL_THEMES, ALL_COUNTRIES } from '@/lib/episodes'
 import { SEO } from '@/lib/constants'
@@ -126,9 +127,25 @@ export default function EpisodesPage() {
             </p>
           </div>
 
-          {/* Scrolling speaker columns — hidden on mobile */}
-          <div className="episodes-marquee animate-fade-up" style={{ flexShrink: 0, animationDelay: '300ms' }}>
-            <SpeakerMarquee speakers={speakers} />
+          {/* Scrolling speaker columns over a faint globe — hidden on mobile */}
+          <div className="episodes-marquee animate-fade-up" style={{ flexShrink: 0, position: 'relative', animationDelay: '300ms' }}>
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            >
+              <FaintGlobe size={400} />
+            </div>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <SpeakerMarquee speakers={speakers} />
+            </div>
           </div>
           <style>{`
             @media (max-width: 768px) {
