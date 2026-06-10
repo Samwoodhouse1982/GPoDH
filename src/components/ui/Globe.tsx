@@ -30,47 +30,35 @@ const CITIES = [
   { name: 'Geneva',    coords: [6.15,   46.20] as [number, number], link: '/episodes' },
 ]
 
-// Progress windows (0..1) for each leg, matched to the caption thresholds in
-// GlobeSection. The whole sequence runs, fades out, then rebuilds every cycle.
+// The journey is a closed loop of equal legs tiled contiguously across the lap,
+// so the comet never pauses and meets back at London at the wrap (the final
+// Geneva→London connector closes the ring). Indices reference CITIES.
+const SEG = 1 / 7
 const ROUTES = [
-  { from: 0, to: 1, startAt: 0.10, endAt: 0.26 },
-  { from: 1, to: 2, startAt: 0.28, endAt: 0.42 },
-  { from: 2, to: 3, startAt: 0.44, endAt: 0.54 },
-  { from: 3, to: 4, startAt: 0.54, endAt: 0.72 },
-  { from: 4, to: 5, startAt: 0.72, endAt: 0.85 },
-  { from: 5, to: 6, startAt: 0.85, endAt: 0.97 },
+  { from: 0, to: 1, startAt: 0 * SEG, endAt: 1 * SEG }, // London → Nairobi
+  { from: 1, to: 2, startAt: 1 * SEG, endAt: 2 * SEG }, // Nairobi → Bengaluru
+  { from: 2, to: 3, startAt: 2 * SEG, endAt: 3 * SEG }, // Bengaluru → Jakarta
+  { from: 3, to: 4, startAt: 3 * SEG, endAt: 4 * SEG }, // Jakarta → São Paulo
+  { from: 4, to: 5, startAt: 4 * SEG, endAt: 5 * SEG }, // São Paulo → Lagos
+  { from: 5, to: 6, startAt: 5 * SEG, endAt: 6 * SEG }, // Lagos → Geneva
+  { from: 6, to: 0, startAt: 6 * SEG, endAt: 7 * SEG }, // Geneva → London (connector)
 ]
 
-const JOURNEY_MS = 32000        // one full lap; the journey loops continuously
+const JOURNEY_MS = 34000        // one full lap of the journey; loops continuously
+const ROTATION_MS = 60000       // one full, constant-speed spin of the globe
 // Each drawn line (and city) fades out over ~this fraction of a lap after it's
 // completed, so by the time the lap comes back around to it, it's almost gone —
 // a perpetual trailing ribbon, never a hold-then-reset.
 const FADE_SPAN = 0.9
+const BASE_LAT = 12             // fixed viewing tilt (the globe spins in longitude only)
 const REDUCED_PROGRESS = 0.6    // a representative frozen frame under reduced-motion
 // Begin part-way through the lap so the first sight (e.g. scrolling to it)
 // already shows lines criss-crossing, never the empty opening beat.
 const INITIAL_PROGRESS = 0.34
 
-const ROTATION_KEYFRAMES = [
-  { at: 0.00, lon:  15, lat:  20 },
-  { at: 0.12, lon:  20, lat:   5 },
-  { at: 0.28, lon:  55, lat:   3 },
-  { at: 0.44, lon:  90, lat:   0 },
-  { at: 0.56, lon: 150, lat:  -8 },
-  { at: 0.65, lon: 220, lat: -12 },
-  { at: 0.72, lon: 313, lat: -10 },
-  { at: 0.80, lon: 343, lat:  -3 },
-  { at: 0.90, lon: 362, lat:   8 },
-  { at: 1.00, lon: 375, lat:  12 },  // 375 ≈ 15 (mod 360) → near-seamless wrap to start
-]
-
 function easeInOut(t: number): number {
   const c = Math.max(0, Math.min(1, t))
   return c < 0.5 ? 2 * c * c : -1 + (4 - 2 * c) * c
-}
-
-function lerp(a: number, b: number, t: number): number {
-  return a + (b - a) * t
 }
 
 // How front-facing a point is: 1 at the globe's centre, 0 at the limb (edge),
@@ -98,21 +86,6 @@ function limbFade(coord: [number, number], centerLon: number, centerLat: number)
 // Progress span over which a city's dot + name eases in once the journey
 // reaches it (~0.03 of the journey ≈ a second), so names never pop.
 const LIT_FADE_IN = 0.03
-
-function getRotation(progress: number): [number, number] {
-  const kf = ROTATION_KEYFRAMES
-  let prev = kf[0]
-  let next = kf[kf.length - 1]
-  for (let i = 0; i < kf.length - 1; i++) {
-    if (progress >= kf[i].at && progress <= kf[i + 1].at) {
-      prev = kf[i]; next = kf[i + 1]; break
-    }
-  }
-  const span = next.at - prev.at
-  const t = span === 0 ? 1 : (progress - prev.at) / span
-  const e = easeInOut(t)
-  return [lerp(prev.lon, next.lon, e), lerp(prev.lat, next.lat, e)]
-}
 
 function getArcPoints(from: [number, number], to: [number, number], n = 120): [number, number][] {
   const interp = geoInterpolate(from, to)
@@ -260,9 +233,12 @@ export default function Globe({ onStage }: GlobeProps) {
     const radius = Math.min(W, H) * 0.38
     ctx.clearRect(0, 0, W, H)
 
-    const [baseLon, baseLat] = getRotation(progress)
+    // Constant, fluid spin in longitude only (decoupled from the journey), so
+    // the globe rotates evenly while the comet/lines ride the geography wherever
+    // it happens to be — not pinned to centre.
+    const baseLon = reducedMotionRef.current ? 20 : (timestamp / ROTATION_MS) * 360
     const lon = baseLon + userOffsetRef.current[0]
-    const lat = Math.max(-85, Math.min(85, baseLat + userOffsetRef.current[1]))
+    const lat = Math.max(-85, Math.min(85, BASE_LAT + userOffsetRef.current[1]))
     lastRotationRef.current = [lon, lat]
 
     const projection = geoOrthographic()
@@ -423,10 +399,11 @@ export default function Globe({ onStage }: GlobeProps) {
       ctx.restore()
     })
 
-    // ── Report the active stage so the caption can follow ───────────────────
+    // ── Report the active stage so the caption can follow. The 6 story legs map
+    // to stages 1..6; the Geneva→London connector (last leg) shows the intro. ──
     let curRoute = 0
     for (let i = 0; i < ROUTES.length; i++) if (progress >= ROUTES[i].startAt) curRoute = i
-    const stage = progress < ROUTES[0].startAt ? 0 : curRoute + 1
+    const stage = curRoute < 6 ? curRoute + 1 : 0
     if (stage !== lastStageRef.current) {
       lastStageRef.current = stage
       onStageRef.current?.(stage)
