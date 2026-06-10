@@ -41,14 +41,13 @@ const ROUTES = [
   { from: 5, to: 6, startAt: 0.85, endAt: 0.97 },
 ]
 
-const JOURNEY_MS = 30000        // time to trace the whole journey
-const HOLD_MS = 2500            // hold the completed picture (all lines + names)
-const CYCLE_MS = JOURNEY_MS + HOLD_MS
-// The completed picture keeps fading out across the START of the next cycle,
-// crossfading with the new trace so the loop never snaps to empty.
-const AFTERGLOW_MS = 4500
+const JOURNEY_MS = 32000        // one full lap; the journey loops continuously
+// Each drawn line (and city) fades out over ~this fraction of a lap after it's
+// completed, so by the time the lap comes back around to it, it's almost gone —
+// a perpetual trailing ribbon, never a hold-then-reset.
+const FADE_SPAN = 0.9
 const REDUCED_PROGRESS = 0.6    // a representative frozen frame under reduced-motion
-// Begin part-way through the journey so the first sight (e.g. scrolling to it)
+// Begin part-way through the lap so the first sight (e.g. scrolling to it)
 // already shows lines criss-crossing, never the empty opening beat.
 const INITIAL_PROGRESS = 0.34
 
@@ -120,32 +119,21 @@ function getArcPoints(from: [number, number], to: [number, number], n = 120): [n
   return Array.from({ length: n }, (_, i) => interp(i / (n - 1)) as [number, number])
 }
 
-// Great-circle-interpolate through a chain of waypoints. With gently-curving
-// waypoints the segment joins are near-collinear, so the path reads as one
-// smooth arc (no kink) while still being steered along a chosen route.
-function getArcViaWaypoints(waypoints: [number, number][], perSeg = 28): [number, number][] {
-  const out: [number, number][] = []
-  for (let s = 0; s < waypoints.length - 1; s++) {
-    const interp = geoInterpolate(waypoints[s], waypoints[s + 1])
-    for (let i = s === 0 ? 0 : 1; i <= perSeg; i++) {
-      out.push(interp(i / perSeg) as [number, number])
-    }
-  }
-  return out
+// A clean curved arc that runs EAST from `from` to `to` (longitude advances
+// monotonically eastward), bulging toward the equator in the middle via a
+// smooth sine term. Used for the trans-Pacific Jakarta→São Paulo leg so it
+// sweeps across the middle of the ocean rather than under the Antarctic.
+function getEastwardArc(from: [number, number], to: [number, number], bulge: number, n = 140): [number, number][] {
+  let dLon = to[0] - from[0]
+  while (dLon <= 0) dLon += 360 // force the eastward direction
+  return Array.from({ length: n }, (_, i) => {
+    const t = i / (n - 1)
+    let lon = from[0] + dLon * t
+    lon = ((lon + 180) % 360 + 360) % 360 - 180 // wrap to [-180, 180)
+    const lat = from[1] + (to[1] - from[1]) * t + Math.sin(Math.PI * t) * bulge
+    return [lon, lat] as [number, number]
+  })
 }
-
-// Jakarta → São Paulo steered east across the *middle* of the Pacific, arcing
-// up near the equator (longitudes climb monotonically) before curving down to
-// São Paulo — a clean ocean crossing, nowhere near the Antarctic.
-const JKT_TO_SAO: [number, number][] = [
-  CITIES[3].coords, // Jakarta (~107, -6)
-  [150, -3],
-  [-175, 0],
-  [-140, -1],
-  [-105, -6],
-  [-72, -16],
-  CITIES[4].coords, // São Paulo (~-47, -23.5)
-]
 
 export default function Globe({ onStage }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -182,9 +170,9 @@ export default function Globe({ onStage }: GlobeProps) {
       const key = `${route.from}-${route.to}`
       if (!arcCacheRef.current.has(key)) {
         // Most legs are a single great-circle arc; the trans-Pacific
-        // Jakarta→São Paulo leg is steered east across the ocean via waypoints.
+        // Jakarta→São Paulo leg is a smooth eastward bow across the ocean.
         const pts = (route.from === 3 && route.to === 4)
-          ? getArcViaWaypoints(JKT_TO_SAO)
+          ? getEastwardArc(CITIES[3].coords, CITIES[4].coords, 20)
           : getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
         arcCacheRef.current.set(key, pts)
       }
@@ -256,24 +244,14 @@ export default function Globe({ onStage }: GlobeProps) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Time-driven cycle (no scroll involved): trace the journey, hold the
-    // completed picture, then let it keep fading across the start of the next
-    // cycle (afterglow) while the new trace builds over it. Frozen under
-    // reduced-motion to a single representative frame.
-    let progress: number     // 0..1 position along the current journey
-    let afterglowAlpha = 0    // opacity of the *previous* completed picture, fading
+    // Continuously looping, time-driven position along the lap (no scroll, no
+    // hold). Frozen under reduced-motion to a single representative frame.
+    let progress: number
     if (reducedMotionRef.current) {
       progress = REDUCED_PROGRESS
     } else {
       if (startRef.current === null) startRef.current = timestamp - INITIAL_PROGRESS * JOURNEY_MS
-      const total = timestamp - startRef.current
-      const cycleIndex = Math.floor(total / CYCLE_MS)
-      const inCycle = total % CYCLE_MS
-      progress = inCycle < JOURNEY_MS ? inCycle / JOURNEY_MS : 1
-      // From the second cycle on, the prior completed journey lingers and fades.
-      if (cycleIndex > 0 && inCycle < AFTERGLOW_MS) {
-        afterglowAlpha = 1 - easeInOut(inCycle / AFTERGLOW_MS)
-      }
+      progress = ((timestamp - startRef.current) % JOURNEY_MS) / JOURNEY_MS
     }
 
     const rect = canvas.getBoundingClientRect()
@@ -337,106 +315,113 @@ export default function Globe({ onStage }: GlobeProps) {
       return numPoints
     }
 
+    // Looping "age" of a moment in the lap: 0 just after it happened, climbing
+    // to 1 just before the lap comes back around to it.
+    const wrapAge = (phase: number) => ((progress - phase) % 1 + 1) % 1
+    // A completed line/city fades out as it ages, almost gone by ~FADE_SPAN.
+    const ageFade = (age: number) => {
+      const a = 1 - age / FADE_SPAN
+      return a <= 0 ? 0 : easeInOut(Math.min(1, a))
+    }
+
     // ── Faint baseline of the full network — always present, never snaps ────
     arcPoints.forEach((points) => {
       ctx.save()
-      ctx.strokeStyle = 'rgba(212, 97, 74, 0.14)'
+      ctx.strokeStyle = 'rgba(212, 97, 74, 0.12)'
       ctx.lineWidth = 1; ctx.lineJoin = 'round'; ctx.lineCap = 'round'
       strokeArc(points, 1)
       ctx.restore()
     })
 
-    // Draws the traced lines + lit cities + names for a given journey position.
-    // `alpha` lets the same routine paint the bright building trace (alpha 1)
-    // and the fading afterglow of the previous journey (alpha → 0). Names stay
-    // visible for every city the journey has reached, so they linger the whole
-    // rotation and only fade via the afterglow at the end.
-    const drawTraced = (p: number, alpha: number, withComet: boolean) => {
-      if (alpha <= 0) return
-      let cur = 0
-      for (let i = 0; i < ROUTES.length; i++) if (p >= ROUTES[i].startAt) cur = i
-      const active = p >= ROUTES[cur].startAt && p < ROUTES[cur].endAt
+    // Which leg is being traced right now (if any).
+    let activeIdx = -1
+    let tipScreen: [number, number] | null = null
 
-      // Lines
+    // ── Lines: the active leg grows bright; completed legs persist then fade
+    // with age, so the trace is a perpetual ribbon trailing the comet. ───────
+    ROUTES.forEach((route, i) => {
+      let frac: number
+      let legAlpha: number
+      if (progress >= route.startAt && progress < route.endAt) {
+        frac = easeInOut((progress - route.startAt) / (route.endAt - route.startAt))
+        legAlpha = 1
+        activeIdx = i
+      } else {
+        frac = 1
+        legAlpha = ageFade(wrapAge(route.endAt))
+      }
+      if (legAlpha <= 0.01) return
       ctx.save()
-      ctx.globalAlpha = alpha
+      ctx.globalAlpha = legAlpha
       ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
       ctx.strokeStyle = 'rgba(212, 97, 74, 0.9)'
       ctx.lineWidth = 2.2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'
-      let tipScreen: [number, number] | null = null
-      ROUTES.forEach((route, i) => {
-        let frac: number
-        if (p >= route.endAt) frac = 1
-        else if (p >= route.startAt) frac = easeInOut((p - route.startAt) / (route.endAt - route.startAt))
-        else return
-        const n = strokeArc(arcPoints[i], frac)
-        if (withComet && active && i === cur) {
-          const tipPt = arcPoints[i][n - 1]
-          if (isVisible(tipPt, lon, lat)) tipScreen = projection(tipPt) as [number, number] | null
-        }
-      })
-      if (withComet && tipScreen) {
-        ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(212, 97, 74, 0.9)'
-        ctx.beginPath(); ctx.arc(tipScreen[0], tipScreen[1], 5.5, 0, Math.PI * 2)
-        ctx.fillStyle = '#D4614A'; ctx.fill()
-      }
+      const n = strokeArc(arcPoints[i], frac)
       ctx.restore()
+      if (i === activeIdx) {
+        const tipPt = arcPoints[i][n - 1]
+        if (isVisible(tipPt, lon, lat)) tipScreen = projection(tipPt) as [number, number] | null
+      }
+    })
 
-      // Lit cities + names (every city the journey has reached so far). Track
-      // the progress at which each was first reached, so it can ease in.
-      const litAt = new Map<number, number>()
-      ROUTES.forEach((route) => {
-        if (p >= route.startAt) litAt.set(route.from, Math.min(litAt.get(route.from) ?? Infinity, route.startAt))
-        if (p >= route.endAt) litAt.set(route.to, Math.min(litAt.get(route.to) ?? Infinity, route.endAt))
-      })
-      const pulsing = new Set<number>(active ? [ROUTES[cur].from, ROUTES[cur].to] : [])
-      litAt.forEach((firstLit, idx) => {
-        const appear = easeInOut(Math.min(1, (p - firstLit) / LIT_FADE_IN))
-        const city = CITIES[idx]
-        const fade = limbFade(city.coords, lon, lat)
-        const a = alpha * fade * appear
-        if (a <= 0) return
-        const pt = projection(city.coords)
-        if (!pt) return
-        ctx.save()
-        ctx.globalAlpha = a
-        if (withComet && pulsing.has(idx)) {
-          const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
-          ctx.beginPath(); ctx.arc(pt[0], pt[1], 11 + pulse * 5, 0, Math.PI * 2)
-          ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
-          ctx.beginPath(); ctx.arc(pt[0], pt[1], 6, 0, Math.PI * 2)
-          ctx.strokeStyle = 'rgba(212, 97, 74, 0.55)'; ctx.lineWidth = 1.2; ctx.stroke()
-        }
-        ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
-        ctx.beginPath(); ctx.arc(pt[0], pt[1], 3.5, 0, Math.PI * 2)
-        ctx.fillStyle = '#D4614A'; ctx.fill()
-        ctx.shadowBlur = 0
-        ctx.font = '500 11px "DM Sans", sans-serif'
-        ctx.fillStyle = 'rgba(13, 30, 28, 0.8)'
-        const textW = ctx.measureText(city.name).width
-        const labelX = pt[0] + 9 + textW > W - 4 ? pt[0] - 9 - textW : pt[0] + 9
-        ctx.fillText(city.name, labelX, pt[1] + 4)
-        ctx.restore()
-      })
+    // Travelling comet on the active leg's leading edge
+    if (activeIdx >= 0 && tipScreen) {
+      const t = tipScreen as [number, number]
+      ctx.save()
+      ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(212, 97, 74, 0.9)'
+      ctx.beginPath(); ctx.arc(t[0], t[1], 5.5, 0, Math.PI * 2)
+      ctx.fillStyle = '#D4614A'; ctx.fill()
+      ctx.restore()
     }
 
-    // Quiet constant marker for every city, so the globe is never bare.
-    CITIES.forEach((city) => {
-      const fade = limbFade(city.coords, lon, lat)
-      if (fade <= 0) return
+    // ── Cities + names: fade in when reached, linger, then fade with age ────
+    const pulsing = new Set<number>(
+      activeIdx >= 0 ? [ROUTES[activeIdx].from, ROUTES[activeIdx].to] : []
+    )
+    CITIES.forEach((city, idx) => {
+      const limb = limbFade(city.coords, lon, lat)
+      if (limb <= 0) return
       const pt = projection(city.coords)
       if (!pt) return
+
+      // Quiet constant marker so the globe is never bare
       ctx.save()
-      ctx.globalAlpha = fade
+      ctx.globalAlpha = limb
       ctx.beginPath(); ctx.arc(pt[0], pt[1], 2.5, 0, Math.PI * 2)
       ctx.fillStyle = 'rgba(212, 97, 74, 0.4)'; ctx.fill()
       ctx.restore()
-    })
 
-    // Previous completed journey lingering and fading (crossfades the loop)…
-    drawTraced(1, afterglowAlpha, false)
-    // …with the new trace building over it.
-    drawTraced(progress, 1, true)
+      // Age = time since this city was most recently reached (any of its legs)
+      let age = Infinity
+      ROUTES.forEach((route) => {
+        if (route.from === idx) age = Math.min(age, wrapAge(route.startAt))
+        if (route.to === idx) age = Math.min(age, wrapAge(route.endAt))
+      })
+      if (!isFinite(age)) return
+      const appear = easeInOut(Math.min(1, age / LIT_FADE_IN)) // ease in when reached
+      const a = limb * appear * ageFade(age)
+      if (a <= 0.01) return
+
+      ctx.save()
+      ctx.globalAlpha = a
+      if (pulsing.has(idx)) {
+        const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
+        ctx.beginPath(); ctx.arc(pt[0], pt[1], 11 + pulse * 5, 0, Math.PI * 2)
+        ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
+        ctx.beginPath(); ctx.arc(pt[0], pt[1], 6, 0, Math.PI * 2)
+        ctx.strokeStyle = 'rgba(212, 97, 74, 0.55)'; ctx.lineWidth = 1.2; ctx.stroke()
+      }
+      ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
+      ctx.beginPath(); ctx.arc(pt[0], pt[1], 3.5, 0, Math.PI * 2)
+      ctx.fillStyle = '#D4614A'; ctx.fill()
+      ctx.shadowBlur = 0
+      ctx.font = '500 11px "DM Sans", sans-serif'
+      ctx.fillStyle = 'rgba(13, 30, 28, 0.8)'
+      const textW = ctx.measureText(city.name).width
+      const labelX = pt[0] + 9 + textW > W - 4 ? pt[0] - 9 - textW : pt[0] + 9
+      ctx.fillText(city.name, labelX, pt[1] + 4)
+      ctx.restore()
+    })
 
     // ── Report the active stage so the caption can follow ───────────────────
     let curRoute = 0
