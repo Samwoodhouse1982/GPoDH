@@ -211,7 +211,7 @@ export default function Globe({ onStage }: GlobeProps) {
         // Most legs are a single great-circle arc; the trans-Pacific
         // Jakarta→São Paulo leg is a smooth eastward bow across the ocean.
         const pts = (route.from === 3 && route.to === 4)
-          ? getEastwardArc(CITIES[3].coords, CITIES[4].coords, 20)
+          ? getEastwardArc(CITIES[3].coords, CITIES[4].coords, 20, 260)
           : getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
         arcCacheRef.current.set(key, pts)
       }
@@ -344,20 +344,38 @@ export default function Globe({ onStage }: GlobeProps) {
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2)
     ctx.strokeStyle = 'rgba(58, 104, 96, 0.3)'; ctx.lineWidth = 1.5; ctx.stroke()
 
-    // Helper: stroke the visible part of an arc, up to `frac` (0..1) of its length.
-    const strokeArc = (points: [number, number][], frac: number) => {
-      const numPoints = Math.max(2, Math.floor(frac * points.length))
+    // Stroke the visible part of an arc up to `frac` (0..1) of its length, with
+    // a continuously-interpolated end point so the leading edge advances
+    // smoothly between samples (not in whole-point jumps — that was the Pacific
+    // staccato). Returns the geographic tip coord so the comet can sit on it.
+    const lineToGeo = (g: [number, number], penDown: boolean): boolean => {
+      if (!isVisible(g, lon, lat)) return false
+      const p = projection(g)
+      if (!p) return false
+      if (!penDown) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1])
+      return true
+    }
+    const strokeArc = (points: [number, number][], frac: number): [number, number] => {
+      const last = points.length - 1
+      const exact = Math.max(0, Math.min(last, frac * last))
+      const full = Math.floor(exact)
+      const fp = exact - full
+      // Wrap-aware interpolated tip between points[full] and points[full+1]
+      let tip = points[full]
+      if (fp > 0 && full < last) {
+        let dlon = points[full + 1][0] - points[full][0]
+        if (dlon > 180) dlon -= 360; else if (dlon < -180) dlon += 360
+        let tlon = points[full][0] + dlon * fp
+        tlon = ((tlon + 180) % 360 + 360) % 360 - 180
+        const tlat = points[full][1] + (points[full + 1][1] - points[full][1]) * fp
+        tip = [tlon, tlat]
+      }
       ctx.beginPath()
       let penDown = false
-      for (let j = 0; j < numPoints; j++) {
-        if (!isVisible(points[j], lon, lat)) { penDown = false; continue }
-        const p = projection(points[j])
-        if (!p) { penDown = false; continue }
-        if (!penDown) { ctx.moveTo(p[0], p[1]); penDown = true }
-        else ctx.lineTo(p[0], p[1])
-      }
+      for (let j = 0; j <= full; j++) penDown = lineToGeo(points[j], penDown)
+      if (fp > 0 && full < last) penDown = lineToGeo(tip, penDown)
       ctx.stroke()
-      return numPoints
+      return tip
     }
 
     // Looping "age" of a moment in the lap: 0 just after it happened, climbing
@@ -403,11 +421,10 @@ export default function Globe({ onStage }: GlobeProps) {
       ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
       ctx.strokeStyle = 'rgba(212, 97, 74, 0.9)'
       ctx.lineWidth = 2.2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'
-      const n = strokeArc(arcPoints[i], frac)
+      const tipGeo = strokeArc(arcPoints[i], frac)
       ctx.restore()
-      if (i === activeIdx) {
-        const tipPt = arcPoints[i][n - 1]
-        if (isVisible(tipPt, lon, lat)) tipScreen = projection(tipPt) as [number, number] | null
+      if (i === activeIdx && isVisible(tipGeo, lon, lat)) {
+        tipScreen = projection(tipGeo) as [number, number] | null
       }
     })
 
