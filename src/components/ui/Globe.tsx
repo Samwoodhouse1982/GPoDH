@@ -48,6 +48,9 @@ const CYCLE_MS = JOURNEY_MS + HOLD_MS
 // crossfading with the new trace so the loop never snaps to empty.
 const AFTERGLOW_MS = 4500
 const REDUCED_PROGRESS = 0.6    // a representative frozen frame under reduced-motion
+// Begin part-way through the journey so the first sight (e.g. scrolling to it)
+// already shows lines criss-crossing, never the empty opening beat.
+const INITIAL_PROGRESS = 0.34
 
 const ROTATION_KEYFRAMES = [
   { at: 0.00, lon:  15, lat:  20 },
@@ -131,16 +134,17 @@ function getArcViaWaypoints(waypoints: [number, number][], perSeg = 28): [number
   return out
 }
 
-// Jakarta → São Paulo steered east across the South Pacific (longitudes climb
-// monotonically; latitude only dips to ~-28°, well clear of the Antarctic).
+// Jakarta → São Paulo steered east across the *middle* of the Pacific, arcing
+// up near the equator (longitudes climb monotonically) before curving down to
+// São Paulo — a clean ocean crossing, nowhere near the Antarctic.
 const JKT_TO_SAO: [number, number][] = [
-  CITIES[3].coords, // Jakarta
-  [150, -14],
-  [-170, -22],
-  [-130, -27],
-  [-95, -28],
-  [-70, -25],
-  CITIES[4].coords, // São Paulo
+  CITIES[3].coords, // Jakarta (~107, -6)
+  [150, -3],
+  [-175, 0],
+  [-140, -1],
+  [-105, -6],
+  [-72, -16],
+  CITIES[4].coords, // São Paulo (~-47, -23.5)
 ]
 
 export default function Globe({ onStage }: GlobeProps) {
@@ -261,7 +265,7 @@ export default function Globe({ onStage }: GlobeProps) {
     if (reducedMotionRef.current) {
       progress = REDUCED_PROGRESS
     } else {
-      if (startRef.current === null) startRef.current = timestamp
+      if (startRef.current === null) startRef.current = timestamp - INITIAL_PROGRESS * JOURNEY_MS
       const total = timestamp - startRef.current
       const cycleIndex = Math.floor(total / CYCLE_MS)
       const inCycle = total % CYCLE_MS
