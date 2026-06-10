@@ -30,22 +30,31 @@ const CITIES = [
   { name: 'Geneva',    coords: [6.15,   46.20] as [number, number], link: '/episodes' },
 ]
 
-// The journey is a closed loop of equal legs tiled contiguously across the lap,
-// so the comet never pauses and meets back at London at the wrap (the final
-// Geneva→London connector closes the ring). Indices reference CITIES.
-const SEG = 1 / 7
-const ROUTES = [
-  { from: 0, to: 1, startAt: 0 * SEG, endAt: 1 * SEG }, // London → Nairobi
-  { from: 1, to: 2, startAt: 1 * SEG, endAt: 2 * SEG }, // Nairobi → Bengaluru
-  { from: 2, to: 3, startAt: 2 * SEG, endAt: 3 * SEG }, // Bengaluru → Jakarta
-  { from: 3, to: 4, startAt: 3 * SEG, endAt: 4 * SEG }, // Jakarta → São Paulo
-  { from: 4, to: 5, startAt: 4 * SEG, endAt: 5 * SEG }, // São Paulo → Lagos
-  { from: 5, to: 6, startAt: 5 * SEG, endAt: 6 * SEG }, // Lagos → Geneva
-  { from: 6, to: 0, startAt: 6 * SEG, endAt: 7 * SEG }, // Geneva → London (connector)
+// The journey is a closed loop, tiled contiguously across the lap so the comet
+// never pauses and meets back at London at the wrap (the final Geneva→London
+// connector closes the ring). `w` weights each leg's *duration* — the long
+// trans-Pacific leg gets extra time so it's watchable; the short European
+// connector is quick. Indices reference CITIES.
+const LEG_DEFS = [
+  { from: 0, to: 1, w: 1 },    // London → Nairobi
+  { from: 1, to: 2, w: 1 },    // Nairobi → Bengaluru
+  { from: 2, to: 3, w: 1 },    // Bengaluru → Jakarta
+  { from: 3, to: 4, w: 2.4 },  // Jakarta → São Paulo (long Pacific crossing)
+  { from: 4, to: 5, w: 1.1 },  // São Paulo → Lagos
+  { from: 5, to: 6, w: 1 },    // Lagos → Geneva
+  { from: 6, to: 0, w: 0.7 },  // Geneva → London (connector)
 ]
+const TOTAL_W = LEG_DEFS.reduce((s, d) => s + d.w, 0)
+const ROUTES = (() => {
+  let acc = 0
+  return LEG_DEFS.map((d) => {
+    const startAt = acc / TOTAL_W
+    acc += d.w
+    return { from: d.from, to: d.to, startAt, endAt: acc / TOTAL_W }
+  })
+})()
 
 const JOURNEY_MS = 34000        // one full lap of the journey; loops continuously
-const ROTATION_MS = 60000       // one full, constant-speed spin of the globe
 // Each drawn line (and city) fades out over ~this fraction of a lap after it's
 // completed, so by the time the lap comes back around to it, it's almost gone —
 // a perpetual trailing ribbon, never a hold-then-reset.
@@ -233,10 +242,19 @@ export default function Globe({ onStage }: GlobeProps) {
     const radius = Math.min(W, H) * 0.38
     ctx.clearRect(0, 0, W, H)
 
-    // Constant, fluid spin in longitude only (decoupled from the journey), so
-    // the globe rotates evenly while the comet/lines ride the geography wherever
-    // it happens to be — not pinned to centre.
-    const baseLon = reducedMotionRef.current ? 20 : (timestamp / ROTATION_MS) * 360
+    const arcPoints = getArcs()
+
+    // Centre the globe on the comet's current longitude so the active leg is
+    // always front-and-visible. Longitude advances eastward along the journey
+    // (wrapping seamlessly at the dateline), easing as it nears each city — a
+    // fluid one-way spin that slows in places rather than running off the back.
+    let cur = 0
+    for (let i = 0; i < ROUTES.length; i++) if (progress >= ROUTES[i].startAt) cur = i
+    const legFrac = easeInOut((progress - ROUTES[cur].startAt) / (ROUTES[cur].endAt - ROUTES[cur].startAt))
+    const cpts = arcPoints[cur]
+    const journeyLon = cpts[Math.max(0, Math.min(cpts.length - 1, Math.round(legFrac * (cpts.length - 1))))][0]
+
+    const baseLon = reducedMotionRef.current ? 20 : journeyLon
     const lon = baseLon + userOffsetRef.current[0]
     const lat = Math.max(-85, Math.min(85, BASE_LAT + userOffsetRef.current[1]))
     lastRotationRef.current = [lon, lat]
@@ -272,8 +290,6 @@ export default function Globe({ onStage }: GlobeProps) {
     // Sphere border
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2)
     ctx.strokeStyle = 'rgba(58, 104, 96, 0.3)'; ctx.lineWidth = 1.5; ctx.stroke()
-
-    const arcPoints = getArcs()
 
     // Helper: stroke the visible part of an arc, up to `frac` (0..1) of its length.
     const strokeArc = (points: [number, number][], frac: number) => {
