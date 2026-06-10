@@ -265,29 +265,6 @@ export default function WorkWithUsPage() {
         </div>
       </section>
 
-      {/* ——— Photo strip ——— */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '0',
-          height: 'clamp(260px, 32vw, 420px)',
-          overflow: 'hidden',
-        }}
-      >
-        {photos.map((photo, i) => (
-          <div key={photo.src} style={{ position: 'relative', overflow: 'hidden' }}>
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              style={{ objectFit: 'cover', objectPosition: photo.position }}
-              sizes="50vw"
-            />
-          </div>
-        ))}
-      </div>
-
       {/* Coral divider with CONSULTING label */}
       <div
         style={{
@@ -416,6 +393,29 @@ export default function WorkWithUsPage() {
           </div>
         </div>
       </section>
+
+      {/* ——— Photo strip ——— */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0',
+          height: 'clamp(260px, 32vw, 420px)',
+          overflow: 'hidden',
+        }}
+      >
+        {photos.map((photo) => (
+          <div key={photo.src} style={{ position: 'relative', overflow: 'hidden' }}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              style={{ objectFit: 'cover', objectPosition: photo.position }}
+              sizes="50vw"
+            />
+          </div>
+        ))}
+      </div>
     </>
   )
 }
