@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import Nav from '@/components/layout/Nav'
 import Footer from '@/components/layout/Footer'
@@ -109,6 +110,10 @@ export default function RootLayout({
             Renders nothing; data only flows once Analytics is enabled in the
             Vercel dashboard (Project → Analytics → Enable). */}
         <Analytics />
+        {/* Vercel Speed Insights — real-user performance (Core Web Vitals).
+            Renders nothing; enable it in the Vercel dashboard
+            (Project → Speed Insights → Enable) for data to flow. */}
+        <SpeedInsights />
       </body>
     </html>
   )
