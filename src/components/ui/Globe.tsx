@@ -117,6 +117,32 @@ function getArcPoints(from: [number, number], to: [number, number], n = 120): [n
   return Array.from({ length: n }, (_, i) => interp(i / (n - 1)) as [number, number])
 }
 
+// Great-circle-interpolate through a chain of waypoints. With gently-curving
+// waypoints the segment joins are near-collinear, so the path reads as one
+// smooth arc (no kink) while still being steered along a chosen route.
+function getArcViaWaypoints(waypoints: [number, number][], perSeg = 28): [number, number][] {
+  const out: [number, number][] = []
+  for (let s = 0; s < waypoints.length - 1; s++) {
+    const interp = geoInterpolate(waypoints[s], waypoints[s + 1])
+    for (let i = s === 0 ? 0 : 1; i <= perSeg; i++) {
+      out.push(interp(i / perSeg) as [number, number])
+    }
+  }
+  return out
+}
+
+// Jakarta → São Paulo steered east across the South Pacific (longitudes climb
+// monotonically; latitude only dips to ~-28°, well clear of the Antarctic).
+const JKT_TO_SAO: [number, number][] = [
+  CITIES[3].coords, // Jakarta
+  [150, -14],
+  [-170, -22],
+  [-130, -27],
+  [-95, -28],
+  [-70, -25],
+  CITIES[4].coords, // São Paulo
+]
+
 export default function Globe({ onStage }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const worldRef = useRef<unknown>(null)
@@ -151,8 +177,11 @@ export default function Globe({ onStage }: GlobeProps) {
     return ROUTES.map((route) => {
       const key = `${route.from}-${route.to}`
       if (!arcCacheRef.current.has(key)) {
-        // A single great-circle arc per leg — smooth, no mid-point kinks.
-        const pts = getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
+        // Most legs are a single great-circle arc; the trans-Pacific
+        // Jakarta→São Paulo leg is steered east across the ocean via waypoints.
+        const pts = (route.from === 3 && route.to === 4)
+          ? getArcViaWaypoints(JKT_TO_SAO)
+          : getArcPoints(CITIES[route.from].coords, CITIES[route.to].coords)
         arcCacheRef.current.set(key, pts)
       }
       return arcCacheRef.current.get(key)!
