@@ -71,11 +71,26 @@ function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t
 }
 
-function isVisible(coord: [number, number], centerLon: number, centerLat: number): boolean {
+// How front-facing a point is: 1 at the globe's centre, 0 at the limb (edge),
+// negative on the far side.
+function facing(coord: [number, number], centerLon: number, centerLat: number): number {
   const R = Math.PI / 180
   const λ = coord[0] * R, φ = coord[1] * R
   const λ0 = centerLon * R, φ0 = centerLat * R
-  return Math.cos(φ) * Math.cos(φ0) * Math.cos(λ - λ0) + Math.sin(φ) * Math.sin(φ0) >= 0
+  return Math.cos(φ) * Math.cos(φ0) * Math.cos(λ - λ0) + Math.sin(φ) * Math.sin(φ0)
+}
+
+function isVisible(coord: [number, number], centerLon: number, centerLat: number): boolean {
+  return facing(coord, centerLon, centerLat) >= 0
+}
+
+// Smooth 0→1 opacity for city markers/labels as they approach the limb, so they
+// fade in/out instead of popping when the globe rotates them past the edge.
+const LIMB_FADE = 0.16
+function limbFade(coord: [number, number], centerLon: number, centerLat: number): number {
+  const f = facing(coord, centerLon, centerLat)
+  if (f <= 0) return 0
+  return easeInOut(Math.min(1, f / LIMB_FADE))
 }
 
 function getRotation(progress: number): [number, number] {
@@ -351,11 +366,12 @@ export default function Globe({ onStage }: GlobeProps) {
       const pulsing = new Set<number>(active ? [ROUTES[cur].from, ROUTES[cur].to] : [])
       lit.forEach((idx) => {
         const city = CITIES[idx]
-        if (!isVisible(city.coords, lon, lat)) return
+        const fade = limbFade(city.coords, lon, lat)
+        if (fade <= 0) return
         const pt = projection(city.coords)
         if (!pt) return
         ctx.save()
-        ctx.globalAlpha = alpha
+        ctx.globalAlpha = alpha * fade
         if (withComet && pulsing.has(idx)) {
           const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
           ctx.beginPath(); ctx.arc(pt[0], pt[1], 11 + pulse * 5, 0, Math.PI * 2)
@@ -378,11 +394,15 @@ export default function Globe({ onStage }: GlobeProps) {
 
     // Quiet constant marker for every city, so the globe is never bare.
     CITIES.forEach((city) => {
-      if (!isVisible(city.coords, lon, lat)) return
+      const fade = limbFade(city.coords, lon, lat)
+      if (fade <= 0) return
       const pt = projection(city.coords)
       if (!pt) return
+      ctx.save()
+      ctx.globalAlpha = fade
       ctx.beginPath(); ctx.arc(pt[0], pt[1], 2.5, 0, Math.PI * 2)
       ctx.fillStyle = 'rgba(212, 97, 74, 0.4)'; ctx.fill()
+      ctx.restore()
     })
 
     // Previous completed journey lingering and fading (crossfades the loop)…
