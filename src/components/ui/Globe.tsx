@@ -10,7 +10,9 @@ import {
 import { feature } from 'topojson-client'
 
 interface GlobeProps {
-  scrollProgress: number
+  /** Called with the active leg index (0 = intro, 1..6 = each route) as the
+   *  animation advances, so the caption alongside can follow along. */
+  onStage?: (index: number) => void
 }
 
 // Each city anchors a real episode/video story; the route below traces how
@@ -28,6 +30,8 @@ const CITIES = [
   { name: 'Geneva',    coords: [6.15,   46.20] as [number, number], link: '/episodes' },
 ]
 
+// Progress windows (0..1) for each leg, matched to the caption thresholds in
+// GlobeSection. The whole sequence loops every LOOP_MS.
 const ROUTES = [
   { from: 0, to: 1, startAt: 0.10, endAt: 0.26 },
   { from: 1, to: 2, startAt: 0.28, endAt: 0.42 },
@@ -36,6 +40,9 @@ const ROUTES = [
   { from: 4, to: 5, startAt: 0.72, endAt: 0.85 },
   { from: 5, to: 6, startAt: 0.85, endAt: 0.97 },
 ]
+
+const LOOP_MS = 34000           // full journey duration before it loops
+const REDUCED_PROGRESS = 0.6    // a representative frozen frame under reduced-motion
 
 const ROTATION_KEYFRAMES = [
   { at: 0.00, lon:  10, lat:  20 },
@@ -97,28 +104,26 @@ function getArcPointsViaMid(
   return [...seg1, ...seg2]
 }
 
-export default function Globe({ scrollProgress }: GlobeProps) {
+export default function Globe({ onStage }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const worldRef = useRef<unknown>(null)
   const arcCacheRef = useRef<Map<string, [number, number][]>>(new Map())
-  const scrollRef = useRef(scrollProgress)
-  // Honour prefers-reduced-motion: rotation here is user-scroll-driven (fine),
-  // but the pulsing city dots are autonomous animation, so freeze them.
   const reducedMotionRef = useRef(false)
-  useEffect(() => {
-    reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  }, [])
+  const startRef = useRef<number | null>(null)
+  const lastStageRef = useRef<number>(-1)
+  const onStageRef = useRef<GlobeProps['onStage']>(onStage)
+  useEffect(() => { onStageRef.current = onStage }, [onStage])
 
-  // Interaction state
+  // Interaction state — lets a curious visitor nudge the globe without
+  // hijacking page scroll (touch vertical pans still scroll the page).
   const isDraggingRef = useRef(false)
   const lastPosRef = useRef<[number, number]>([0, 0])
   const startPosRef = useRef<[number, number]>([0, 0])
   const userOffsetRef = useRef<[number, number]>([0, 0]) // [lonOffset, latOffset]
   const lastRotationRef = useRef<[number, number]>([10, 20])
 
-  useEffect(() => { scrollRef.current = scrollProgress }, [scrollProgress])
-
   useEffect(() => {
+    reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then(r => r.json())
       .then((topo: unknown) => {
@@ -198,18 +203,26 @@ export default function Globe({ scrollProgress }: GlobeProps) {
     }
   }, [hitTestCity])
 
-
   const draw = useCallback((timestamp: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const progress = scrollRef.current
+    // Time-driven, looping progress (no scroll involved). Frozen under
+    // reduced-motion to a single representative frame.
+    let progress: number
+    if (reducedMotionRef.current) {
+      progress = REDUCED_PROGRESS
+    } else {
+      if (startRef.current === null) startRef.current = timestamp
+      progress = ((timestamp - startRef.current) % LOOP_MS) / LOOP_MS
+    }
+
     const rect = canvas.getBoundingClientRect()
     const W = rect.width, H = rect.height
     const cx = W / 2, cy = H / 2
-    const radius = Math.min(W, H) * 0.38 
+    const radius = Math.min(W, H) * 0.38
     ctx.clearRect(0, 0, W, H)
 
     const [baseLon, baseLat] = getRotation(progress)
@@ -249,33 +262,61 @@ export default function Globe({ scrollProgress }: GlobeProps) {
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2)
     ctx.strokeStyle = 'rgba(58, 104, 96, 0.3)'; ctx.lineWidth = 1.5; ctx.stroke()
 
-    // Arcs
     const arcPoints = getArcs()
-    ROUTES.forEach((route, i) => {
-      if (progress < route.startAt) return
-      const arcProg = progress < route.endAt
-        ? (progress - route.startAt) / (route.endAt - route.startAt) : 1
-      const isComplete = arcProg >= 1
-      const points = arcPoints[i]
-      const numPoints = Math.max(2, Math.floor(easeInOut(arcProg) * points.length))
 
+    // ── The whole network, always faintly present ──────────────────────────
+    // Drawing every route at low opacity means a quick glance (or a fast
+    // scroll-past) still reads as "lots of stories criss-crossing the globe",
+    // not a single line waiting to be triggered.
+    arcPoints.forEach((points) => {
       ctx.save()
-      ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
       ctx.beginPath()
       let penDown = false
-      for (let j = 0; j < numPoints; j++) {
+      for (let j = 0; j < points.length; j++) {
         if (!isVisible(points[j], lon, lat)) { penDown = false; continue }
         const p = projection(points[j])
         if (!p) { penDown = false; continue }
         if (!penDown) { ctx.moveTo(p[0], p[1]); penDown = true }
         else ctx.lineTo(p[0], p[1])
       }
-      ctx.strokeStyle = isComplete ? 'rgba(212, 97, 74, 0.4)' : 'rgba(212, 97, 74, 0.9)'
-      ctx.lineWidth = isComplete ? 1.5 : 2.2
-      ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); ctx.restore()
+      ctx.strokeStyle = 'rgba(212, 97, 74, 0.16)'
+      ctx.lineWidth = 1
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke()
+      ctx.restore()
+    })
 
-      if (!isComplete) {
-        const tip = projection(points[numPoints - 1])
+    // ── The current leg, drawn brightly with a travelling comet tip ─────────
+    let curRoute = 0
+    for (let i = 0; i < ROUTES.length; i++) {
+      if (progress >= ROUTES[i].startAt) curRoute = i
+    }
+    const cr = ROUTES[curRoute]
+    const active = progress >= cr.startAt && progress < cr.endAt
+    const arcProg = active
+      ? easeInOut((progress - cr.startAt) / (cr.endAt - cr.startAt))
+      : 1
+    const points = arcPoints[curRoute]
+    const numPoints = Math.max(2, Math.floor(arcProg * points.length))
+
+    ctx.save()
+    ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(212, 97, 74, 0.55)'
+    ctx.beginPath()
+    let penDown = false
+    for (let j = 0; j < numPoints; j++) {
+      if (!isVisible(points[j], lon, lat)) { penDown = false; continue }
+      const p = projection(points[j])
+      if (!p) { penDown = false; continue }
+      if (!penDown) { ctx.moveTo(p[0], p[1]); penDown = true }
+      else ctx.lineTo(p[0], p[1])
+    }
+    ctx.strokeStyle = 'rgba(212, 97, 74, 0.9)'
+    ctx.lineWidth = 2.2
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); ctx.restore()
+
+    if (active) {
+      const tipPt = points[numPoints - 1]
+      if (isVisible(tipPt, lon, lat)) {
+        const tip = projection(tipPt)
         if (tip) {
           ctx.save()
           ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(212, 97, 74, 0.9)'
@@ -283,39 +324,47 @@ export default function Globe({ scrollProgress }: GlobeProps) {
           ctx.fillStyle = '#D4614A'; ctx.fill(); ctx.restore()
         }
       }
-    })
+    }
 
-    // City dots
-    const activated = new Set<number>()
-    if (progress >= 0.05) activated.add(ROUTES[0].from)
-    ROUTES.forEach((route) => {
-      if (progress >= route.startAt) activated.add(route.from)
-      if (progress >= route.endAt) activated.add(route.to)
-    })
-
-    activated.forEach((idx) => {
-      const city = CITIES[idx]
+    // ── City dots: all cities always shown; the current leg's two glow ──────
+    const highlight = new Set<number>([cr.from, cr.to])
+    CITIES.forEach((city, idx) => {
+      if (!isVisible(city.coords, lon, lat)) return
       const p = projection(city.coords)
       if (!p) return
-      const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
+      const isHot = highlight.has(idx)
 
-      ctx.beginPath(); ctx.arc(p[0], p[1], 11 + pulse * 5, 0, Math.PI * 2)
-      ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
+      if (isHot) {
+        const pulse = reducedMotionRef.current ? 0.5 : 0.5 + 0.5 * Math.sin(timestamp * 0.002 + idx * 1.3)
+        ctx.beginPath(); ctx.arc(p[0], p[1], 11 + pulse * 5, 0, Math.PI * 2)
+        ctx.strokeStyle = `rgba(212, 97, 74, ${0.12 + pulse * 0.1})`; ctx.lineWidth = 1; ctx.stroke()
 
-      ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, Math.PI * 2)
-      ctx.strokeStyle = 'rgba(212, 97, 74, 0.55)'; ctx.lineWidth = 1.2; ctx.stroke()
+        ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, Math.PI * 2)
+        ctx.strokeStyle = 'rgba(212, 97, 74, 0.55)'; ctx.lineWidth = 1.2; ctx.stroke()
 
-      ctx.save()
-      ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
-      ctx.beginPath(); ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2)
-      ctx.fillStyle = '#D4614A'; ctx.fill(); ctx.restore()
+        ctx.save()
+        ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(212, 97, 74, 0.7)'
+        ctx.beginPath(); ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2)
+        ctx.fillStyle = '#D4614A'; ctx.fill(); ctx.restore()
 
-      ctx.font = '500 11px "DM Sans", sans-serif'
-      ctx.fillStyle = 'rgba(13, 30, 28, 0.8)'
-      const textW = ctx.measureText(city.name).width
-      const labelX = p[0] + 9 + textW > W - 4 ? p[0] - 9 - textW : p[0] + 9
-      ctx.fillText(city.name, labelX, p[1] + 4)
+        ctx.font = '500 11px "DM Sans", sans-serif'
+        ctx.fillStyle = 'rgba(13, 30, 28, 0.8)'
+        const textW = ctx.measureText(city.name).width
+        const labelX = p[0] + 9 + textW > W - 4 ? p[0] - 9 - textW : p[0] + 9
+        ctx.fillText(city.name, labelX, p[1] + 4)
+      } else {
+        // Quiet marker so the rest of the network still feels populated
+        ctx.beginPath(); ctx.arc(p[0], p[1], 2.5, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(212, 97, 74, 0.4)'; ctx.fill()
+      }
     })
+
+    // ── Report the active stage so the caption can follow ───────────────────
+    const stage = progress < ROUTES[0].startAt ? 0 : curRoute + 1
+    if (stage !== lastStageRef.current) {
+      lastStageRef.current = stage
+      onStageRef.current?.(stage)
+    }
   }, [getArcs])
 
   // The effect owns the render loop (draw stays a pure per-frame function).
@@ -353,8 +402,10 @@ export default function Globe({ scrollProgress }: GlobeProps) {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      style={{ width: '100%', height: '100%', display: 'block', cursor: 'grab', touchAction: 'none' }}
-      aria-label="Interactive globe: drag to spin, click a city dot to explore episodes"
+      // pan-y: vertical touch gestures keep scrolling the page; horizontal
+      // drags spin the globe. So it never blocks the content beneath it.
+      style={{ width: '100%', height: '100%', display: 'block', cursor: 'grab', touchAction: 'pan-y' }}
+      aria-label="Animated globe tracing how insights travel between episode locations. Drag to spin; tap a city to browse episodes."
       role="img"
     />
   )
