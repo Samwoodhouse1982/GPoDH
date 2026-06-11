@@ -48,10 +48,12 @@ export default function LegalNoticePage() {
         </LegalP>
       </LegalSection>
 
-      <LegalSection title="Consulting services">
+      <LegalSection title="Nature of the site & consulting services">
         <LegalP>
-          This is a personal, non-commercial site. Any professional consulting
-          services referenced are provided separately by{' '}
+          Global Perspectives on Digital Health is a personal, non-commercial
+          podcast and content site; it does not itself sell products or services.
+          However, any commercial or consulting activity generated or derived
+          through promotion on this site is carried out by, and forms part of,{' '}
           <strong>SandiQ Global</strong>, a Société par Actions Simplifiée
           Unipersonnelle (SASU) registered in France:
         </LegalP>
