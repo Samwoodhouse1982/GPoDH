@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { PLATFORMS } from '@/lib/constants'
 import reusable from '@/data/site/reusable.json'
@@ -12,14 +12,17 @@ interface Props {
   onClose: () => void
 }
 
+// Apple/Spotify/YouTube deep-link straight into the listener's app, where
+// following is a single tap. RSS is handled separately (copy-to-clipboard)
+// so people never hit a raw XML page.
 const PLATFORM_LINKS: { label: string; href: string }[] = [
   { label: 'Apple Podcasts', href: PLATFORMS.apple },
   { label: 'Spotify', href: PLATFORMS.spotify },
   { label: 'YouTube', href: PLATFORMS.youtube },
-  { label: 'RSS feed (any app)', href: PLATFORMS.rss },
 ]
 
 export default function SubscribeModal({ open, onClose }: Props) {
+  const [copied, setCopied] = useState(false)
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
   // The element that had focus before the modal opened, so we can return
   // keyboard users to it on close.
@@ -37,6 +40,18 @@ export default function SubscribeModal({ open, onClose }: Props) {
     }
     return () => { document.body.style.overflow = '' }
   }, [open])
+
+  const copyFeed = async () => {
+    try {
+      await navigator.clipboard.writeText(PLATFORMS.rss)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    } catch {
+      // Clipboard unavailable (old browser / insecure context) — fall back to
+      // opening the feed so the user can copy it from the address bar.
+      window.open(PLATFORMS.rss, '_blank', 'noopener,noreferrer')
+    }
+  }
 
   useEffect(() => {
     if (!open) return
@@ -141,6 +156,13 @@ export default function SubscribeModal({ open, onClose }: Props) {
               <span aria-hidden="true">&#8599;</span>
             </a>
           ))}
+
+          {/* RSS — copy the feed URL instead of opening raw XML, so people
+              can paste it into any podcast app without leaving the site. */}
+          <button type="button" onClick={copyFeed} className="sub-platform sub-rss" aria-live="polite">
+            {copied ? 'Feed URL copied — paste it into your app' : 'Copy RSS feed (any app)'}
+            <span aria-hidden="true">{copied ? '✓' : '⧉'}</span>
+          </button>
         </div>
 
         {/* Secondary: email updates */}
@@ -160,16 +182,22 @@ export default function SubscribeModal({ open, onClose }: Props) {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
             padding: 0.75rem 1.1rem;
             border: 1px solid var(--accent-coral);
             border-radius: var(--radius-md);
+            background: none;
             color: var(--accent-coral);
+            font-family: inherit;
             font-size: 0.9375rem;
             font-weight: 500;
+            text-align: left;
             text-decoration: none;
+            cursor: pointer;
             transition: var(--transition-base);
           }
           .sub-platform:hover { background: var(--accent-coral); color: var(--bg-primary); }
+          .sub-rss { gap: 0.75rem; }
         `}</style>
       </div>
     </>
