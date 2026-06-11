@@ -13,6 +13,9 @@ interface GlobeProps {
   /** Called with the active leg index (0 = intro, 1..6 = each route) as the
    *  animation advances, so the caption alongside can follow along. */
   onStage?: (index: number) => void
+  /** Bump `nonce` with `dir` +1 / -1 to fast-skip to the next/previous story;
+   *  the globe spins quickly to that destination, then resumes auto-play. */
+  seek?: { dir: number; nonce: number }
 }
 
 // Each city anchors a real episode/video story; the route below traces how
@@ -174,15 +177,37 @@ function getEastwardArc(from: [number, number], to: [number, number], bulge: num
   })
 }
 
-export default function Globe({ onStage }: GlobeProps) {
+export default function Globe({ onStage, seek }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const worldRef = useRef<unknown>(null)
   const arcCacheRef = useRef<Map<string, [number, number][]>>(new Map())
   const reducedMotionRef = useRef(false)
-  const startRef = useRef<number | null>(null)
+  // Current position along the lap, advanced each frame (so it can be both
+  // auto-played and fast-seeked by the prev/next controls).
+  const progressRef = useRef(INITIAL_PROGRESS)
+  const lastTimeRef = useRef<number | null>(null)
+  // Active fast-skip tween (unwrapped from→to over `dur` ms).
+  const seekRef = useRef<{ active: boolean; from: number; to: number; start: number; dur: number }>(
+    { active: false, from: 0, to: 0, start: 0, dur: 700 }
+  )
   const lastStageRef = useRef<number>(-1)
   const onStageRef = useRef<GlobeProps['onStage']>(onStage)
   useEffect(() => { onStageRef.current = onStage }, [onStage])
+
+  // Fast-skip to the next/previous story when the controls bump `seek`.
+  useEffect(() => {
+    if (!seek || seek.dir === 0) return
+    const current = progressRef.current
+    let cur = 0
+    for (let i = 0; i < ROUTES.length; i++) if (current >= ROUTES[i].startAt) cur = i
+    const targetLeg = cur + seek.dir
+    // Unwrapped target progress so the tween travels the short, correct way.
+    let to = ROUTES[((targetLeg % 7) + 7) % 7].startAt + Math.floor(targetLeg / 7)
+    if (seek.dir > 0 && to <= current) to += 1
+    if (seek.dir < 0 && to >= current) to -= 1
+    seekRef.current = { active: true, from: current, to, start: performance.now(), dur: 700 }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seek?.nonce])
 
   // Interaction state — lets a curious visitor nudge the globe without
   // hijacking page scroll (touch vertical pans still scroll the page).
@@ -283,15 +308,26 @@ export default function Globe({ onStage }: GlobeProps) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Continuously looping, time-driven position along the lap (no scroll, no
-    // hold). Frozen under reduced-motion to a single representative frame.
+    // Position along the lap. Normally auto-plays; while a fast-skip is active
+    // it tweens quickly to the target story, then resumes auto-play from there.
+    // Frozen under reduced-motion to a single representative frame.
+    const wrap01 = (x: number) => ((x % 1) + 1) % 1
     let progress: number
     if (reducedMotionRef.current) {
       progress = REDUCED_PROGRESS
     } else {
-      if (startRef.current === null) startRef.current = timestamp - INITIAL_PROGRESS * JOURNEY_MS
-      progress = ((timestamp - startRef.current) % JOURNEY_MS) / JOURNEY_MS
+      const sk = seekRef.current
+      if (sk.active) {
+        const t = Math.min(1, (timestamp - sk.start) / sk.dur)
+        progress = wrap01(sk.from + (sk.to - sk.from) * easeInOut(t))
+        if (t >= 1) sk.active = false
+      } else {
+        const dt = lastTimeRef.current === null ? 0 : timestamp - lastTimeRef.current
+        progress = wrap01(progressRef.current + dt / JOURNEY_MS)
+      }
+      progressRef.current = progress
     }
+    lastTimeRef.current = timestamp
 
     const rect = canvas.getBoundingClientRect()
     const W = rect.width, H = rect.height

@@ -23,7 +23,10 @@ const STAGES = [
 
 export default function GlobeSection() {
   const [stageIdx, setStageIdx] = useState(0)
+  const [seek, setSeek] = useState({ dir: 0, nonce: 0 })
   const stage = STAGES[stageIdx] ?? STAGES[0]
+
+  const skip = (dir: 1 | -1) => setSeek((s) => ({ dir, nonce: s.nonce + 1 }))
 
   return (
     <section
@@ -92,20 +95,44 @@ export default function GlobeSection() {
             </p>
           </div>
 
-          {/* Progress pills — reflect the leg the globe is currently tracing */}
-          <div style={{ display: 'flex', gap: '0.375rem' }} aria-hidden="true">
-            {STAGES.map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: i === stageIdx ? 22 : 6,
-                  height: 5,
-                  borderRadius: 3,
-                  background: i === stageIdx ? 'var(--accent-coral)' : 'rgba(58,104,96,0.2)',
-                  transition: 'width 0.45s ease, background 0.45s ease',
-                }}
-              />
-            ))}
+          {/* Skip controls + progress pills */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button
+              type="button"
+              onClick={() => skip(-1)}
+              aria-label="Previous story"
+              className="globe-skip"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <div style={{ display: 'flex', gap: '0.375rem' }} aria-hidden="true">
+              {STAGES.map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: i === stageIdx ? 22 : 6,
+                    height: 5,
+                    borderRadius: 3,
+                    background: i === stageIdx ? 'var(--accent-coral)' : 'rgba(58,104,96,0.2)',
+                    transition: 'width 0.45s ease, background 0.45s ease',
+                  }}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => skip(1)}
+              aria-label="Next story"
+              className="globe-skip"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </button>
           </div>
 
           {/* CTA */}
@@ -138,9 +165,30 @@ export default function GlobeSection() {
             margin: '0 auto',
           }}
         >
-          <Globe onStage={setStageIdx} />
+          <Globe onStage={setStageIdx} seek={seek} />
         </div>
       </div>
+
+      <style>{`
+        .globe-skip {
+          flex-shrink: 0;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid var(--border);
+          background: var(--bg-card);
+          color: var(--text-secondary);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .globe-skip:hover {
+          border-color: var(--accent-coral);
+          color: var(--accent-coral);
+        }
+      `}</style>
     </section>
   )
 }
