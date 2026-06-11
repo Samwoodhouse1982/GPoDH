@@ -280,9 +280,10 @@ captions are editable), persona SVG icons and card-accent colours, and section
 animations. These live in the components, not the JSON, so editors can't break
 the design.
 
-## 6. Automated video sync (YouTube → PR)
+## 6. Automated video sync (YouTube → master)
 
-New uploads on the channel are pulled in automatically for review.
+New uploads on the channel are pulled in and published automatically; you tidy
+the metadata afterwards in the CMS.
 
 - **`scripts/sync-videos.mjs`** resolves the `@globalpdhpodcast` channel, reads
   its **public RSS feed** (no API key needed), and appends any uploads not
