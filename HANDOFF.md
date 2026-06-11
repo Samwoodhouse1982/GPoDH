@@ -37,11 +37,11 @@ hosted by Dr Shubs Upadhyay. It showcases podcast **episodes**, **videos**
 page, and a contact page. It also funnels toward Shubs' consulting
 (`shubs.me`) and newsletter (Shubstack).
 
-- **Current deployment URL:** **https://g-po-dh.vercel.app** (the Vercel default
+- **Current deployment URL:** **https://gpodh-site.vercel.app** (the Vercel default
   domain). A custom domain (`gpodh.org` / `www.gpodh.org`) may be attached later;
   if so, update the CMS `base_url` and the OAuth callback to match — see
   [§5 CMS](#5-content-management-decap-cms) and [§11 Blockers](#11-known-blockers-gotchas--decisions).
-- **Repository:** `samwoodhouse1982/gpodh` (GitHub), default branch **`master`**.
+- **Repository:** `shubs-me/GPoDH` (GitHub), default branch **`master`**.
 - **Hosting/deploy:** **Vercel** (auto-deploys on push to `master`).
 - **YouTube channel:** https://www.youtube.com/@globalpdhpodcast
 - **Podcast hosting:** Transistor (episode embeds use `share.transistor.fm/e/...`).
@@ -142,14 +142,16 @@ files.
 
 ## 5. Content management (Decap CMS)
 
-A git-based CMS lives at **`/admin`** (currently https://g-po-dh.vercel.app/admin).
+A git-based CMS lives at **`/admin`** (currently https://gpodh-site.vercel.app/admin).
 It edits the JSON data files and commits back to the repo.
 
 ### How it works
 - `public/admin/index.html` loads Decap CMS from a CDN (no build step / npm dep).
 - `public/admin/config.yml` defines:
-  - **backend:** GitHub, repo `samwoodhouse1982/gpodh`, branch `master`,
-    `base_url: https://g-po-dh.vercel.app`, `auth_endpoint: api/auth`.
+  - **backend:** GitHub, repo `shubs-me/GPoDH`, branch `master`,
+    `auth_endpoint: api/auth`. `base_url` is set in the file but **overridden at
+    runtime** by `index.html` to whatever domain `/admin` is opened on (see the
+    domain-handling note in [§11](#11-known-blockers-gotchas--decisions)).
   - **No `publish_mode`** — Decap is in *simple* mode, so hitting **Publish**
     commits straight to `master` and Vercel auto-deploys it to production (no PR
     / Workflow tab). Re-add `publish_mode: editorial_workflow` to restore review.
@@ -452,7 +454,7 @@ each month's numbers into the repo so the history is permanent.
      newsletter. Add subscribers to Substack manually, or repoint the subscribe
      forms at Substack's native signup if you'd rather automate that.
 2. **Domain.** The live deployment is currently served from
-   `https://g-po-dh.vercel.app`, but the code is primed for the canonical domain:
+   `https://gpodh-site.vercel.app`, but the code is primed for the canonical domain:
    the CMS `base_url` and the `SITE_URL` fallback are both set to
    **`https://gpodh.org`**. Complete the cutover in the dashboards (Vercel
    domains + DNS + `NEXT_PUBLIC_SITE_URL` + the OAuth App callback — see §5).
@@ -523,7 +525,7 @@ each month's numbers into the repo so the history is permanent.
 - **Commit messages:** clear, imperative subject + a short body explaining *why*.
   (During the assisted build, commits ended with a Claude session footer link;
   that is optional and can be dropped.)
-- **Do not push to repositories other than `samwoodhouse1982/gpodh`.**
+- **Do not push to repositories other than `shubs-me/GPoDH`.**
 - **Heed `AGENTS.md`:** this Next.js version differs from older training data —
   consult `node_modules/next/dist/docs/` before using unfamiliar Next APIs.
 - **Never commit secrets.** Use Vercel env vars + a password manager.

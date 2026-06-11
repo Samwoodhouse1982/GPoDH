@@ -47,7 +47,7 @@ Have them send you (the person doing the handover) their **GitHub username**.
 
 > You'll also want to know: **is there a custom web address** (like
 > `www.gpodh.org`), or is the site currently living at its temporary Vercel
-> address `https://g-po-dh.vercel.app`? This affects Step 6.
+> address `https://gpodh-site.vercel.app`? This affects Step 6.
 
 ---
 
@@ -55,7 +55,7 @@ Have them send you (the person doing the handover) their **GitHub username**.
 
 This hands over the master copy of the whole website.
 
-1. Go to the repository: **`github.com/samwoodhouse1982/gpodh`**
+1. Go to the repository: **`github.com/shubs-me/GPoDH`**
 2. Click **Settings** (top of the page).
 3. Scroll to the very bottom — the **"Danger Zone"** — and click
    **Transfer ownership**.
@@ -135,7 +135,7 @@ account is no longer involved at all.
    - **Authorization callback URL:** the website's address **followed by**
      `/api/callback`
      *(e.g. `https://www.gpodh.org/api/callback`, or for now
-     `https://g-po-dh.vercel.app/api/callback`)*
+     `https://gpodh-site.vercel.app/api/callback`)*
 3. Click **Register**, copy the **Client ID**, then **Generate a client secret**
    and copy that too.
 4. Paste those two values into Vercel as the two environment variables from
@@ -153,7 +153,7 @@ account is no longer involved at all.
 
 Decide the website's **permanent public address**:
 
-- **Keeping the free Vercel address** (`https://g-po-dh.vercel.app`)? Then
+- **Keeping the free Vercel address** (`https://gpodh-site.vercel.app`)? Then
   nothing to do here — but note the new owner's project will have its *own* Vercel
   address (something like `gpodh-xxxx.vercel.app`). Use that everywhere.
 - **Using a custom domain** (e.g. `www.gpodh.org`)? In the new Vercel project go

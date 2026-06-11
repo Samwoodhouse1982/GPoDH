@@ -7,7 +7,7 @@ publishing them. No coding needed. (Technical details live in `HANDOFF.md`.)
 
 ## Where you edit: the Content Manager
 
-Go to **https://g-po-dh.vercel.app/admin/** and click **Login with GitHub**.
+Go to **https://gpodh-site.vercel.app/admin/** and click **Login with GitHub**.
 *(Tip: include the trailing slash.)*
 
 > **First time only:** the login needs a quick one-time setup (a GitHub "OAuth

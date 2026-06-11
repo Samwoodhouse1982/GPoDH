@@ -12,7 +12,7 @@
 
 backend:
   name: github
-  repo: samwoodhouse1982/gpodh
+  repo: shubs-me/GPoDH
   branch: master
   base_url: https://gpodh.org
   auth_endpoint: api/auth
