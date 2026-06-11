@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { SITE } from '@/lib/constants'
-import { LegalPage, LegalSection, LegalP, legalLinkStyle } from '@/components/ui/LegalPage'
+import { LegalPage, LegalSection, LegalP, legalLinkStyle, legalListStyle } from '@/components/ui/LegalPage'
 
 export const metadata: Metadata = {
   title: 'Legal Notice',
@@ -8,15 +8,11 @@ export const metadata: Metadata = {
     'Legal notice (mentions légales) for Global Perspectives on Digital Health: publisher, publication director and host.',
 }
 
-// ⚠️ French law (LCEN) requires a "mentions légales" page for a site published
-// by someone resident in France. Confirm the details below with a qualified
-// person before publishing — in particular:
-//   • Vercel's exact current registered address + contact (see vercel.com/legal),
-//   • SandiQ's registration number (SIREN/SIRET) and registered office,
-//   • whether Shubs wishes to list a postal address (an individual running a
-//     personal, non-commercial site can keep this minimal; once the site
-//     promotes the SandiQ consulting it leans professional, which raises the
-//     disclosure requirements — worth a quick legal check).
+// French law (LCEN) requires a "mentions légales" page for a site published by
+// someone resident in France. Publisher/host/SandiQ details below were provided
+// from shubs.me/legal. Still worth a final legal check on whether this personal
+// site should itself be treated as commercial (it promotes SandiQ consulting),
+// which can raise the disclosure requirements.
 
 const mail = `mailto:${SITE.email}`
 
@@ -46,10 +42,9 @@ export default function LegalNoticePage() {
 
       <LegalSection title="Hosting">
         <LegalP>
-          The site is hosted by <strong>Vercel Inc.</strong>,{' '}
-          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={legalLinkStyle}>vercel.com</a>{' '}
-          — 340 S Lemon Ave #4133, Walnut, CA 91789, United States.
-          {' '}<span style={{ color: 'var(--text-muted)' }}>[Confirm Vercel&rsquo;s current registered address and contact at vercel.com/legal before publishing.]</span>
+          The site is hosted by <strong>Vercel Inc.</strong>, 340 Pine Street,
+          Suite 700, San Francisco, CA 94104, United States —{' '}
+          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={legalLinkStyle}>vercel.com</a>.
         </LegalP>
       </LegalSection>
 
@@ -57,9 +52,17 @@ export default function LegalNoticePage() {
         <LegalP>
           This is a personal, non-commercial site. Any professional consulting
           services referenced are provided separately by{' '}
-          <strong>SandiQ</strong>, a business registered in France{' '}
-          <span style={{ color: 'var(--text-muted)' }}>[registration number (SIREN/SIRET) and registered office to be added]</span>.
+          <strong>SandiQ Global</strong>, a Société par Actions Simplifiée
+          Unipersonnelle (SASU) registered in France:
         </LegalP>
+        <ul style={legalListStyle}>
+          <li>Registered office: 3 rue Aurélien Scholl, étage 0, 33000 Bordeaux, France</li>
+          <li>SIRET: 944 095 322 00011</li>
+          <li>RCS: Bordeaux 944 095 322</li>
+          <li>Share capital: €1</li>
+          <li>Intra-community VAT: FR50 944 095 322</li>
+          <li>APE/NAF code: 70.22Z (business and management consultancy)</li>
+        </ul>
       </LegalSection>
 
       <LegalSection title="Intellectual property">
