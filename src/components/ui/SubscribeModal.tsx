@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { subscribeEmail } from '@/lib/web3forms'
 import { PLATFORMS } from '@/lib/constants'
 import reusable from '@/data/site/reusable.json'
 
@@ -23,6 +23,11 @@ const PLATFORM_LINKS: { label: string; href: string }[] = [
 
 export default function SubscribeModal({ open, onClose }: Props) {
   const [copied, setCopied] = useState(false)
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [botField, setBotField] = useState('')
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
   // The element that had focus before the modal opened, so we can return
   // keyboard users to it on close.
@@ -41,6 +46,15 @@ export default function SubscribeModal({ open, onClose }: Props) {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
+  // Reset transient state on close so reopening starts fresh.
+  const handleClose = useCallback(() => {
+    setSubmitted(false)
+    setEmail('')
+    setError('')
+    setCopied(false)
+    onClose()
+  }, [onClose])
+
   const copyFeed = async () => {
     try {
       await navigator.clipboard.writeText(PLATFORMS.rss)
@@ -53,12 +67,28 @@ export default function SubscribeModal({ open, onClose }: Props) {
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    if (botField) { setSubmitted(true); return }
+    setLoading(true)
+    setError('')
+    try {
+      await subscribeEmail(email, 'Subscribe pop-up (top nav)')
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (!open) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [open, handleClose])
 
   if (!open) return null
 
@@ -66,7 +96,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
     <>
       {/* Backdrop */}
       <div
-        onClick={onClose}
+        onClick={handleClose}
         style={{
           position: 'fixed',
           inset: 0,
@@ -98,7 +128,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
       >
         {/* Close */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close"
           style={{
             position: 'absolute',
@@ -165,17 +195,94 @@ export default function SubscribeModal({ open, onClose }: Props) {
           </button>
         </div>
 
-        {/* Secondary: email updates */}
-        <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '1.25rem', lineHeight: 1.6 }}>
-          Prefer email?{' '}
-          <Link
-            href="/#subscribe"
-            onClick={onClose}
-            style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
-          >
-            Get new episodes in your inbox &#8594;
-          </Link>
-        </p>
+        {/* Secondary: email capture, inline */}
+        <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
+          {submitted ? (
+            <div role="status" aria-live="polite">
+              <p
+                style={{
+                  fontFamily: 'var(--font-cormorant, var(--font-display))',
+                  fontSize: '1.25rem',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginBottom: '0.375rem',
+                }}
+              >
+                {copy.success.heading}
+              </p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                {copy.success.body}
+              </p>
+            </div>
+          ) : (
+            <>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.625rem' }}>
+                Prefer email? Get new episodes in your inbox.
+              </p>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  name="botcheck"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={botField}
+                  onChange={(e) => setBotField(e.target.value)}
+                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                />
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <input
+                    type="email"
+                    aria-label="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={copy.placeholder}
+                    required
+                    style={{
+                      flex: '1 1 12rem',
+                      minWidth: 0,
+                      padding: '0.6rem 0.85rem',
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 'var(--radius-md)',
+                      color: 'var(--text-primary)',
+                      fontSize: '0.9375rem',
+                      fontFamily: 'inherit',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      padding: '0.6rem 1.1rem',
+                      background: 'var(--accent-coral)',
+                      color: '#fff',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.9375rem',
+                      fontWeight: 500,
+                      cursor: loading ? 'wait' : 'pointer',
+                      opacity: loading ? 0.7 : 1,
+                      border: 'none',
+                      whiteSpace: 'nowrap',
+                      transition: 'background var(--transition-fast)',
+                    }}
+                  >
+                    {loading ? copy.submittingLabel : copy.submitLabel}
+                  </button>
+                </div>
+              </form>
+              {error && (
+                <p role="alert" style={{ fontSize: '0.8125rem', color: 'var(--accent-coral)', marginTop: '0.5rem' }}>
+                  {error}
+                </p>
+              )}
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                {copy.note}
+              </p>
+            </>
+          )}
+        </div>
 
         <style>{`
           .sub-platform {
