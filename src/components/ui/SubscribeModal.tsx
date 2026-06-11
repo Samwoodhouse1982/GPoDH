@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { subscribeEmail } from '@/lib/web3forms'
+import { useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { PLATFORMS } from '@/lib/constants'
 import reusable from '@/data/site/reusable.json'
 
@@ -12,13 +12,15 @@ interface Props {
   onClose: () => void
 }
 
+const PLATFORM_LINKS: { label: string; href: string }[] = [
+  { label: 'Apple Podcasts', href: PLATFORMS.apple },
+  { label: 'Spotify', href: PLATFORMS.spotify },
+  { label: 'YouTube', href: PLATFORMS.youtube },
+  { label: 'RSS feed (any app)', href: PLATFORMS.rss },
+]
+
 export default function SubscribeModal({ open, onClose }: Props) {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [botField, setBotField] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const firstLinkRef = useRef<HTMLAnchorElement>(null)
   // The element that had focus before the modal opened, so we can return
   // keyboard users to it on close.
   const previousFocusRef = useRef<HTMLElement | null>(null)
@@ -27,7 +29,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
     if (open) {
       previousFocusRef.current = document.activeElement as HTMLElement | null
       document.body.style.overflow = 'hidden'
-      setTimeout(() => inputRef.current?.focus(), 80)
+      setTimeout(() => firstLinkRef.current?.focus(), 80)
     } else {
       document.body.style.overflow = ''
       previousFocusRef.current?.focus()
@@ -42,22 +44,6 @@ export default function SubscribeModal({ open, onClose }: Props) {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
-    if (botField) { setSubmitted(true); return }
-    setLoading(true)
-    setError('')
-    try {
-      await subscribeEmail(email, 'Subscribe pop-up (top nav)')
-      setSubmitted(true)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (!open) return null
 
@@ -80,7 +66,7 @@ export default function SubscribeModal({ open, onClose }: Props) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Subscribe"
+        aria-label="Subscribe to the podcast"
         style={{
           position: 'fixed',
           top: '50%',
@@ -115,147 +101,76 @@ export default function SubscribeModal({ open, onClose }: Props) {
           ✕
         </button>
 
-        {submitted ? (
-          <div role="status" aria-live="polite">
-            <p
-              style={{
-                fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: '1.75rem',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                marginBottom: '0.625rem',
-              }}
+        <p
+          style={{
+            fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+            fontSize: '0.625rem',
+            letterSpacing: '0.12em',
+            color: 'var(--accent-coral)',
+            textTransform: 'uppercase',
+            marginBottom: '0.75rem',
+          }}
+        >
+          {copy.eyebrow}
+        </p>
+        <p
+          style={{
+            fontFamily: 'var(--font-cormorant, var(--font-display))',
+            fontSize: '1.75rem',
+            fontWeight: 600,
+            color: 'var(--text-primary)',
+            lineHeight: 1.2,
+            marginBottom: '1.5rem',
+          }}
+        >
+          {copy.heading}
+        </p>
+
+        {/* Podcast platforms */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+          {PLATFORM_LINKS.map((p, i) => (
+            <a
+              key={p.label}
+              ref={i === 0 ? firstLinkRef : undefined}
+              href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sub-platform"
             >
-              {copy.success.heading}
-            </p>
-            <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-              {copy.success.body}
-            </p>
-          </div>
-        ) : (
-          <>
-            <p
-              style={{
-                fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                fontSize: '0.625rem',
-                letterSpacing: '0.12em',
-                color: 'var(--accent-coral)',
-                textTransform: 'uppercase',
-                marginBottom: '0.75rem',
-              }}
-            >
-              {copy.eyebrow}
-            </p>
-            <p
-              style={{
-                fontFamily: 'var(--font-cormorant, var(--font-display))',
-                fontSize: '1.75rem',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                lineHeight: 1.2,
-                marginBottom: '1.5rem',
-              }}
-            >
-              {copy.heading}
-            </p>
+              {p.label}
+              <span aria-hidden="true">&#8599;</span>
+            </a>
+          ))}
+        </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input
-                type="text"
-                name="botcheck"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                value={botField}
-                onChange={(e) => setBotField(e.target.value)}
-                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
-              />
-              <input
-                ref={inputRef}
-                type="email"
-                aria-label="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={copy.placeholder}
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-md)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.9375rem',
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box',
-                }}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  padding: '0.75rem 1.5rem',
-                  background: 'var(--accent-coral)',
-                  color: '#fff',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '0.9375rem',
-                  fontWeight: 500,
-                  cursor: loading ? 'wait' : 'pointer',
-                  opacity: loading ? 0.7 : 1,
-                  border: 'none',
-                  transition: 'background var(--transition-fast)',
-                }}
-              >
-                {loading ? copy.submittingLabel : copy.submitLabel}
-              </button>
-            </form>
+        {/* Secondary: email updates */}
+        <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '1.25rem', lineHeight: 1.6 }}>
+          Prefer email?{' '}
+          <Link
+            href="/#subscribe"
+            onClick={onClose}
+            style={{ color: 'var(--accent-coral)', textDecoration: 'none', fontWeight: 500 }}
+          >
+            Get new episodes in your inbox &#8594;
+          </Link>
+        </p>
 
-            {error && (
-              <p role="alert" style={{ fontSize: '0.8125rem', color: 'var(--accent-coral)', marginTop: '0.75rem' }}>
-                {error}
-              </p>
-            )}
-
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.875rem' }}>
-              {copy.note}
-            </p>
-
-            {/* Or follow the podcast directly in a podcast app */}
-            <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
-              <p
-                style={{
-                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
-                  fontSize: '0.625rem',
-                  letterSpacing: '0.12em',
-                  color: 'var(--text-muted)',
-                  textTransform: 'uppercase',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                Or follow the podcast
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <a className="sub-follow" href={PLATFORMS.apple} target="_blank" rel="noopener noreferrer">Apple</a>
-                <a className="sub-follow" href={PLATFORMS.spotify} target="_blank" rel="noopener noreferrer">Spotify</a>
-                <a className="sub-follow" href={PLATFORMS.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
-                <a className="sub-follow" href={PLATFORMS.rss} target="_blank" rel="noopener noreferrer">RSS feed</a>
-              </div>
-              <style>{`
-                .sub-follow {
-                  padding: 0.35rem 0.85rem;
-                  border: 1px solid var(--accent-coral);
-                  border-radius: var(--radius-md);
-                  color: var(--accent-coral);
-                  font-size: 0.8125rem;
-                  font-weight: 500;
-                  text-decoration: none;
-                  transition: var(--transition-base);
-                }
-                .sub-follow:hover { background: var(--accent-coral); color: var(--bg-primary); }
-              `}</style>
-            </div>
-          </>
-        )}
+        <style>{`
+          .sub-platform {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.1rem;
+            border: 1px solid var(--accent-coral);
+            border-radius: var(--radius-md);
+            color: var(--accent-coral);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition-base);
+          }
+          .sub-platform:hover { background: var(--accent-coral); color: var(--bg-primary); }
+        `}</style>
       </div>
     </>
   )

@@ -12,8 +12,8 @@
     }
   },
   "subscribeModal": {
-    "eyebrow": "Join the conversation",
-    "heading": "Get new episodes direct to your inbox.",
+    "eyebrow": "Subscribe",
+    "heading": "Follow the show wherever you listen.",
     "placeholder": "your@email.com",
     "submitLabel": "Subscribe",
     "submittingLabel": "Subscribing…",
@@ -51,7 +51,12 @@
     "heroImage": "/shubs-podcasting.jpg",
     "heroAlt": "Shubs interviewing a guest at HLTH Conference",
     "bio": "Shubs is a physician, digital health strategist, and the founder of this podcast. He trained in medicine in the UK and has spent the past decade working at the intersection of clinical practice, health technology, and global health systems.\n\nHis consulting work takes him across health systems in Sub-Saharan Africa, South Asia, the Middle East, and beyond. He has advised health ministries, large NGOs, digital health startups, and institutional investors on strategy, evidence, and implementation.\n\nHe started GPODH because the conversations he was having privately deserved a much wider audience. He noticed that the same founders, the same researchers, the same clinicians kept saying the same thing: nobody is talking about this publicly, and nobody outside our region seems to care.\n\nThis podcast is his attempt to fix that.",
-    "credentials": ["Physician", "Digital Health Strategist", "Consultant", "Podcast Host"],
+    "credentials": [
+      "Physician",
+      "Digital Health Strategist",
+      "Consultant",
+      "Podcast Host"
+    ],
     "siteLinkText": "Visit shubs.me →",
     "siteUrl": "https://www.shubs.me",
     "linkedinLabel": "LinkedIn ↗",
