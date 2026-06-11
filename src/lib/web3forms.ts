@@ -3,16 +3,19 @@
 // One shared access key powers every form on the site (contact + the three
 // email-capture forms). They are told apart in the inbox by the `subject` field.
 //
-// The key lives in NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY — Web3Forms access keys are
-// *public by design* (they sit in the client-side HTML), so exposing it via a
-// NEXT_PUBLIC var is expected and safe. Set it in Vercel (Project → Settings →
-// Environment Variables) and in `.env.local` for local dev, then redeploy.
+// Web3Forms access keys are *public by design* (they sit in the client-side
+// HTML and can only deliver to the inbox configured on web3forms.com), so the
+// live key is committed here as the default. It can still be overridden without
+// a code change by setting NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in Vercel
+// (Project → Settings → Environment Variables) — e.g. to point at a new inbox.
 //
 // See HANDOFF §"Forms / Web3Forms" for the full setup walkthrough.
 
 const ENDPOINT = 'https://api.web3forms.com/submit'
 
-export const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? ''
+const DEFAULT_KEY = 'f71cdb29-7aca-430d-9363-b2074160e8b2'
+
+export const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || DEFAULT_KEY
 
 export type Web3FormsFields = Record<string, string | undefined>
 
