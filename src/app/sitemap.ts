@@ -8,7 +8,7 @@ import { videos } from '@/lib/videos'
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
 
-  const staticPages = ['', '/episodes', '/videos', '/work-with-us', '/resources', '/contact', '/privacy'].map(
+  const staticPages = ['', '/episodes', '/videos', '/work-with-us', '/resources', '/contact', '/privacy', '/terms', '/legal'].map(
     (path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: now,

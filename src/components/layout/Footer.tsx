@@ -162,12 +162,16 @@ export default function Footer() {
         >
           {footer.copyright}
           {' · '}
-          <Link
-            href="/privacy"
-            className="footer-link"
-            style={{ color: 'var(--text-muted)', textDecoration: 'none' }}
-          >
+          <Link href="/privacy" className="footer-link" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
             Privacy &amp; cookies
+          </Link>
+          {' · '}
+          <Link href="/terms" className="footer-link" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+            Terms
+          </Link>
+          {' · '}
+          <Link href="/legal" className="footer-link" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+            Legal notice
           </Link>
         </p>
       </div>
