@@ -126,7 +126,7 @@ export default function FeaturedEpisodeBanner({ episode }: FeaturedEpisodeBanner
           </span>
         </Link>
 
-        {/* Browse-more panel — the right quarter */}
+        {/* Browse-more — the right quarter: just a coral arrow + label, no box */}
         <Link
           href="/episodes"
           className="featured-more"
@@ -137,22 +137,17 @@ export default function FeaturedEpisodeBanner({ episode }: FeaturedEpisodeBanner
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.75rem',
-            background: 'var(--bg-card)',
-            border: '1px dashed var(--border-accent)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '1.5rem',
             textDecoration: 'none',
             color: 'inherit',
-            boxShadow: 'var(--shadow-card)',
-            transition: 'var(--transition-slow)',
             textAlign: 'center',
           }}
         >
           <span
             aria-hidden="true"
+            className="featured-more-arrow"
             style={{
-              width: '44px',
-              height: '44px',
+              width: '52px',
+              height: '52px',
               borderRadius: '50%',
               background: 'var(--accent-coral)',
               color: '#fff',
@@ -160,9 +155,10 @@ export default function FeaturedEpisodeBanner({ episode }: FeaturedEpisodeBanner
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              transition: 'transform var(--transition-fast), background var(--transition-fast)',
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </span>
@@ -177,9 +173,6 @@ export default function FeaturedEpisodeBanner({ episode }: FeaturedEpisodeBanner
           >
             More episodes
           </span>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
-            Browse the full series
-          </span>
         </Link>
       </div>
 
@@ -192,10 +185,9 @@ export default function FeaturedEpisodeBanner({ episode }: FeaturedEpisodeBanner
         .featured-banner:hover .featured-banner-cta {
           background: var(--accent-coral-dim) !important;
         }
-        .featured-more:hover {
-          transform: translateY(-3px);
-          border-color: var(--accent-coral) !important;
-          box-shadow: var(--shadow-elevated) !important;
+        .featured-more:hover .featured-more-arrow {
+          transform: translateX(3px);
+          background: var(--accent-coral-dim) !important;
         }
       `}</style>
     </section>
