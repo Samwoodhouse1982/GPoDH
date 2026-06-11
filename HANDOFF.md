@@ -411,7 +411,7 @@ each month's numbers into the repo so the history is permanent.
 ## 11. Known blockers, gotchas & decisions
 
 1. **Forms — wired to Web3Forms.** The contact form and all three email-capture
-   forms (`EmailSignup`, `EmailSignupTile`, `SubscribeModal`) submit through
+   surfaces (`EmailSignup`, `EmailSignupTile`, `SubscribeModal`) submit through
    **Web3Forms** via `src/lib/web3forms.ts`. They share **one access key**, set
    as **`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`** (Web3Forms keys are public by
    design). Submissions are told apart in the inbox by their `subject`
@@ -422,13 +422,24 @@ each month's numbers into the repo so the history is permanent.
    (`EmailSignupTile`), or `Subscribe pop-up (top nav)` (`SubscribeModal`). Pass
    a new label as the 2nd arg to `subscribeEmail(email, source)` to track
    another placement.
+   - **Subscribe pop-up (`SubscribeModal`) is dual-purpose.** Besides the inline
+     email signup, it leads with **"follow the show"** options: deep links to
+     Apple Podcasts / Spotify / YouTube (from `PLATFORMS` in
+     `src/lib/constants.ts`) plus a **"Copy RSS feed"** button that copies the
+     feed URL to the clipboard (falling back to opening the feed if the Clipboard
+     API is unavailable) so listeners can subscribe in any app without leaving
+     the site. There is no true one-click "subscribe" a website can perform — the
+     follow action always happens in the listener's own app; email is the only
+     on-site capture. Modal copy lives in `reusable.json` under `subscribeModal`
+     (the `placeholder`/`submitLabel`/`note`/`success` fields drive the email
+     form; `eyebrow`/`heading` are the panel headers).
    - **Setup:** create a key at <https://web3forms.com> (enter the destination
      email), then set `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in Vercel (Project →
      Settings → Environment Variables) **and** redeploy. For local dev, copy
      `.env.example` → `.env.local` and fill it in. **Until the key is set, the
      forms show an error on submit** rather than silently faking success.
    - ⚠️ **Subscribe = email-to-inbox, not a mailing list.** Web3Forms just emails
-     you each new subscriber; it does **not** add them to Shubstack or send the
+     you each new subscriber; it does **not** add them to Substack or send the
      newsletter. Add subscribers to Substack manually, or repoint the subscribe
      forms at Substack's native signup if you'd rather automate that.
 2. **Domain.** The live deployment is currently served from
