@@ -7,6 +7,7 @@
       "description": "At HIMSS Europe, I got together with some fantastic podcasters who care about what matters in healthcare. What are some things we need to do better on implementing tech and AI in healthcare? With Valentine Kamau of @AIHealthBeatPodcast , Tjasa Zjac of@facesofdigitalhealth and Claire Murigande from @NarrativesofPurpose",
       "youtubeVideoId": "B5cfqh6bOWg",
       "date": "Jun 2026",
+      "category": "panel",
       "tags": [
         "AI",
         "Digital Health",
@@ -22,6 +23,7 @@
       "description": "Whilst it is true that in low resource settings, access is a challenge and therefore more likely that the benefits outweight risks compared to the baseline, developers still need to to take a responsible approach on building the right way. Joe Alderman shares his insights ont he gpodh.org podcast. Get the full insights here on what it takes to create AI for underserved communities.…",
       "youtubeVideoId": "kCn4rThjr90",
       "date": "Apr 2026",
+      "category": "clip",
       "tags": [
         "AI",
         "LMIC",
@@ -37,6 +39,7 @@
       "description": "Echo Vanderwal of The Luke Commission in Eswatini talks about how they built a locally maintained drone system to help deliver vital medicines like snake antivenom and other critical medicines to people when they needed them. The impact was incredible. That year, they reduced snakebite deaths (previously a near certainty) to ZERO in the country.…",
       "youtubeVideoId": "L5zR6Zx2UgA",
       "date": "Oct 2025",
+      "category": "talk",
       "tags": [
         "Global Health",
         "Last Mile",
@@ -52,6 +55,7 @@
       "description": "Founder, Aral Surmeli talks about the challenges building HERA digital health, a digital tool for Syrian refugees in Turkey. Aral talks about how HERA were affected by the USAID funding cuts and stop work order in Feb 2025. Check out the full episode, full of real talk and insight : https://www.youtube.com/watch?v=l_p3zJGFKf0",
       "youtubeVideoId": "uP-YgITNdQ4",
       "date": "Sep 2025",
+      "category": "clip",
       "tags": [
         "Refugees",
         "Founders",
