@@ -1810,7 +1810,8 @@
       ],
       "artworkUrl": "/guests/echo-vanderwal.webp",
       "id": "14",
-      "description": "What can a tiny country enveloped by South Africa teach the world about digital health done right? Echo Vanderwal shares how The Luke Commission built healthcare for those who needed it most - from telehealth hubs in shipping containers and drone delivery of antivenom, to a bespoke clinician-centred EHR - all anchored in clear values and a vision of what great care actually looks like."
+      "description": "What can a tiny country enveloped by South Africa teach the world about digital health done right? Echo Vanderwal shares how The Luke Commission built healthcare for those who needed it most - from telehealth hubs in shipping containers and drone delivery of antivenom, to a bespoke clinician-centred EHR - all anchored in clear values and a vision of what great care actually looks like.",
+      "bio": "Echo Vanderwal is a visionary leader in global health who has spearheaded innovative health and development solutions to serve isolated and underserved patients. Under her leadership, The Luke Commission (TLC) has delivered comprehensive healthcare services through more than 1.5 million patient visits in Eswatini since 2005. TLC's Miracle Campus, in the centre of Eswatini, includes a national referral hospital providing primary to tertiary care, Africa's largest PSA oxygen plant, a world-class snakebite treatment unit, and the globally recognised Training and Leadership Center of Excellence for deepening and extending a culture of compassionate care.\n\nEcho's passionate advocacy for equitable healthcare access has led to TLC's international recognition for addressing systemic challenges throughout the HIV epidemic and the COVID-19 pandemic. Her commitment to aligning technology with community continues to shape public health, with plans to scale TLC's impact globally through strategic collaborations and scalable innovations."
     },
     {
       "topics": [
@@ -1976,7 +1977,8 @@
           "time": "48:40",
           "label": "Recommendations to innovators about healthcare regulation"
         }
-      ]
+      ],
+      "bio": "Dr Bilal Mateen is the Executive Director of Digital Square at PATH. A physician by training, he has an academic interest in health-related applications of data science and machine learning. He holds an honorary professorial appointment at University College London and a clinical data science fellowship at the Alan Turing Institute — the UK's national institute for data science and AI. He served as the clinical technology lead and senior manager for digital technology at the Wellcome Trust, where his team worked on funding digital public goods and the software infrastructure that underpins the science to address three key health challenges: mental health, the impacts of climate change on human health, and emerging and escalating infectious diseases."
     },
     {
       "topics": [
@@ -2053,7 +2055,8 @@
       ],
       "artworkUrl": "/guests/dr-xiao-liu.jpg",
       "id": "9",
-      "description": "A crucial conversation on one of the most pressing issues in global digital health: health data poverty. What it is, why it matters, and how we might begin to address it."
+      "description": "A crucial conversation on one of the most pressing issues in global digital health: health data poverty. What it is, why it matters, and how we might begin to address it.",
+      "bio": "Dr Xiaoxuan (Xiao, pronounced \"Shau\") Liu is an Honorary Associate Professor in AI and Digital Health at the University of Birmingham, Principal Scientist and Health Research Lead at Microsoft AI, and a Deputy Editor at NEJM AI.\n\nShe was appointed a 125th Anniversary Fellow at the University of Birmingham in August 2024 following her significant contributions to internationally adopted evidence standards and policy for AI and health. Before this, she was an ophthalmology doctor in the NHS and a Health Scientist at Apple.\n\nDr Liu's work focuses on the responsible innovation of AI health technologies, seeking to ensure they are safe, effective and equitable. Projects she has previously led include:\n\n- **Improving the evidence** — developing internationally adopted reporting guidelines for AI clinical trials (SPIRIT-AI and CONSORT-AI), and contributing to other AI reporting standards including TRIPOD+AI, STARD-AI and DECIDE-AI; as well as defining standards for NICE (the Digital Health Technologies Evidence Standards Framework), in collaboration with Imperial College London and the Alan Turing Institute.\n- **Improving safety** — developing tools for assessing the safety of AI-enabled medical devices: the Medical Algorithmic Audit and CANAIRI (Collaboration for Translational AI Trials), and working directly with medical device regulators such as the MHRA.\n- **Improving equity and fairness** — tackling algorithmic bias and improving the transparency and diversity of health datasets to mitigate AI-driven health inequalities, through STANDING Together.\n- **Improving global health** — conducting real-world trials of generative AI and large language models to assist community health workers in resource-limited settings, in collaboration with PATH.\n\nDr Liu works with a range of academic, industry and policy institutions around the world. She supports the UK NIHR Incubator for AI & Digital Healthcare and the NHS AI and Digital Regulatory Services, and serves as a board member for the MHRA's AI Airlock — the regulatory sandbox for AI as a Medical Device."
     }
   ]
 }

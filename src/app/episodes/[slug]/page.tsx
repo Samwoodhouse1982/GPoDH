@@ -8,6 +8,7 @@ import EmailSignup from '@/components/sections/EmailSignup'
 import TranscriptToggle from '@/components/ui/TranscriptToggle'
 import RelatedEpisodes from '@/components/ui/RelatedEpisodes'
 import ShareButtons from '@/components/ui/ShareButtons'
+import RichText from '@/components/ui/RichText'
 import EpisodePlayer from '@/components/ui/EpisodePlayer'
 import { episodes } from '@/lib/episodes'
 import { PLATFORMS, SITE, SITE_URL } from '@/lib/constants'
@@ -661,7 +662,7 @@ export default async function EpisodePage({ params }: Props) {
               </p>
             </div>
             <div>
-              <p
+              <RichText
                 style={{
                   fontSize: '0.9375rem',
                   color: 'var(--text-secondary)',
@@ -670,7 +671,7 @@ export default async function EpisodePage({ params }: Props) {
                 }}
               >
                 {episode.bio}
-              </p>
+              </RichText>
               {episode.guestLinkedIn && (
                 <a
                   href={withUtm(episode.guestLinkedIn, { campaign: 'episode', content: 'guest-linkedin' })}
