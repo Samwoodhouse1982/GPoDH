@@ -4,9 +4,11 @@
 # and src/app/api/callback). You will need a GitHub OAuth App and two env vars
 # in Vercel: GITHUB_OAUTH_CLIENT_ID and GITHUB_OAUTH_CLIENT_SECRET.
 #
-# IMPORTANT: set base_url to your canonical production origin (the same domain
-# you open /admin on). Update the GitHub OAuth App callback URL to match
-# <base_url>/api/callback.
+# NOTE: base_url below is overridden at runtime by public/admin/index.html to
+# whatever domain /admin is opened on (gpodh.org, a *.vercel.app URL, or a
+# preview), so the OAuth handshake always stays on one origin. The value here is
+# just a fallback. Whichever domain you use, the GitHub OAuth App must list
+# <that-domain>/api/callback as an Authorization callback URL.
 
 backend:
   name: github

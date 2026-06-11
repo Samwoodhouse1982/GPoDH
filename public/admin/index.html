@@ -10,6 +10,25 @@
   </head>
   <body>
     <!-- Decap CMS (formerly Netlify CMS) loaded from CDN — no build step needed. -->
+    <script>
+      // Don't auto-init; we override one setting first (below).
+      window.CMS_MANUAL_INIT = true
+    </script>
     <script src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script>
+      // Run the GitHub OAuth handshake against whatever domain /admin is opened
+      // on — the production gpodh.org domain, a *.vercel.app deployment URL, or a
+      // preview — instead of the single base_url hardcoded in config.yml. The
+      // /api/auth route derives its redirect_uri from the same request origin, so
+      // the whole login stays on one domain and can't 404 on a mismatch.
+      //
+      // This object is merged over config.yml (repo, branch, collections, etc.
+      // still come from the file); we only override backend.base_url.
+      window.CMS.init({
+        config: {
+          backend: { base_url: window.location.origin },
+        },
+      })
+    </script>
   </body>
 </html>

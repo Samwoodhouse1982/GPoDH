@@ -177,11 +177,19 @@ It edits the JSON data files and commits back to the repo.
 - **"Appears at the top":** new entries are appended; **drag them to the top** of
   the list so they show first in list order. The homepage banner / featured video
   use the **`featured`** boolean regardless of position.
-- `base_url` in `config.yml` and the OAuth callback URL **must match the domain
-  you actually open `/admin` on.** Both are now set to the canonical
-  `https://gpodh.org`, so once DNS points at Vercel and the OAuth App callback is
-  `https://gpodh.org/api/callback`, open `/admin` **on `gpodh.org`** (not the
-  `*.vercel.app` URL, or login will fail).
+- **Domain handling (important during a Vercel/domain move).** `public/admin/index.html`
+  now overrides `base_url` at runtime to **whatever domain you open `/admin` on**
+  (gpodh.org, a `*.vercel.app` deployment URL, or a preview), so the login no
+  longer has to happen only on gpodh.org. The remaining requirement is the
+  **GitHub OAuth App callback URL**: it must list `<that-domain>/api/callback`.
+  GitHub OAuth Apps allow several callback URLs, so add both the `*.vercel.app`
+  URL and `https://gpodh.org/api/callback` while the domain cutover is in
+  progress. (Symptom if this is wrong: GitHub login shows, then a 404
+  *"API endpoint could not be found"* — that's the callback hitting a domain
+  that isn't serving this app, or one the OAuth App doesn't allow.)
+- And, as always, set `GITHUB_OAUTH_CLIENT_ID` / `GITHUB_OAUTH_CLIENT_SECRET`
+  on **the Vercel project you're actually deploying** (a brand-new project does
+  not inherit them) and **redeploy** before testing `/admin`.
 
 ### ↩️ Undo recent changes — `/admin/undo`
 Because publishing now goes straight to production with no PR review, there is a
