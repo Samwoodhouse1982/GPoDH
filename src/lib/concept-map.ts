@@ -74,7 +74,7 @@ export const CONCEPT_MAP: [string[], string[]][] = [
   ],
   [
     ['refugee', 'refugees', 'displaced', 'humanitarian', 'migrant', 'asylum', 'stateless'],
-    ['refugee', 'displaced', 'humanitarian', 'migrant', 'asylum', 'statelessness', 'identity', 'displacement', 'camp', 'syria', 'icrc', 'conflict', 'crisis'],
+    ['refugee', 'displaced', 'humanitarian', 'migrant', 'asylum', 'statelessness', 'identity', 'displacement', 'camp', 'syria', 'syrian', 'turkey', 'türkiye', 'hera', 'icrc', 'conflict', 'crisis'],
   ],
   [
     ['identity', 'digital identity', 'id'],
@@ -189,6 +189,20 @@ export const CONCEPT_MAP: [string[], string[]][] = [
   [
     ['disability', 'accessibility', 'inclusive design', 'assistive technology'],
     ['disability', 'accessibility', 'inclusive design', 'assistive technology', 'inclusion', 'universal design', 'visual impairment', 'hearing', 'screen reader', 'wheelchair', 'rehabilitation', 'neurodiversity'],
+  ],
+  // ── Grounded in the newer video transcripts (drones/Eswatini, refugee
+  //    founders, low-resource AI, the HIMSS hot-takes roundtable).
+  [
+    ['drone', 'drones', 'uav', 'uavs', 'aerial delivery', 'unmanned', 'medical drone'],
+    ['drone', 'uav', 'unmanned aerial', 'aerial delivery', 'last mile delivery', 'medical delivery', 'medicine delivery', 'zipline', 'logistics', 'distribution', 'supply chain', 'cold chain', 'remote delivery', 'isolated communities'],
+  ],
+  [
+    ['snakebite', 'snake bite', 'antivenom', 'anti-venom', 'envenoming', 'neglected tropical disease', 'ntd', 'ntds'],
+    ['snakebite', 'antivenom', 'envenoming', 'snake', 'black mamba', 'venom', 'neurotoxic', 'neglected tropical disease', 'ntd', 'rabies', 'tropical disease', 'referral hospital', 'emergency care'],
+  ],
+  [
+    ['conference', 'conferences', 'summit', 'forum', 'event', 'himss', 'hlth', 'keynote'],
+    ['conference', 'summit', 'forum', 'himss', 'himss europe', 'hlth', 'hlth europe', 'global digital health forum', 'gdhf', 'health ai forum', 'keynote', 'panel', 'roundtable', 'hot takes', 'expo', 'networking'],
   ],
 ]
 
