@@ -1,5 +1,5 @@
 interface PlatformBadgeProps {
-  platform: 'apple' | 'spotify' | 'youtube'
+  platform: 'apple' | 'spotify' | 'youtube' | 'rss'
   href: string
 }
 
@@ -7,6 +7,7 @@ const platformLabels: Record<PlatformBadgeProps['platform'], string> = {
   apple: 'Apple Podcasts',
   spotify: 'Spotify',
   youtube: 'YouTube',
+  rss: 'RSS feed',
 }
 
 export default function PlatformBadge({ platform, href }: PlatformBadgeProps) {

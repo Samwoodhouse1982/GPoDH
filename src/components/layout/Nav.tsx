@@ -228,6 +228,7 @@ export default function Nav() {
             <a href={PLATFORMS.apple} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Apple Podcasts</a>
             <a href={PLATFORMS.spotify} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>Spotify</a>
             <a href={PLATFORMS.youtube} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>YouTube</a>
+            <a href={PLATFORMS.rss} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-coral)', fontSize: '0.875rem' }}>RSS feed</a>
           </div>
         </div>
       )}

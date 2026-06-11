@@ -15,7 +15,8 @@
   "platforms": {
     "apple": "https://podcasts.apple.com/us/podcast/id1744026517?mt=2&ls=1",
     "spotify": "https://open.spotify.com/show/15zbPaJeOknH1qZNL4Spau",
-    "youtube": "https://www.youtube.com/@globalpdhpodcast"
+    "youtube": "https://www.youtube.com/@globalpdhpodcast",
+    "rss": "https://feeds.transistor.fm/global-perspectives-digital-health"
   },
   "social": {
     "linkedin": "https://www.linkedin.com/in/dr-shubs-upadhyay-494691132/",

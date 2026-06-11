@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { subscribeEmail } from '@/lib/web3forms'
+import { PLATFORMS } from '@/lib/constants'
 import reusable from '@/data/site/reusable.json'
 
 const copy = reusable.subscribeModal
@@ -218,6 +219,41 @@ export default function SubscribeModal({ open, onClose }: Props) {
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.875rem' }}>
               {copy.note}
             </p>
+
+            {/* Or follow the podcast directly in a podcast app */}
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm-mono, var(--font-mono))',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                Or follow the podcast
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <a className="sub-follow" href={PLATFORMS.apple} target="_blank" rel="noopener noreferrer">Apple</a>
+                <a className="sub-follow" href={PLATFORMS.spotify} target="_blank" rel="noopener noreferrer">Spotify</a>
+                <a className="sub-follow" href={PLATFORMS.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a className="sub-follow" href={PLATFORMS.rss} target="_blank" rel="noopener noreferrer">RSS feed</a>
+              </div>
+              <style>{`
+                .sub-follow {
+                  padding: 0.35rem 0.85rem;
+                  border: 1px solid var(--accent-coral);
+                  border-radius: var(--radius-md);
+                  color: var(--accent-coral);
+                  font-size: 0.8125rem;
+                  font-weight: 500;
+                  text-decoration: none;
+                  transition: var(--transition-base);
+                }
+                .sub-follow:hover { background: var(--accent-coral); color: var(--bg-primary); }
+              `}</style>
+            </div>
           </>
         )}
       </div>

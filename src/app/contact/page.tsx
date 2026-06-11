@@ -269,6 +269,7 @@ export default function ContactPage() {
                   <PlatformBadge platform="apple" href={PLATFORMS.apple} />
                   <PlatformBadge platform="spotify" href={PLATFORMS.spotify} />
                   <PlatformBadge platform="youtube" href={PLATFORMS.youtube} />
+                  <PlatformBadge platform="rss" href={PLATFORMS.rss} />
                 </div>
               </div>
 

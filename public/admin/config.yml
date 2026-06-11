@@ -60,6 +60,7 @@ collections:
               - { name: apple, label: Apple Podcasts URL, widget: string }
               - { name: spotify, label: Spotify URL, widget: string }
               - { name: youtube, label: YouTube URL, widget: string }
+              - { name: rss, label: RSS feed URL, widget: string, required: false }
           - name: social
             label: Social links
             widget: object

@@ -100,6 +100,7 @@ export default function Footer() {
               <PlatformBadge platform="apple" href={PLATFORMS.apple} />
               <PlatformBadge platform="spotify" href={PLATFORMS.spotify} />
               <PlatformBadge platform="youtube" href={PLATFORMS.youtube} />
+              <PlatformBadge platform="rss" href={PLATFORMS.rss} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <a
