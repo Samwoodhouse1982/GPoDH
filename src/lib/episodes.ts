@@ -5,6 +5,14 @@ export interface Timestamp {
   label: string
 }
 
+// One guest's face in the floating face cloud on /episodes. Used to give a
+// multi-guest episode several individual faces instead of one combined photo.
+export interface GuestFace {
+  name: string
+  artworkUrl: string
+  artworkPosition?: string   // CSS object-position override, e.g. 'top center'
+}
+
 export interface Episode {
   id: string
   slug: string
@@ -16,6 +24,8 @@ export interface Episode {
   duration?: string
   description: string
   artworkUrl?: string
+  artworkPosition?: string   // CSS object-position override for the single Guest photo
+  guestFaces?: GuestFace[]   // multi-guest: individual faces shown in the /episodes cloud
   themes: string[]
   country: string
   tags: string[]

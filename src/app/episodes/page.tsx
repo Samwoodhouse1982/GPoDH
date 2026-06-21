@@ -16,17 +16,20 @@ export default function EpisodesPage() {
   const episodeCount = episodes.length
 
   const speakers = episodes
-    .filter((e) => !!e.artworkUrl)
+    .filter((e) => !!e.artworkUrl || (e.guestFaces?.length ?? 0) > 0)
     .sort((a, b) => (Number(b.episodeNumber) || 0) - (Number(a.episodeNumber) || 0))
     .flatMap((e) => {
-      // Episode 9 has a combined photo — expand into individual entries
-      if (e.slug === 'policy-insights-from-the-rwanda-ministry-of-health-and-find') {
-        return [
-          { slug: e.slug, guest: 'Rigveda Kadam', artworkUrl: '/guests/rigveda-kadam.jpg' },
-          { slug: e.slug, guest: 'Andrew Muhire', artworkUrl: '/guests/andrew-muhire.jpg' },
-        ]
+      // Multi-guest episodes list individual faces in `guestFaces` (set in the
+      // CMS); these replace the single combined photo in the floating cloud.
+      if (e.guestFaces?.length) {
+        return e.guestFaces.map((g) => ({
+          slug: e.slug,
+          guest: g.name,
+          artworkUrl: g.artworkUrl,
+          artworkPosition: g.artworkPosition,
+        }))
       }
-      return [{ slug: e.slug, guest: e.guest, artworkUrl: e.artworkUrl! }]
+      return [{ slug: e.slug, guest: e.guest, artworkUrl: e.artworkUrl!, artworkPosition: e.artworkPosition }]
     })
 
   return (

@@ -156,6 +156,21 @@ collections:
               - { name: duration, label: 'Duration (e.g. 1hr 8min)', widget: string, required: false }
               - { name: description, label: Description, widget: text }
               - { name: artworkUrl, label: Guest photo, widget: image, required: false, choose_url: true }
+              - name: guestFaces
+                label: 'Extra guest faces (multi-guest episodes only)'
+                widget: list
+                required: false
+                summary: '{{fields.name}}'
+                hint: >-
+                  Only for episodes with more than one guest. Add one row per
+                  guest (including the first) with their own photo — these
+                  individual faces replace the single Guest photo above in the
+                  floating face cloud on the Episodes page. Leave empty for
+                  single-guest episodes.
+                fields:
+                  - { name: name, label: Guest name, widget: string }
+                  - { name: artworkUrl, label: Photo, widget: image, choose_url: true }
+                  - { name: artworkPosition, label: 'Photo position (optional, e.g. top center)', widget: string, required: false }
               - { name: country, label: Country, widget: string }
               - name: themes
                 label: Themes

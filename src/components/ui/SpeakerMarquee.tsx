@@ -7,6 +7,7 @@ interface Speaker {
   slug: string
   guest: string
   artworkUrl: string
+  artworkPosition?: string   // CSS object-position override for tall/unusual crops
 }
 
 interface Props {
@@ -181,9 +182,8 @@ export default function SpeakerMarquee({ speakers }: Props) {
         const NICK: Record<string, string> = { Alexandre: 'Alex' }
         const firstName = s.guest.replace(/^(Dr\.?|Prof\.?)\s*/i, '').split(' ')[0]
         const shortName = NICK[firstName] ?? firstName
-        // Per-guest object-position overrides for tall/unusual crops
-        const OBJ_POS: Record<string, string> = { 'Andrew Muhire': 'top center' }
-        const objectPosition = OBJ_POS[s.guest] ?? 'center center'
+        // Crop override comes from the data (per-guest), no hardcoding needed
+        const objectPosition = s.artworkPosition ?? 'center center'
 
         return (
           <div
