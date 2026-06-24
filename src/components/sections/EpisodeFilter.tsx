@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useRef, useEffect, useCallback, Fragment } from 'react'
+import { useState, useMemo, useRef, useEffect, useCallback, useDeferredValue, Fragment } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Fuse from 'fuse.js'
@@ -27,6 +27,9 @@ interface Suggestion {
 
 export default function EpisodeFilter({ episodes, allThemes, allCountries }: EpisodeFilterProps) {
   const [query, setQuery] = useState('')
+  // The input stays bound to `query` so typing is instant; the expensive search
+  // recompute reads `deferredQuery`, which React lets lag behind under load.
+  const deferredQuery = useDeferredValue(query)
   const [activeTheme, setActiveTheme] = useState<string | null>(null)
   const [activeCountry, setActiveCountry] = useState<string | null>(null)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
@@ -49,13 +52,14 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           { name: 'tags',              weight: 0.12 },
           { name: 'guestRole',         weight: 0.12 },
           { name: 'country',           weight: 0.12 },
-          // Deeper content — transcripts and page copy. Low weights so a
-          // strong title/guest match still ranks above a passing transcript
-          // mention, but a word only ever *spoken* is still findable.
+          // Deeper page copy. Low weights so a strong title/guest match still
+          // ranks above a passing mention.
           { name: 'pullQuote',         weight: 0.10 },
           { name: 'timestamps.label',  weight: 0.10 },
           { name: 'bio',               weight: 0.07 },
-          { name: 'transcript',        weight: 0.05 },
+          // NB: `transcript` is deliberately NOT indexed here. Fuzzy-scanning
+          // ~800KB of transcript per search term froze the page; transcripts are
+          // matched separately via a cheap exact-substring pass (see `filtered`).
         ],
         threshold: 0.38,
         includeScore: true,
@@ -65,10 +69,16 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     [episodes]
   )
 
+  // Lowercased transcripts, prepared once, for the cheap exact-substring pass.
+  const transcriptIndex = useMemo(
+    () => episodes.map((ep) => ({ id: ep.id, text: (ep.transcript ?? '').toLowerCase() })),
+    [episodes]
+  )
+
   // ── Semantic expansion for current query ─────────────────────────────────
   const { terms: expandedTerms, concepts: matchedConcepts } = useMemo(
-    () => expandQuery(query),
-    [query]
+    () => expandQuery(deferredQuery),
+    [deferredQuery]
   )
 
   // ── Full filtered results (used for the episode grid) ────────────────────
@@ -83,29 +93,37 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     const epNum = (ep: Episode) =>
       typeof ep.episodeNumber === 'number' ? ep.episodeNumber : parseFloat(String(ep.episodeNumber)) || 0
 
-    if (!query.trim()) return [...base].sort((a, b) => epNum(b) - epNum(a))
+    if (!deferredQuery.trim()) return [...base].sort((a, b) => epNum(b) - epNum(a))
 
-    // Run a Fuse search for each expanded term, collect scored ids
+    // Score each episode: a fuzzy Fuse match on the light fields, plus a cheap
+    // exact-substring match in the transcript. Both are bounded by the capped
+    // number of expanded terms, so a keystroke can no longer block the page.
     const scoreMap = new Map<string, number>()
     expandedTerms.forEach((term, i) => {
-      const results = fuse.search(term)
-      results.forEach(({ item, score }) => {
-        const s = 1 - (score ?? 1)
-        // Decay bonus for synonym terms so original query terms rank higher
-        const weight = i === 0 ? 1 : 0.55
-        const existing = scoreMap.get(item.id) ?? 0
-        scoreMap.set(item.id, Math.max(existing, s * weight))
+      // Decay bonus for synonym terms so original query terms rank higher
+      const weight = i === 0 ? 1 : 0.55
+      fuse.search(term).forEach(({ item, score }) => {
+        const s = (1 - (score ?? 1)) * weight
+        scoreMap.set(item.id, Math.max(scoreMap.get(item.id) ?? 0, s))
       })
+      // Transcript depth: exact mentions only (cheap), ranked below field hits.
+      if (term.length >= 3) {
+        transcriptIndex.forEach(({ id, text }) => {
+          if (text.includes(term)) {
+            scoreMap.set(id, Math.max(scoreMap.get(id) ?? 0, 0.3 * weight))
+          }
+        })
+      }
     })
 
     return base
       .filter((ep) => scoreMap.has(ep.id))
       .sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0))
-  }, [episodes, query, expandedTerms, fuse, activeTheme, activeCountry])
+  }, [episodes, deferredQuery, expandedTerms, fuse, transcriptIndex, activeTheme, activeCountry])
 
   // ── Live suggestions (for dropdown) ──────────────────────────────────────
   const suggestions = useMemo((): Suggestion[] => {
-    if (!query.trim() || query.trim().length < 2) return []
+    if (!deferredQuery.trim() || deferredQuery.trim().length < 2) return []
 
     const sugs: Suggestion[] = []
 
@@ -126,7 +144,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     })
 
     // Matching themes
-    const q = query.toLowerCase()
+    const q = deferredQuery.toLowerCase()
     allThemes
       .filter((t) => t.toLowerCase().includes(q) && t !== activeTheme)
       .slice(0, 3)
@@ -135,7 +153,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       })
 
     return sugs.slice(0, 7)
-  }, [query, filtered, matchedConcepts, allThemes, activeTheme])
+  }, [deferredQuery, filtered, matchedConcepts, allThemes, activeTheme])
 
   // ── Close dropdown on outside click ──────────────────────────────────────
   useEffect(() => {

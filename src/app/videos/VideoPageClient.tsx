@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo, useRef, useEffect, Fragment } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect, useDeferredValue, Fragment } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Fuse from 'fuse.js'
@@ -24,6 +24,9 @@ export default function VideoPageClient() {
 
   // ── Search state ──────────────────────────────────────────────────────────
   const [query, setQuery] = useState('')
+  // Input stays bound to `query` (instant typing); the expensive search reads
+  // `deferredQuery`, which React lets lag behind under load.
+  const deferredQuery = useDeferredValue(query)
   const [activeCategory, setActiveCategory] = useState<VideoCategory | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIdx, setHighlightedIdx] = useState(-1)
@@ -31,35 +34,35 @@ export default function VideoPageClient() {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // ── Fuse instance ─────────────────────────────────────────────────────────
-  // Augment each video with its transcript so search can match words spoken
-  // in the video, not just the title/tags/description.
-  const searchDocs = useMemo(
-    () => videos.map((v) => ({ ...v, transcript: v.transcript ?? videoTranscripts[v.slug] ?? '' })),
+  // Lowercased transcripts (CMS field, falling back to the legacy per-slug
+  // store), prepared once for the cheap exact-substring pass. They are NOT put
+  // in the Fuse index: fuzzy-scanning ~1.3MB of transcript per term froze the
+  // page on every keystroke.
+  const transcriptIndex = useMemo(
+    () => videos.map((v) => ({ id: v.id, text: (v.transcript ?? videoTranscripts[v.slug] ?? '').toLowerCase() })),
     []
   )
 
   const fuse = useMemo(
     () =>
-      new Fuse(searchDocs, {
+      new Fuse(videos, {
         keys: [
           { name: 'title',       weight: 0.45 },
           { name: 'tags',        weight: 0.30 },
           { name: 'description', weight: 0.25 },
-          // Full transcript — low weight so a strong title/tag match still wins.
-          { name: 'transcript',  weight: 0.05 },
         ],
         threshold: 0.38,
         includeScore: true,
         ignoreLocation: true,
         minMatchCharLength: 2,
       }),
-    [searchDocs]
+    []
   )
 
   // ── Semantic expansion ────────────────────────────────────────────────────
   const { terms: expandedTerms, concepts: matchedConcepts } = useMemo(
-    () => expandQuery(query),
-    [query]
+    () => expandQuery(deferredQuery),
+    [deferredQuery]
   )
 
   // ── Filtered results ──────────────────────────────────────────────────────
@@ -68,18 +71,26 @@ export default function VideoPageClient() {
       ? videos.filter(v => v.category === activeCategory)
       : videos
 
-    if (!query.trim()) {
+    if (!deferredQuery.trim()) {
       const trailer = videos.find(v => v.id === TRAILER_ID)
       return trailer ? [trailer, ...base.filter(v => v.id !== TRAILER_ID)] : base
     }
 
     const scoreMap = new Map<string, number>()
     expandedTerms.forEach((term, i) => {
+      const weight = i === 0 ? 1 : 0.55
       fuse.search(term).forEach(({ item, score }) => {
-        const s = 1 - (score ?? 1)
-        const weight = i === 0 ? 1 : 0.55
-        scoreMap.set(item.id, Math.max(scoreMap.get(item.id) ?? 0, s * weight))
+        const s = (1 - (score ?? 1)) * weight
+        scoreMap.set(item.id, Math.max(scoreMap.get(item.id) ?? 0, s))
       })
+      // Transcript depth: cheap exact match only, ranked below field hits.
+      if (term.length >= 3) {
+        transcriptIndex.forEach(({ id, text }) => {
+          if (text.includes(term)) {
+            scoreMap.set(id, Math.max(scoreMap.get(id) ?? 0, 0.3 * weight))
+          }
+        })
+      }
     })
 
     const scored = base
@@ -88,7 +99,7 @@ export default function VideoPageClient() {
 
     const trailer = videos.find(v => v.id === TRAILER_ID)
     return trailer ? [trailer, ...scored.filter(v => v.id !== TRAILER_ID)] : scored
-  }, [query, expandedTerms, fuse, activeCategory])
+  }, [deferredQuery, expandedTerms, fuse, transcriptIndex, activeCategory])
 
   // ── Surprise me — opens a random video in a modal ────────────────────────
   const surprise = useCallback(() => {
@@ -107,7 +118,7 @@ export default function VideoPageClient() {
   }
 
   const suggestions = useMemo((): Suggestion[] => {
-    if (!query.trim() || query.trim().length < 2) return []
+    if (!deferredQuery.trim() || deferredQuery.trim().length < 2) return []
     const sugs: Suggestion[] = []
     matchedConcepts.forEach(c => {
       sugs.push({ type: 'concept', label: `Expanding search to: ${c} and related terms` })
@@ -116,7 +127,7 @@ export default function VideoPageClient() {
       sugs.push({ type: 'video', label: v.title, sublabel: v.date, slug: v.slug })
     })
     return sugs.slice(0, 7)
-  }, [query, filteredVideos, matchedConcepts])
+  }, [deferredQuery, filteredVideos, matchedConcepts])
 
   // ── Close dropdown on outside click / close modal on Escape ─────────────
   useEffect(() => {
