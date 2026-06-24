@@ -12,7 +12,7 @@ import { videoTranscripts } from '@/lib/video-transcripts'
 import { expandQuery } from '@/lib/concept-map'
 
 
-const ALL_CATEGORIES: VideoCategory[] = ['talk', 'panel', 'explainer', 'clip']
+const ALL_CATEGORIES: VideoCategory[] = ['talk', 'panel', 'explainer', 'clip', 'hot-take']
 const TRAILER_ID = '29' // Always pinned to first grid position
 
 export default function VideoPageClient() {

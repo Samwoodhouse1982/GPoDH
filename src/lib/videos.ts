@@ -1,6 +1,6 @@
 import videosData from '@/data/videos.json'
 
-export type VideoCategory = 'talk' | 'panel' | 'explainer' | 'clip'
+export type VideoCategory = 'talk' | 'panel' | 'explainer' | 'clip' | 'hot-take'
 
 export interface Video {
   id: string
@@ -36,4 +36,5 @@ export const CATEGORY_LABELS: Record<VideoCategory, string> = {
   panel:     'Panel',
   explainer: 'Explainer',
   clip:      'Clip',
+  'hot-take': 'Hot take',
 }

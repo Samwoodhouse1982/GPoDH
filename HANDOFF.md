@@ -303,7 +303,7 @@ the metadata afterwards in the CMS.
   demand via *Actions → Run workflow*), then **commits any new videos straight to
   `master`**, so they go live automatically the day they're published.
 - **You tidy up afterwards in the CMS (still live):** set the `category`
-  (`talk`/`panel`/`explainer`/`clip`) and `tags`, tidy the description, and
+  (`talk`/`panel`/`explainer`/`clip`/`hot-take`) and `tags`, tidy the description, and
   optionally paste a `transcript`. New entries appear uncategorised until then.
 
 ### Required GitHub settings for the commit step

@@ -228,7 +228,7 @@ collections:
                 label: Category
                 widget: select
                 required: false
-                options: ['talk', 'panel', 'explainer', 'clip']
+                options: ['talk', 'panel', 'explainer', 'clip', 'hot-take']
               - { name: duration, label: 'Duration (e.g. 12:34)', widget: string, required: false }
               - { name: description, label: Description, widget: text }
               - name: tags

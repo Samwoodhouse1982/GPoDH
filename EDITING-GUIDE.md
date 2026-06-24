@@ -71,7 +71,7 @@ To finish a video (or add one by hand):
 2. Find the new video (or click **Add videos** to create one and drag it to the top).
 3. Fill in / check:
    - **Title**, **Slug**, **ID**, **YouTube video ID** (the part after `watch?v=`), **Date**.
-   - **Category** — choose `talk`, `panel`, `explainer`, or `clip`.
+   - **Category** — choose `talk`, `panel`, `explainer`, `clip`, or `hot-take`.
    - **Tags** — add a few (these help search and browsing).
    - **Description**.
    - **Transcript** — optional, but if you paste one it's **included in search**.
