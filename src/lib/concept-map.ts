@@ -211,6 +211,17 @@ export interface ConceptExpansion {
   concepts: string[]
 }
 
+// A query is expanded through the concept map only when it clearly *references*
+// a concept — an exact word the user typed, a full multi-word phrase contained
+// in the query, or (once the query is long enough to be specific) a typeahead
+// prefix. The previous version also matched when a concept word merely
+// *contained* the query (every trigger contains the letter "a"…), so a 1–2
+// character query expanded into 500+ terms and each one drove a full fuzzy
+// transcript scan — freezing the page on the first keystroke. MAX_EXPANSION_TERMS
+// is a final backstop so expansion can never blow up the per-keystroke work.
+const MAX_EXPANSION_TERMS = 12
+const MIN_PREFIX_LENGTH = 4
+
 /**
  * Expand a raw query into the original term plus any related vocabulary from
  * the concept map, and the list of matched concept labels (for UI hints).
@@ -219,20 +230,32 @@ export function expandQuery(raw: string): ConceptExpansion {
   const q = raw.toLowerCase().trim()
   if (!q) return { terms: [], concepts: [] }
 
+  const words = new Set(q.split(/\s+/).filter(Boolean))
+
+  // Does this trigger/synonym phrase genuinely appear in the user's query?
+  const phraseMatches = (phrase: string): boolean => {
+    // An exact word the user typed ("kenya", "ai", "vc")…
+    if (words.has(phrase)) return true
+    // …a full multi-word phrase contained in the query ("community health")…
+    if (phrase.includes(' ') && q.includes(phrase)) return true
+    // …or a typeahead prefix, but only once the query is specific enough that
+    // it can't match almost everything (this guard is what prevents the freeze).
+    if (q.length >= MIN_PREFIX_LENGTH && phrase.startsWith(q)) return true
+    return false
+  }
+
   const extraTerms = new Set<string>()
   const matchedConcepts: string[] = []
 
   for (const [triggers, synonyms] of CONCEPT_MAP) {
-    const hit = triggers.some((t) => q.includes(t) || t.includes(q))
-    const synHit = !hit && synonyms.some((s) => q.includes(s) || (s.length > 3 && s.startsWith(q)))
-    if (hit || synHit) {
+    if (triggers.some(phraseMatches) || synonyms.some(phraseMatches)) {
       matchedConcepts.push(triggers[0])
       synonyms.forEach((s) => extraTerms.add(s))
     }
   }
 
   return {
-    terms: [q, ...Array.from(extraTerms)],
+    terms: [q, ...Array.from(extraTerms).slice(0, MAX_EXPANSION_TERMS)],
     concepts: matchedConcepts,
   }
 }
