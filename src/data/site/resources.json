@@ -206,12 +206,6 @@
           "subgroup": "Philanthropic Foundations"
         },
         {
-          "label": "USAID Digital Development",
-          "description": "USAID's digital development team funds and supports digital tools and infrastructure in developing countries. Their Digital Strategy sets the framework.",
-          "url": "https://www.usaid.gov/digital-development",
-          "subgroup": "Governmental & Bilateral"
-        },
-        {
           "label": "IDRC: International Development Research Centre",
           "description": "Canadian public funder supporting research-based solutions in developing countries. Strong portfolio in digital health, AI for development, and data systems.",
           "url": "https://idrc.ca/",
@@ -226,7 +220,7 @@
         {
           "label": "World Bank Digital Development Partnership",
           "description": "A multi-donor trust fund supporting countries in developing digital infrastructure and policies. Useful for government and systems-level digital health projects.",
-          "url": "https://www.worldbank.org/en/programs/digital-development-partnership",
+          "url": "https://www.worldbank.org/ext/en/home",
           "subgroup": "Multilateral"
         },
         {
