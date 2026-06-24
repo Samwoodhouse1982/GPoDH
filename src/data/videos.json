@@ -1,29 +1,21 @@
 {
   "videos": [
     {
-      "id": "36",
-      "slug": "hot-takes-hlth-health-inequities",
-      "title": "Hot Takes HLTH  Health inequities",
-      "description": "GPODH.org went on the road to HLTH Europe in June 2026. Here's part 1 of Hot takes, talking about what we need to do better on in the digital health industry. What antipatterns we need to change and act better on. I took aside some of the fantastic folks at our digital health inequities session to get their hot takes. Prof Jenny Shand, health economist at UCL spoke about value and the ROI case.…",
-      "youtubeVideoId": "DQpPO1Lytxw",
-      "date": "Jun 2026",
-      "tags": []
-    },
-    {
-      "id": "35",
       "slug": "himss-hot-takes-doing-better-with-ai-in-healthcare",
-      "title": "HIMSS hot takes: doing better with AI in healthcare",
-      "description": "At HIMSS Europe, I got together with some fantastic podcasters who care about what matters in healthcare. What are some things we need to do better on implementing tech and AI in healthcare? With Valentine Kamau of @AIHealthBeatPodcast , Tjasa Zjac of@facesofdigitalhealth and Claire Murigande from @NarrativesofPurpose",
-      "youtubeVideoId": "B5cfqh6bOWg",
+      "featured": true,
       "date": "Jun 2026",
-      "category": "panel",
+      "youtubeVideoId": "B5cfqh6bOWg",
+      "title": "HIMSS hot takes: doing better with AI in healthcare",
       "tags": [
         "AI",
         "Digital Health",
         "Hot Takes",
         "Implementation",
         "HIMSS Europe"
-      ]
+      ],
+      "id": "35",
+      "description": "At HIMSS Europe, I got together with some fantastic podcasters who care about what matters in healthcare. What are some things we need to do better on implementing tech and AI in healthcare? With Valentine Kamau of @AIHealthBeatPodcast , Tjasa Zjac of@facesofdigitalhealth and Claire Murigande from @NarrativesofPurpose",
+      "category": "panel"
     },
     {
       "id": "34",
@@ -502,19 +494,19 @@
       ]
     },
     {
-      "id": "29",
-      "slug": "trailer",
-      "title": "Trailer: Global Perspectives on Digital Health Podcast",
-      "description": "An introduction to the Global Perspectives on Digital Health podcast,who it is for, what it covers, and why these conversations matter.",
-      "youtubeVideoId": "ABmm7iO9sDc",
       "thumbnailUrl": "/shubs.webp",
-      "thumbnailPosition": "center 20%",
+      "slug": "trailer",
       "date": "Apr 2025",
-      "category": "clip",
+      "youtubeVideoId": "ABmm7iO9sDc",
+      "thumbnailPosition": "center 20%",
+      "title": "Trailer: Global Perspectives on Digital Health Podcast",
       "tags": [
         "Trailer",
         "GPODH"
-      ]
+      ],
+      "id": "29",
+      "description": "An introduction to the Global Perspectives on Digital Health podcast,who it is for, what it covers, and why these conversations matter.",
+      "category": "clip"
     },
     {
       "id": "30",
