@@ -21,10 +21,15 @@ backend:
 media_folder: public/guests
 public_folder: /guests
 
-# Publish directly: hitting "Publish" in the CMS commits straight to the
-# `branch` above (master), which Vercel auto-deploys to production. There is no
-# pull-request review step. To re-enable a review queue (the "Workflow" tab),
-# add back:  publish_mode: editorial_workflow
+# Review queue: with publish_mode below, hitting "Publish" sends the change
+# through Decap's editorial workflow (the "Workflow" tab) — it opens a pull
+# request to `master` instead of committing directly, so every edit can be
+# reviewed (and an accidental deletion caught) before Vercel deploys it. This
+# also guards videos.json against the daily YouTube sync and a CMS save racing
+# on the same file: the change arrives as a reviewable PR rather than silently
+# overwriting the bot's just-added video. Edit one draft per collection at a
+# time (each collection is a single file). Remove this line for direct publish.
+publish_mode: editorial_workflow
 
 collections:
   - name: content
