@@ -31,7 +31,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   // The input stays bound to `query` so typing is instant; the expensive search
   // recompute reads `deferredQuery`, which React lets lag behind under load.
   const deferredQuery = useDeferredValue(query)
-  const [activeTheme, setActiveTheme] = useState<string | null>(null)
+  const [activeThemes, setActiveThemes] = useState<string[]>([])
   const [activeCountry, setActiveCountry] = useState<string | null>(null)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -88,7 +88,8 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   const filtered = useMemo(() => {
     // Theme/country filters apply regardless
     const base = episodes.filter((ep) => {
-      if (activeTheme && !ep.themes.includes(activeTheme)) return false
+      // Multi-select topics: keep an episode if it matches ANY selected theme.
+      if (activeThemes.length > 0 && !ep.themes.some((t) => activeThemes.includes(t))) return false
       if (activeCountry && ep.country !== activeCountry) return false
       return true
     })
@@ -122,7 +123,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     return base
       .filter((ep) => scoreMap.has(ep.id))
       .sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0))
-  }, [episodes, deferredQuery, expandedTerms, fuse, transcriptIndex, activeTheme, activeCountry])
+  }, [episodes, deferredQuery, expandedTerms, fuse, transcriptIndex, activeThemes, activeCountry])
 
   // ── Live suggestions (for dropdown) ──────────────────────────────────────
   const suggestions = useMemo((): Suggestion[] => {
@@ -149,14 +150,14 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     // Matching themes
     const q = deferredQuery.toLowerCase()
     allThemes
-      .filter((t) => t.toLowerCase().includes(q) && t !== activeTheme)
+      .filter((t) => t.toLowerCase().includes(q) && !activeThemes.includes(t))
       .slice(0, 3)
       .forEach((t) => {
         sugs.push({ type: 'theme', label: t, theme: t })
       })
 
     return sugs.slice(0, 7)
-  }, [deferredQuery, filtered, matchedConcepts, allThemes, activeTheme])
+  }, [deferredQuery, filtered, matchedConcepts, allThemes, activeThemes])
 
   // ── Close dropdown on outside click ──────────────────────────────────────
   useEffect(() => {
@@ -215,7 +216,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
         e.preventDefault()
         const sug = suggestions[highlightedIdx]
         if (sug.type === 'theme' && sug.theme) {
-          setActiveTheme(sug.theme)
+          setActiveThemes((prev) => (prev.includes(sug.theme!) ? prev : [...prev, sug.theme!]))
           setQuery('')
         } else if (sug.type === 'concept') {
           // keep query, just close
@@ -234,7 +235,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
     return [...allThemes].sort((a, b) => (counts.get(b) ?? 0) - (counts.get(a) ?? 0)).slice(0, 10)
   }, [episodes, allThemes])
 
-  const hasFilters = query || activeTheme || activeCountry
+  const hasFilters = query || activeThemes.length > 0 || activeCountry
 
   return (
     <div>
@@ -382,7 +383,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
                       key={`theme-${sug.theme}`}
                       onMouseEnter={() => setHighlightedIdx(i)}
                       onClick={() => {
-                        setActiveTheme(sug.theme!)
+                        setActiveThemes((prev) => (prev.includes(sug.theme!) ? prev : [...prev, sug.theme!]))
                         setQuery('')
                         setShowSuggestions(false)
                       }}
@@ -513,12 +514,13 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
             {topThemes.map((theme) => {
-              const active = activeTheme === theme
+              const active = activeThemes.includes(theme)
               const hovered = hoveredTheme === theme
               return (
                 <button
                   key={theme}
-                  onClick={() => setActiveTheme(active ? null : theme)}
+                  aria-pressed={active}
+                  onClick={() => setActiveThemes((prev) => (active ? prev.filter((t) => t !== theme) : [...prev, theme]))}
                   onMouseEnter={() => setHoveredTheme(theme)}
                   onMouseLeave={() => setHoveredTheme(null)}
                   style={{
@@ -579,7 +581,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
           </p>
           {hasFilters && (
             <button
-              onClick={() => { setQuery(''); setActiveTheme(null); setActiveCountry(null) }}
+              onClick={() => { setQuery(''); setActiveThemes([]); setActiveCountry(null) }}
               style={{ fontSize: '0.8125rem', color: 'var(--accent-coral)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-dm-sans, sans-serif)' }}
             >
               Clear filters
@@ -788,7 +790,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
             No episodes match your search.
           </p>
           <button
-            onClick={() => { setQuery(''); setActiveTheme(null); setActiveCountry(null) }}
+            onClick={() => { setQuery(''); setActiveThemes([]); setActiveCountry(null) }}
             style={{ fontSize: '0.875rem', color: 'var(--accent-coral)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-dm-sans, sans-serif)' }}
           >
             Clear all filters
