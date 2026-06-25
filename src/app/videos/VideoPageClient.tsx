@@ -185,6 +185,14 @@ export default function VideoPageClient() {
           .search-row { flex-direction: column; align-items: stretch; }
           .search-row .surprise-btn { width: 100%; justify-content: center; }
         }
+        /* Trim the featured video's vertical footprint on phones (desktop unchanged). */
+        @media (max-width: 768px) {
+          .featured-section { padding-top: 2.25rem !important; padding-bottom: 2.5rem !important; }
+          .featured-label-row { margin-bottom: 1.1rem !important; }
+          .featured-grid { gap: 1.4rem !important; }
+          .featured-content { gap: 0.85rem !important; }
+          .featured-desc { -webkit-line-clamp: 2 !important; }
+        }
         .watch-btn:hover { background: var(--accent-coral-dim) !important; }
         .featured-play-ring:hover { transform: scale(1.1); }
         .surprise-btn:hover { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.5) !important; }
@@ -330,11 +338,11 @@ export default function VideoPageClient() {
       </section>
 
       {/* ——— Featured ——— */}
-      <section style={{ padding: '4rem var(--gutter) 5rem' }}>
+      <section className="featured-section" style={{ padding: '4rem var(--gutter) 5rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
 
           {/* Label row */}
-          <div style={{ marginBottom: '2rem' }}>
+          <div className="featured-label-row" style={{ marginBottom: '2rem' }}>
             <p style={{
               fontFamily: 'var(--font-dm-mono, var(--font-mono))',
               fontSize: '0.6875rem',
@@ -347,7 +355,7 @@ export default function VideoPageClient() {
           </div>
 
           {/* Two-column layout */}
-          <div style={{
+          <div className="featured-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))',
             gap: '3rem',
@@ -414,7 +422,7 @@ export default function VideoPageClient() {
             </Link>
 
             {/* Content */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div className="featured-content" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <p style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.6875rem',
@@ -436,7 +444,7 @@ export default function VideoPageClient() {
                 {featured.title}
               </h2>
 
-              <p style={{
+              <p className="featured-desc" style={{
                 fontSize: '0.9375rem',
                 color: 'var(--text-secondary)',
                 lineHeight: 1.7,
