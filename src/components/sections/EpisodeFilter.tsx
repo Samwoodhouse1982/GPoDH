@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Fuse from 'fuse.js'
 import EpisodeCard from '@/components/ui/EpisodeCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
+import SurpriseRoller from '@/components/ui/SurpriseRoller'
 import { Episode } from '@/lib/episodes'
 import { expandQuery } from '@/lib/concept-map'
 
@@ -36,6 +37,8 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIdx, setHighlightedIdx] = useState(-1)
   const [surpriseEpisode, setSurpriseEpisode] = useState<Episode | null>(null)
+  const [rolling, setRolling] = useState(false)
+  const rollTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -171,12 +174,29 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
   }, [])
 
   // ── Surprise me ──────────────────────────────────────────────────────────
+  const surpriseLabels = useMemo(() => episodes.map((ep) => ep.title), [episodes])
+
   const surprise = useCallback(() => {
     const pool = filtered.length > 0 ? filtered : episodes
+    if (pool.length === 0) return
     setSurpriseEpisode(pool[Math.floor(Math.random() * pool.length)])
+    // Roll the dice for a beat before revealing the pick.
+    setRolling(true)
+    if (rollTimer.current) clearTimeout(rollTimer.current)
+    const reduce =
+      typeof window !== 'undefined' &&
+      !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    rollTimer.current = setTimeout(() => setRolling(false), reduce ? 120 : 900)
   }, [filtered, episodes])
 
-  const closeSurprise = useCallback(() => setSurpriseEpisode(null), [])
+  const closeSurprise = useCallback(() => {
+    if (rollTimer.current) clearTimeout(rollTimer.current)
+    setRolling(false)
+    setSurpriseEpisode(null)
+  }, [])
+
+  // Clear any pending reveal timer on unmount.
+  useEffect(() => () => { if (rollTimer.current) clearTimeout(rollTimer.current) }, [])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -664,6 +684,10 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
               position: 'relative',
             }}
           >
+            {rolling ? (
+              <SurpriseRoller labels={surpriseLabels} caption="Picking an episode…" />
+            ) : (
+            <>
             {/* Transistor embed or artwork header */}
             {surpriseEpisode.transistorUrl ? (
               <div style={{ padding: '1.5rem 1.5rem 0' }}>
@@ -723,6 +747,8 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
                 </button>
               </div>
             </div>
+            </>
+            )}
 
             {/* Close */}
             <button

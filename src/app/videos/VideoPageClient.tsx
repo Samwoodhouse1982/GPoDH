@@ -8,6 +8,7 @@ import { videos, CATEGORY_LABELS, featuredVideo } from '@/lib/videos'
 import type { VideoCategory } from '@/lib/videos'
 import VideoCard from '@/components/ui/VideoCard'
 import EmailSignupTile from '@/components/ui/EmailSignupTile'
+import SurpriseRoller from '@/components/ui/SurpriseRoller'
 import { videoTranscripts } from '@/lib/video-transcripts'
 import { expandQuery } from '@/lib/concept-map'
 
@@ -21,6 +22,8 @@ export default function VideoPageClient() {
 
   // ── Surprise modal state ──────────────────────────────────────────────────
   const [surpriseVideo, setSurpriseVideo] = useState<typeof videos[0] | null>(null)
+  const [rolling, setRolling] = useState(false)
+  const rollTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // ── Search state ──────────────────────────────────────────────────────────
   const [query, setQuery] = useState('')
@@ -102,12 +105,29 @@ export default function VideoPageClient() {
   }, [deferredQuery, expandedTerms, fuse, transcriptIndex, activeCategory])
 
   // ── Surprise me — opens a random video in a modal ────────────────────────
+  const surpriseLabels = useMemo(() => videos.map((v) => v.title), [])
+
   const surprise = useCallback(() => {
     const pool = filteredVideos.length > 0 ? filteredVideos : videos
+    if (pool.length === 0) return
     setSurpriseVideo(pool[Math.floor(Math.random() * pool.length)])
+    // Roll the dice for a beat before revealing the pick.
+    setRolling(true)
+    if (rollTimer.current) clearTimeout(rollTimer.current)
+    const reduce =
+      typeof window !== 'undefined' &&
+      !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    rollTimer.current = setTimeout(() => setRolling(false), reduce ? 120 : 900)
   }, [filteredVideos])
 
-  const closeSurprise = useCallback(() => setSurpriseVideo(null), [])
+  const closeSurprise = useCallback(() => {
+    if (rollTimer.current) clearTimeout(rollTimer.current)
+    setRolling(false)
+    setSurpriseVideo(null)
+  }, [])
+
+  // Clear any pending reveal timer on unmount.
+  useEffect(() => () => { if (rollTimer.current) clearTimeout(rollTimer.current) }, [])
 
   // ── Suggestions dropdown ──────────────────────────────────────────────────
   interface Suggestion {
@@ -251,6 +271,10 @@ export default function VideoPageClient() {
               animation: 'surprise-in 0.28s ease',
             }}
           >
+            {rolling ? (
+              <SurpriseRoller labels={surpriseLabels} caption="Picking a video…" />
+            ) : (
+            <>
             {/* YouTube embed */}
             <div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}>
               <iframe
@@ -298,6 +322,8 @@ export default function VideoPageClient() {
                 </button>
               </div>
             </div>
+            </>
+            )}
 
             {/* Close */}
             <button
