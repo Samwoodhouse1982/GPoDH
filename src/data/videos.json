@@ -1,6 +1,33 @@
 {
   "videos": [
     {
+      "id": "39",
+      "slug": "hot-takes-antoine-withings",
+      "title": "Hot takes Antoine Withings",
+      "description": "GPODH on the road at HLTH Europe with Hot takes. Grilling digital health leaders about what we need to do better in our inudstry. We caught up with Antoine Pivron from Withings Health Solutions on how to do better on health prevention. Check out our hot takes series.",
+      "youtubeVideoId": "n6ptaVHvW3Y",
+      "date": "Jun 2026",
+      "tags": []
+    },
+    {
+      "id": "38",
+      "slug": "hot-take-laurie-nabla",
+      "title": "Hot take Laurie Nabla",
+      "description": "GPODH on the road at HLTH Europe with Hot takes. Grilling digital health leaders about what we need to do better in our inudstry. We caught up with Laurie Soffiati of Nabla Health Check out our hot takes series.",
+      "youtubeVideoId": "b0E9vYY6eK4",
+      "date": "Jun 2026",
+      "tags": []
+    },
+    {
+      "id": "37",
+      "slug": "doctolib-stan-hot-take",
+      "title": "Doctolib Stan hot take",
+      "description": "Hot takes. What do we need to do better on in the digital health industry. We hit the road to ask leaders in health tech on their biggest hot takes. Here's CEO of Doctolib, Stanislas Niox-Chateau on that really matters to create real value for clinicians. Part of our GPODH.org on the road series at HLTH Europe in 2026. Check out our other hot takes.",
+      "youtubeVideoId": "tYZ3ZR1p4mA",
+      "date": "Jun 2026",
+      "tags": []
+    },
+    {
       "featured": true,
       "id": "36",
       "slug": "hot-takes-hlth-health-inequities",
