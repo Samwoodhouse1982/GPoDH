@@ -117,7 +117,7 @@ export default function EpisodesPage() {
             </p>
 
             <p className="animate-fade-up" style={{ fontSize: '1.0625rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '36rem', marginBottom: '1.5rem', animationDelay: '280ms' }}>
-              Clinicians, founders, researchers, and policy makers doing the hard work in digital health across under-resourced settings. The lessons travel.
+              Clinicians, founders, researchers, and policy makers are doing the hard work in digital health across under-resourced settings - and the lessons that they&#39;ve learned travel.
             </p>
             <p className="animate-fade-up" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6, animationDelay: '340ms' }}>
               New to the show?{' '}
