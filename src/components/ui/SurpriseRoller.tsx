@@ -37,16 +37,18 @@ export default function SurpriseRoller({ labels, caption = 'Rolling the dice…'
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           gap: 1.4rem; padding: 3.75rem 2rem; text-align: center; min-height: 200px;
         }
-        .sr-scene { perspective: 260px; width: 64px; height: 64px; }
+        .sr-scene { perspective: 340px; width: 64px; height: 64px; }
         .sr-cube {
           position: relative; width: 64px; height: 64px;
           transform-style: preserve-3d;
-          animation: sr-tumble 0.78s linear infinite;
-          filter: drop-shadow(0 14px 18px rgba(0,0,0,0.35));
+          animation: sr-tumble 0.72s linear infinite;
+          /* No filter/opacity/clip-path here: those collapse a preserve-3d
+             context, flattening the cube into a 2D panel that just flaps. */
         }
         .sr-face {
           position: absolute; width: 64px; height: 64px; box-sizing: border-box;
-          background: #fff; border: 2px solid rgba(0,0,0,0.10); border-radius: 11px;
+          background: #fff; border: 1.5px solid rgba(0,0,0,0.16); border-radius: 11px;
+          box-shadow: inset 0 0 10px rgba(0,0,0,0.06);
         }
         .sr-dot {
           position: absolute; width: 11px; height: 11px; border-radius: 50%;
@@ -58,9 +60,11 @@ export default function SurpriseRoller({ labels, caption = 'Rolling the dice…'
         .sr-f4 { transform: rotateY(-90deg) translateZ(32px); }
         .sr-f5 { transform: rotateX(90deg)  translateZ(32px); }
         .sr-f6 { transform: rotateX(-90deg) translateZ(32px); }
+        /* End-over-end tumble: X flips twice, Y once, per loop — seamless
+           because both end on a multiple of 360deg (a cube face repeats). */
         @keyframes sr-tumble {
-          from { transform: rotateX(-20deg) rotateY(20deg); }
-          to   { transform: rotateX(340deg) rotateY(380deg); }
+          from { transform: rotateX(0deg)   rotateY(0deg); }
+          to   { transform: rotateX(720deg) rotateY(360deg); }
         }
         .sr-caption {
           margin: 0;
