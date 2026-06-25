@@ -1,6 +1,22 @@
 {
   "videos": [
     {
+      "id": "36",
+      "slug": "hot-takes-hlth-health-inequities",
+      "title": "Hot Takes HLTH  Health inequities",
+      "description": "GPODH.org went on the road to HLTH Europe in June 2026. Here's part 1 of Hot takes, talking about what we need to do better on in the digital health industry. What antipatterns we need to change and act better on. I took aside some of the fantastic folks at our digital health inequities session to get their hot takes. Prof Jenny Shand, health economist at UCL spoke about value and the ROI case.…",
+      "youtubeVideoId": "DQpPO1Lytxw",
+      "date": "Jun 2026",
+      "category": "hot-take",
+      "tags": [
+        "Digital Health",
+        "Health Inequities",
+        "Hot Takes",
+        "HLTH Europe",
+        "ROI"
+      ]
+    },
+    {
       "slug": "himss-hot-takes-doing-better-with-ai-in-healthcare",
       "featured": true,
       "date": "Jun 2026",
