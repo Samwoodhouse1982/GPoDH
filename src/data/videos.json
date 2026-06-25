@@ -1,6 +1,7 @@
 {
   "videos": [
     {
+      "featured": true,
       "id": "36",
       "slug": "hot-takes-hlth-health-inequities",
       "title": "Hot Takes HLTH  Health inequities",
@@ -18,7 +19,6 @@
     },
     {
       "slug": "himss-hot-takes-doing-better-with-ai-in-healthcare",
-      "featured": true,
       "date": "Jun 2026",
       "youtubeVideoId": "B5cfqh6bOWg",
       "title": "HIMSS hot takes: doing better with AI in healthcare",
