@@ -2,7 +2,10 @@ name: Sync YouTube videos
 
 # Checks the GPODH YouTube channel for new uploads and, when it finds videos
 # not yet listed in src/data/videos.json, commits them straight to master so
-# they go live automatically. Set the category/tags afterwards in the CMS.
+# they go live automatically. Then fetches YouTube transcripts for any videos
+# that still lack one (into src/lib/video-transcripts.ts) and commits those too.
+# Set the category/tags afterwards in the CMS; a transcript fills in once YouTube
+# has generated captions, so a brand-new upload may be transcribed on a later run.
 
 on:
   schedule:
@@ -23,14 +26,19 @@ jobs:
           node-version: 20
 
       - name: Sync videos from YouTube
-        id: sync
         run: node scripts/sync-videos.mjs
 
-      - name: Commit new videos to master
-        if: steps.sync.outputs.added && steps.sync.outputs.added != '0'
+      - name: Fetch transcripts for videos that lack one
+        run: node scripts/fetch-transcripts.mjs
+
+      - name: Commit new videos and transcripts to master
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add src/data/videos.json
-          git commit -m 'Add new YouTube video(s) to the library'
-          git push origin HEAD:master
+          git add src/data/videos.json src/lib/video-transcripts.ts
+          if git diff --cached --quiet; then
+            echo 'Nothing new to commit.'
+          else
+            git commit -m 'Add new YouTube videos and/or transcripts'
+            git push origin HEAD:master
+          fi
