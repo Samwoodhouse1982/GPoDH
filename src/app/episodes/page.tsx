@@ -37,7 +37,7 @@ export default function EpisodesPage() {
       {/* Hero */}
       <section
         style={{
-          padding: '10rem var(--gutter) 0',
+          padding: 'clamp(7rem, 3rem + 11vw, 10rem) var(--gutter) 0',
           overflow: 'hidden',
           borderBottom: '1px solid var(--border)',
         }}

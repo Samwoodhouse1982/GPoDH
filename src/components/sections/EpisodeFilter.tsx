@@ -222,7 +222,7 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2.5rem' }}>
 
         {/* Smart search input + Surprise me */}
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div className="search-row" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1 }}>
           {/* Search icon */}
           <svg
@@ -570,6 +570,12 @@ export default function EpisodeFilter({ episodes, allThemes, allCountries }: Epi
 
       {/* ── Surprise modal ───────────────────────────────────────────────── */}
       <style>{`
+        /* On phones the search field shares a row with the "Surprise me" button,
+           squeezing the input until its placeholder truncates. Stack them. */
+        @media (max-width: 560px) {
+          .search-row { flex-direction: column; align-items: stretch; }
+          .search-row .surprise-btn { width: 100%; justify-content: center; }
+        }
         .surprise-btn:hover { border-color: var(--accent-coral) !important; color: var(--accent-coral) !important; }
 
         /* ── 3D Dice ── */

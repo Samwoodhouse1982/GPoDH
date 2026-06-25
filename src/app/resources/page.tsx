@@ -32,7 +32,7 @@ export default function ResourcesPage() {
       {/* Hero */}
       <section
         style={{
-          padding: '10rem var(--gutter) 4rem',
+          padding: 'clamp(7rem, 3rem + 11vw, 10rem) var(--gutter) 4rem',
           borderBottom: '1px solid var(--border)',
         }}
       >
@@ -174,6 +174,7 @@ export default function ResourcesPage() {
 
                 {/* Substack wordmark "S" badge */}
                 <div
+                  className="sub-badge"
                   style={{
                     width: '4rem',
                     height: '4rem',
@@ -303,6 +304,7 @@ export default function ResourcesPage() {
                       elements.push(
                         <li
                           key={item.label}
+                          className="resource-row"
                           style={{
                             display: 'grid',
                             gridTemplateColumns: 'minmax(min(100%, 240px), 1fr) 2fr',
@@ -386,6 +388,17 @@ export default function ResourcesPage() {
       </section>
 
       <style>{`
+        /* Resource rows: stack label above description on phones (was a fixed
+           2-column grid that forced horizontal page scroll). */
+        @media (max-width: 640px) {
+          .resource-row { grid-template-columns: 1fr !important; gap: 0.4rem 0 !important; }
+        }
+        /* Newsletter card: stack and drop the small badge (the watermark "S"
+           already brands it) so the copy gets full width. */
+        @media (max-width: 560px) {
+          .shubstack-card > div { grid-template-columns: 1fr !important; }
+          .sub-badge { display: none !important; }
+        }
         .shubstack-card:hover > div { opacity: 0.92; }
         .resource-link:hover { opacity: 0.8; }
         .resource-nav-pill:hover {

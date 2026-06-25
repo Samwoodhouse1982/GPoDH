@@ -54,6 +54,7 @@ export default function Nav() {
         }}
       >
         <p
+          className="topbar-tagline"
           style={{
             fontFamily: 'var(--font-dm-mono, var(--font-mono))',
             fontSize: '0.625rem',
@@ -236,6 +237,10 @@ export default function Nav() {
       <SubscribeModal open={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
 
       <style>{`
+        /* Topbar tagline runs edge-to-edge on the narrowest phones — tighten it. */
+        @media (max-width: 380px) {
+          .topbar-tagline { letter-spacing: 0.06em; font-size: 0.5625rem; }
+        }
         /* Logo: 48px on mobile, a touch larger on wider screens */
         .site-logo { height: 48px; }
         @media (min-width: 768px) {

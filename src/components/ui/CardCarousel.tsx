@@ -74,6 +74,11 @@ export default function CardCarousel({
   return (
     <>
       <style>{`
+        /* Touch devices swipe the rail; the arrows sit at the screen edge on
+           phones, so hide them and let the edge-fade hint scrollability. */
+        @media (max-width: 767px) {
+          .carousel-arrow { display: none !important; }
+        }
         .carousel-card:hover {
           transform: translateY(-3px);
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -86,7 +91,7 @@ export default function CardCarousel({
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
         {/* Left arrow */}
         {!atStart && (
-          <button onClick={() => scrollByStep(-1)} aria-label="Scroll left" style={arrowStyle('left')}>
+          <button onClick={() => scrollByStep(-1)} aria-label="Scroll left" className="carousel-arrow" style={arrowStyle('left')}>
             ←
           </button>
         )}
@@ -185,7 +190,7 @@ export default function CardCarousel({
 
         {/* Right arrow */}
         {!atEnd && (
-          <button onClick={() => scrollByStep(1)} aria-label="Scroll right" style={arrowStyle('right')}>
+          <button onClick={() => scrollByStep(1)} aria-label="Scroll right" className="carousel-arrow" style={arrowStyle('right')}>
             →
           </button>
         )}

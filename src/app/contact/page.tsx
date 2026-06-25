@@ -67,7 +67,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <section style={{ padding: '10rem var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
+      <section style={{ padding: 'clamp(7rem, 3rem + 11vw, 10rem) var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ marginBottom: '3rem' }}>
             <p

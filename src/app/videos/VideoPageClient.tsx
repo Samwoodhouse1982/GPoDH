@@ -179,6 +179,12 @@ export default function VideoPageClient() {
   return (
     <>
       <style>{`
+        /* Stack the search field above the "Surprise me" button on phones so the
+           input keeps full width (otherwise its placeholder truncates). */
+        @media (max-width: 560px) {
+          .search-row { flex-direction: column; align-items: stretch; }
+          .search-row .surprise-btn { width: 100%; justify-content: center; }
+        }
         .watch-btn:hover { background: var(--accent-coral-dim) !important; }
         .featured-play-ring:hover { transform: scale(1.1); }
         .surprise-btn:hover { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.5) !important; }
@@ -298,7 +304,7 @@ export default function VideoPageClient() {
       )}
 
       {/* ——— Hero ——— */}
-      <section style={{ padding: '10rem var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
+      <section style={{ padding: 'clamp(7rem, 3rem + 11vw, 10rem) var(--gutter) 4rem', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <p
             className="animate-fade-up"
@@ -494,7 +500,7 @@ export default function VideoPageClient() {
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
 
           {/* Search bar row */}
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <div className="search-row" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '1.25rem' }}>
 
             {/* Search input wrapper */}
             <div style={{ position: 'relative', flex: 1 }}>

@@ -358,7 +358,7 @@ export default function HomePage() {
       <HostIntroStrip />
 
       {/* ——— Promo photo strip ——— */}
-      <section style={{ position: 'relative', overflow: 'hidden', height: 'clamp(340px, 42vw, 540px)' }}>
+      <section className="promo-strip" style={{ position: 'relative', overflow: 'hidden', height: 'clamp(340px, 42vw, 540px)' }}>
         <Image
           src={promo.image}
           alt={promo.alt}
@@ -369,20 +369,20 @@ export default function HomePage() {
           sizes="100vw"
         />
         {/* Right-side gradient — Shubs is on the left, text sits on the darkened right */}
-        <div style={{
+        <div className="promo-grad" style={{
           position: 'absolute',
           inset: 0,
           background: 'linear-gradient(to left, rgba(15,12,10,0.82) 0%, rgba(15,12,10,0.6) 40%, rgba(15,12,10,0.08) 68%, transparent 100%)',
         }} />
-        <div style={{
+        <div className="promo-outer" style={{
           position: 'absolute',
           inset: 0,
           display: 'flex',
           alignItems: 'center',
           padding: '0 var(--gutter)',
         }}>
-          <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
-            <div style={{ maxWidth: '460px', textAlign: 'right' }}>
+          <div className="promo-inner" style={{ maxWidth: 'var(--max-width)', margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+            <div className="promo-text" style={{ maxWidth: '460px', textAlign: 'right' }}>
               <p style={{
                 fontFamily: 'var(--font-dm-mono, var(--font-mono))',
                 fontSize: '0.625rem',
@@ -420,6 +420,14 @@ export default function HomePage() {
 
       {/* ——— Who listens ——— */}
       <style>{`
+        /* Promo photo strip: on phones the right-aligned quote crowds the frame.
+           Anchor it bottom-left, full width, over a bottom-up gradient. */
+        @media (max-width: 640px) {
+          .promo-grad { background: linear-gradient(to top, rgba(15,12,10,0.92) 0%, rgba(15,12,10,0.5) 45%, rgba(15,12,10,0.12) 78%, transparent 100%) !important; }
+          .promo-outer { align-items: flex-end !important; padding-bottom: 1.75rem !important; }
+          .promo-inner { justify-content: flex-start !important; }
+          .promo-text { max-width: 100% !important; text-align: left !important; }
+        }
         @keyframes heartbeat {
           0%, 60%, 100% { transform: scale(1); }
           50%            { transform: scale(1.22); }

@@ -14,7 +14,7 @@ export default function WorkWithUsPage() {
   return (
     <>
       {/* ——— Podcast Partnerships ——— */}
-      <section style={{ padding: '10rem var(--gutter) 2rem' }}>
+      <section style={{ padding: 'clamp(7rem, 3rem + 11vw, 10rem) var(--gutter) 2rem' }}>
         <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
           <div style={{ maxWidth: 'var(--content-width)', marginBottom: '3.5rem' }}>
             <ScrollReveal>
