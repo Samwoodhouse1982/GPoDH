@@ -1,6 +1,33 @@
 {
   "videos": [
     {
+      "id": "42",
+      "slug": "hot-take-ai-regulation-have-we-got-it-backwards",
+      "title": "Hot take. AI regulation. Have we got it backwards?",
+      "description": "I caught up with Professor of regulatory science Stephen Gilbert at HLTH Europe on his thoughts about where we could or should be headed with regulating AI in healthcare Have we got it wrong thinking about this as a medical device or regulating agents how we might regulate clinicians? Tasty stuff. Check out the full hot takes series with GPODH on the road, and our brand new website at gpodh.org",
+      "youtubeVideoId": "JUJvsrL7w-g",
+      "date": "Jul 2026",
+      "tags": []
+    },
+    {
+      "id": "41",
+      "slug": "hot-takes-ai-and-digital-health-do-the-boring-stuff",
+      "title": "Hot takes AI and digital health. Do the BORING stuff!",
+      "description": "I caught up at HLTH Europe with Haris Shuaib, founder and CEO of Newton's Tree to hear his hot take on - every dollar spent on tech innovation needs 5 on implementation - health tech is not like building an Angry birds (or any phone gaming) app - we need more boring stuff that matters - an extra bonus hot take A great hot take with a great human! Thanks Haris! What do you think?…",
+      "youtubeVideoId": "sPepedtsuxE",
+      "date": "Jul 2026",
+      "tags": []
+    },
+    {
+      "id": "40",
+      "slug": "hot-takes-social-media-ban-in-the-uk-with-vishaal-virani-of-youtube-health",
+      "title": "Hot Takes  Social Media Ban in the UK with Vishaal Virani of Youtube Health",
+      "description": "I caught up with Head of Youtube Health to discuss the UK's recent announcement on the social media ban for under 16s. Was it the right decision? Vishaal explains how a ban may not necessarily tackle the root cause. We have a back and forth around the concerns parents have about risks and harms, vs the potential benefits and the work Youtube has been doing to mitigate this.…",
+      "youtubeVideoId": "GtG6dMEpr7A",
+      "date": "Jul 2026",
+      "tags": []
+    },
+    {
       "id": "39",
       "slug": "hot-takes-antoine-withings",
       "title": "HLTH Hot Takes - Withings (Antoine Pivron)",
